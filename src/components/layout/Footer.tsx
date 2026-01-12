@@ -16,6 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/logo.png";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -69,17 +70,39 @@ export const Footer = () => {
 
     setIsSubmitting(true);
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      const { error: insertError } = await supabase
+        .from("newsletter_subscriptions")
+        .insert({ email: email.trim().toLowerCase() });
 
-    setIsSubmitting(false);
-    setIsSubscribed(true);
-    setEmail("");
+      if (insertError) {
+        if (insertError.code === "23505") {
+          // Unique constraint violation - already subscribed
+          setError("This email is already subscribed");
+        } else {
+          throw insertError;
+        }
+        setIsSubmitting(false);
+        return;
+      }
 
-    toast({
-      title: "Successfully subscribed!",
-      description: "Thank you for subscribing to our newsletter.",
-    });
+      setIsSubscribed(true);
+      setEmail("");
+
+      toast({
+        title: "Successfully subscribed!",
+        description: "Thank you for subscribing to our newsletter.",
+      });
+    } catch (err) {
+      console.error("Newsletter subscription error:", err);
+      toast({
+        title: "Subscription failed",
+        description: "Something went wrong. Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
