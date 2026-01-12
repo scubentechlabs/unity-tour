@@ -6,84 +6,84 @@
 
 @layer base {
   :root {
-    /* Premium Dark Theme with Gold Accents */
+    /* Premium Dark Theme with Unity Global Tours Olive Gold */
     --background: 0 0% 6%;
-    --foreground: 45 20% 95%;
+    --foreground: 50 20% 95%;
 
     --card: 0 0% 9%;
-    --card-foreground: 45 20% 95%;
+    --card-foreground: 50 20% 95%;
 
     --popover: 0 0% 9%;
-    --popover-foreground: 45 20% 95%;
+    --popover-foreground: 50 20% 95%;
 
-    --primary: 43 74% 49%;
+    --primary: 50 52% 58%;
     --primary-foreground: 0 0% 6%;
 
     --secondary: 0 0% 14%;
-    --secondary-foreground: 45 20% 95%;
+    --secondary-foreground: 50 20% 95%;
 
     --muted: 0 0% 14%;
     --muted-foreground: 0 0% 60%;
 
-    --accent: 43 74% 49%;
+    --accent: 50 52% 58%;
     --accent-foreground: 0 0% 6%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 45 20% 95%;
+    --destructive-foreground: 50 20% 95%;
 
     --border: 0 0% 18%;
     --input: 0 0% 18%;
-    --ring: 43 74% 49%;
+    --ring: 50 52% 58%;
 
     --radius: 0.5rem;
 
-    /* Custom Premium Colors */
-    --gold: 43 74% 49%;
-    --gold-light: 43 74% 60%;
-    --gold-dark: 43 74% 40%;
+    /* Custom Premium Colors - Unity Global Tours Olive Gold */
+    --gold: 50 52% 58%;
+    --gold-light: 50 52% 68%;
+    --gold-dark: 50 52% 48%;
     --dark-900: 0 0% 6%;
     --dark-800: 0 0% 9%;
     --dark-700: 0 0% 12%;
     --dark-600: 0 0% 18%;
 
     /* Gradients */
-    --gradient-gold: linear-gradient(135deg, hsl(43, 74%, 49%), hsl(43, 74%, 60%));
+    --gradient-gold: linear-gradient(135deg, hsl(50, 52%, 58%), hsl(50, 52%, 68%));
     --gradient-dark: linear-gradient(180deg, hsl(0, 0%, 6%), hsl(0, 0%, 9%));
 
     /* Shadows */
-    --shadow-gold: 0 4px 30px -5px hsla(43, 74%, 49%, 0.3);
+    --shadow-gold: 0 4px 30px -5px hsla(50, 52%, 58%, 0.3);
     --shadow-card: 0 10px 40px -10px hsla(0, 0%, 0%, 0.5);
 
     --sidebar-background: 0 0% 9%;
-    --sidebar-foreground: 45 20% 95%;
-    --sidebar-primary: 43 74% 49%;
+    --sidebar-foreground: 50 20% 95%;
+    --sidebar-primary: 50 52% 58%;
     --sidebar-primary-foreground: 0 0% 6%;
     --sidebar-accent: 0 0% 14%;
-    --sidebar-accent-foreground: 45 20% 95%;
+    --sidebar-accent-foreground: 50 20% 95%;
     --sidebar-border: 0 0% 18%;
-    --sidebar-ring: 43 74% 49%;
+    --sidebar-ring: 50 52% 58%;
   }
 
   .dark {
     --background: 0 0% 6%;
-    --foreground: 45 20% 95%;
+    --foreground: 50 20% 95%;
     --card: 0 0% 9%;
-    --card-foreground: 45 20% 95%;
+    --card-foreground: 50 20% 95%;
     --popover: 0 0% 9%;
-    --popover-foreground: 45 20% 95%;
-    --primary: 43 74% 49%;
+    --popover-foreground: 50 20% 95%;
+    --primary: 50 52% 58%;
     --primary-foreground: 0 0% 6%;
     --secondary: 0 0% 14%;
-    --secondary-foreground: 45 20% 95%;
+    --secondary-foreground: 50 20% 95%;
     --muted: 0 0% 14%;
     --muted-foreground: 0 0% 60%;
-    --accent: 43 74% 49%;
+    --accent: 50 52% 58%;
     --accent-foreground: 0 0% 6%;
     --destructive: 0 62% 30%;
-    --destructive-foreground: 45 20% 95%;
+    --destructive-foreground: 50 20% 95%;
     --border: 0 0% 18%;
     --input: 0 0% 18%;
-    --ring: 43 74% 49%;
+    --ring: 50 52% 58%;
   }
 }
 
@@ -107,11 +107,11 @@
   }
 
   .bg-gradient-gold {
-    background: linear-gradient(135deg, hsl(43, 74%, 49%), hsl(43, 74%, 60%));
+    background: linear-gradient(135deg, hsl(50, 52%, 58%), hsl(50, 52%, 68%));
   }
 
   .shadow-gold {
-    box-shadow: 0 4px 30px -5px hsla(43, 74%, 49%, 0.3);
+    box-shadow: 0 4px 30px -5px hsla(50, 52%, 58%, 0.3);
   }
 
   .glass-card {
