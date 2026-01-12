@@ -42,9 +42,6 @@ const handler = async (req: Request): Promise<Response> => {
     const data: EnquiryNotification = await req.json();
     console.log("Enquiry data:", JSON.stringify(data, null, 2));
 
-    let subject = "";
-    let htmlContent = "";
-
     const baseStyles = `
       <style>
         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
@@ -57,13 +54,20 @@ const handler = async (req: Request): Promise<Response> => {
         .value { color: #333; }
         h1 { margin: 0; font-size: 24px; }
         h2 { color: #c9a84c; border-bottom: 2px solid #c9a84c; padding-bottom: 10px; }
+        .highlight { background: #fff8e7; padding: 15px; border-radius: 8px; border-left: 4px solid #c9a84c; margin: 15px 0; }
       </style>
     `;
 
+    let adminSubject = "";
+    let adminHtml = "";
+    let userSubject = "";
+    let userHtml = "";
+
     switch (data.type) {
       case "tour":
-        subject = `🏖️ New Tour Enquiry: ${data.tourName || "Tour Package"}`;
-        htmlContent = `
+        // Admin notification
+        adminSubject = `🏖️ New Tour Enquiry: ${data.tourName || "Tour Package"}`;
+        adminHtml = `
           ${baseStyles}
           <div class="container">
             <div class="header"><h1>🏖️ New Tour Enquiry</h1></div>
@@ -82,11 +86,40 @@ const handler = async (req: Request): Promise<Response> => {
             <div class="footer">Unity Global Tours - Admin Notification</div>
           </div>
         `;
+        
+        // User confirmation
+        userSubject = `✅ Enquiry Received - ${data.tourName || "Tour Package"}`;
+        userHtml = `
+          ${baseStyles}
+          <div class="container">
+            <div class="header"><h1>🏖️ Thank You for Your Enquiry!</h1></div>
+            <div class="content">
+              <p>Dear <strong>${data.name}</strong>,</p>
+              <p>Thank you for your interest in our tour package. We have received your enquiry and our team will get back to you within 24 hours.</p>
+              
+              <div class="highlight">
+                <h2 style="margin-top: 0;">Your Enquiry Summary</h2>
+                <div class="field"><span class="label">Tour Package:</span> <span class="value">${data.tourName || "Not specified"}</span></div>
+                <div class="field"><span class="label">Travel Date:</span> <span class="value">${data.travelDate || "Flexible"}</span></div>
+                <div class="field"><span class="label">Travelers:</span> <span class="value">${data.adults || 1} Adult(s)${data.children ? `, ${data.children} Child(ren)` : ""}</span></div>
+              </div>
+              
+              <p>If you have any urgent questions, feel free to call us or reach out via WhatsApp.</p>
+              <p>We look forward to helping you plan an unforgettable trip!</p>
+              <p>Best regards,<br><strong>Unity Global Tours Team</strong></p>
+            </div>
+            <div class="footer">
+              Unity Global Tours | Your Journey, Our Passion<br>
+              This is an automated confirmation email. Please do not reply directly.
+            </div>
+          </div>
+        `;
         break;
 
       case "taxi":
-        subject = `🚕 New Taxi Booking Enquiry: ${data.tripType}`;
-        htmlContent = `
+        // Admin notification
+        adminSubject = `🚕 New Taxi Booking Enquiry: ${data.tripType}`;
+        adminHtml = `
           ${baseStyles}
           <div class="container">
             <div class="header"><h1>🚕 New Taxi Booking</h1></div>
@@ -106,11 +139,42 @@ const handler = async (req: Request): Promise<Response> => {
             <div class="footer">Unity Global Tours - Admin Notification</div>
           </div>
         `;
+        
+        // User confirmation
+        userSubject = `✅ Taxi Enquiry Received - ${data.tripType || "Booking"}`;
+        userHtml = `
+          ${baseStyles}
+          <div class="container">
+            <div class="header"><h1>🚕 Thank You for Your Taxi Enquiry!</h1></div>
+            <div class="content">
+              <p>Dear <strong>${data.name}</strong>,</p>
+              <p>Thank you for choosing Unity Global Tours for your taxi service. We have received your enquiry and our team will contact you shortly with the best rates.</p>
+              
+              <div class="highlight">
+                <h2 style="margin-top: 0;">Your Trip Summary</h2>
+                <div class="field"><span class="label">Trip Type:</span> <span class="value">${data.tripType || "One Way"}</span></div>
+                <div class="field"><span class="label">Pickup:</span> <span class="value">${data.pickupLocation || "Not specified"}</span></div>
+                <div class="field"><span class="label">Drop:</span> <span class="value">${data.dropLocation || "Local"}</span></div>
+                <div class="field"><span class="label">Date:</span> <span class="value">${data.travelDate || "Flexible"}</span></div>
+                ${data.vehicleName ? `<div class="field"><span class="label">Vehicle:</span> <span class="value">${data.vehicleName}</span></div>` : ""}
+              </div>
+              
+              <p>Our team will reach out to you within a few hours to confirm availability and provide a quote.</p>
+              <p>For immediate assistance, feel free to call us directly.</p>
+              <p>Best regards,<br><strong>Unity Global Tours Team</strong></p>
+            </div>
+            <div class="footer">
+              Unity Global Tours | Your Journey, Our Passion<br>
+              This is an automated confirmation email. Please do not reply directly.
+            </div>
+          </div>
+        `;
         break;
 
       case "flight":
-        subject = `✈️ New Flight Enquiry: ${data.from} → ${data.to}`;
-        htmlContent = `
+        // Admin notification
+        adminSubject = `✈️ New Flight Enquiry: ${data.from} → ${data.to}`;
+        adminHtml = `
           ${baseStyles}
           <div class="container">
             <div class="header"><h1>✈️ New Flight Enquiry</h1></div>
@@ -130,11 +194,41 @@ const handler = async (req: Request): Promise<Response> => {
             <div class="footer">Unity Global Tours - Admin Notification</div>
           </div>
         `;
+        
+        // User confirmation
+        userSubject = `✅ Flight Enquiry Received - ${data.from} to ${data.to}`;
+        userHtml = `
+          ${baseStyles}
+          <div class="container">
+            <div class="header"><h1>✈️ Thank You for Your Flight Enquiry!</h1></div>
+            <div class="content">
+              <p>Dear <strong>${data.name}</strong>,</p>
+              <p>Thank you for your flight enquiry. We have received your request and our travel experts will find the best deals for you.</p>
+              
+              <div class="highlight">
+                <h2 style="margin-top: 0;">Your Flight Request</h2>
+                <div class="field"><span class="label">Route:</span> <span class="value">${data.from} → ${data.to}</span></div>
+                <div class="field"><span class="label">Departure:</span> <span class="value">${data.departDate || "Flexible"}</span></div>
+                <div class="field"><span class="label">Return:</span> <span class="value">${data.returnDate || "One Way"}</span></div>
+                <div class="field"><span class="label">Passengers:</span> <span class="value">${data.passengers || 1}</span></div>
+                <div class="field"><span class="label">Class:</span> <span class="value">${data.travelClass || "Economy"}</span></div>
+              </div>
+              
+              <p>We'll get back to you with the best flight options and prices within 24 hours.</p>
+              <p>Best regards,<br><strong>Unity Global Tours Team</strong></p>
+            </div>
+            <div class="footer">
+              Unity Global Tours | Your Journey, Our Passion<br>
+              This is an automated confirmation email. Please do not reply directly.
+            </div>
+          </div>
+        `;
         break;
 
       case "contact":
-        subject = `📧 New Contact Message: ${data.subject || "General Inquiry"}`;
-        htmlContent = `
+        // Admin notification
+        adminSubject = `📧 New Contact Message: ${data.subject || "General Inquiry"}`;
+        adminHtml = `
           ${baseStyles}
           <div class="container">
             <div class="header"><h1>📧 New Contact Message</h1></div>
@@ -150,15 +244,43 @@ const handler = async (req: Request): Promise<Response> => {
             <div class="footer">Unity Global Tours - Admin Notification</div>
           </div>
         `;
+        
+        // User confirmation
+        userSubject = `✅ Message Received - Unity Global Tours`;
+        userHtml = `
+          ${baseStyles}
+          <div class="container">
+            <div class="header"><h1>📧 Thank You for Contacting Us!</h1></div>
+            <div class="content">
+              <p>Dear <strong>${data.name}</strong>,</p>
+              <p>Thank you for reaching out to Unity Global Tours. We have received your message and will respond as soon as possible.</p>
+              
+              <div class="highlight">
+                <h2 style="margin-top: 0;">Your Message</h2>
+                <div class="field"><span class="label">Subject:</span> <span class="value">${data.subject || "General Inquiry"}</span></div>
+                <p style="margin-top: 10px;">${data.message || "No message provided"}</p>
+              </div>
+              
+              <p>Our team typically responds within 24 hours during business days.</p>
+              <p>Best regards,<br><strong>Unity Global Tours Team</strong></p>
+            </div>
+            <div class="footer">
+              Unity Global Tours | Your Journey, Our Passion<br>
+              This is an automated confirmation email. Please do not reply directly.
+            </div>
+          </div>
+        `;
         break;
 
       default:
         throw new Error("Invalid enquiry type");
     }
 
-    console.log(`Sending email to: ${adminEmail}`);
+    console.log(`Sending admin email to: ${adminEmail}`);
+    console.log(`Sending user confirmation to: ${data.email}`);
     
-    const res = await fetch("https://api.resend.com/emails", {
+    // Send admin notification
+    const adminRes = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -167,19 +289,45 @@ const handler = async (req: Request): Promise<Response> => {
       body: JSON.stringify({
         from: "Unity Global Tours <onboarding@resend.dev>",
         to: [adminEmail],
-        subject: subject,
-        html: htmlContent,
+        subject: adminSubject,
+        html: adminHtml,
       }),
     });
 
-    const emailResponse = await res.json();
-    console.log("Email response:", emailResponse);
+    const adminEmailResponse = await adminRes.json();
+    console.log("Admin email response:", adminEmailResponse);
 
-    if (!res.ok) {
-      throw new Error(emailResponse.message || "Failed to send email");
+    if (!adminRes.ok) {
+      console.error("Failed to send admin email:", adminEmailResponse);
     }
 
-    return new Response(JSON.stringify({ success: true, data: emailResponse }), {
+    // Send user confirmation email
+    const userRes = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${RESEND_API_KEY}`,
+      },
+      body: JSON.stringify({
+        from: "Unity Global Tours <onboarding@resend.dev>",
+        to: [data.email],
+        subject: userSubject,
+        html: userHtml,
+      }),
+    });
+
+    const userEmailResponse = await userRes.json();
+    console.log("User confirmation email response:", userEmailResponse);
+
+    if (!userRes.ok) {
+      console.error("Failed to send user confirmation email:", userEmailResponse);
+    }
+
+    return new Response(JSON.stringify({ 
+      success: true, 
+      adminEmail: adminEmailResponse,
+      userEmail: userEmailResponse 
+    }), {
       status: 200,
       headers: { "Content-Type": "application/json", ...corsHeaders },
     });
