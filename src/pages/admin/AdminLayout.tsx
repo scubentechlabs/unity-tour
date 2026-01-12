@@ -17,11 +17,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
+import { Car } from "lucide-react";
+
 const sidebarLinks = [
   { name: "Dashboard", path: "/admin", icon: LayoutDashboard },
   { name: "Hero Slides", path: "/admin/hero-slides", icon: Image },
   { name: "Tour Packages", path: "/admin/tours", icon: Package },
   { name: "Enquiries", path: "/admin/enquiries", icon: MessageSquare },
+  { name: "Taxi Management", path: "/admin/taxi", icon: Car },
   { name: "Admin Users", path: "/admin/users", icon: Users },
   { name: "Settings", path: "/admin/settings", icon: Settings },
 ];

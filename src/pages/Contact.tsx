@@ -1,0 +1,341 @@
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Layout } from "@/components/layout/Layout";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Clock,
+  Send,
+  MessageSquare,
+  Facebook,
+  Instagram,
+  Twitter,
+  Youtube,
+} from "lucide-react";
+
+const contactInfo = [
+  {
+    icon: Phone,
+    title: "Phone",
+    details: ["+91 98765 43210", "+91 87654 32109"],
+    action: "tel:+919876543210",
+  },
+  {
+    icon: Mail,
+    title: "Email",
+    details: ["info@unityglobaltours.com", "support@unityglobaltours.com"],
+    action: "mailto:info@unityglobaltours.com",
+  },
+  {
+    icon: MapPin,
+    title: "Address",
+    details: ["123 Travel Plaza, MG Road", "Mumbai, Maharashtra 400001"],
+    action: "https://maps.google.com",
+  },
+  {
+    icon: Clock,
+    title: "Working Hours",
+    details: ["Mon - Sat: 9:00 AM - 7:00 PM", "Sunday: 10:00 AM - 4:00 PM"],
+  },
+];
+
+const socialLinks = [
+  { icon: Facebook, href: "#", label: "Facebook" },
+  { icon: Instagram, href: "#", label: "Instagram" },
+  { icon: Twitter, href: "#", label: "Twitter" },
+  { icon: Youtube, href: "#", label: "YouTube" },
+];
+
+const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
+  });
+  const [submitting, setSubmitting] = useState(false);
+  const { toast } = useToast();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+
+    // Simulate form submission
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    toast({
+      title: "Message Sent!",
+      description: "We'll get back to you within 24 hours.",
+    });
+
+    setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+    setSubmitting(false);
+  };
+
+  return (
+    <Layout>
+      {/* Hero Section */}
+      <section className="relative py-20 md:py-28 overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1423666639041-f56000c27a9a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')`,
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/80 to-background" />
+        </div>
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center max-w-3xl mx-auto"
+          >
+            <span className="inline-block px-4 py-2 bg-primary/20 border border-primary/30 rounded-full text-primary text-sm font-medium mb-6">
+              Get In Touch
+            </span>
+            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
+              Contact <span className="text-primary">Us</span>
+            </h1>
+            <p className="text-muted-foreground text-lg">
+              Have questions about our tours? Need help planning your trip?
+              We're here to assist you every step of the way.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section className="py-16 md:py-24 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* Contact Info */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="lg:col-span-1 space-y-6"
+            >
+              <div>
+                <h2 className="font-display text-2xl font-bold text-foreground mb-2">
+                  Contact Information
+                </h2>
+                <p className="text-muted-foreground">
+                  Reach out to us through any of these channels.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                {contactInfo.map((info, index) => {
+                  const Icon = info.icon;
+                  return (
+                    <motion.div
+                      key={info.title}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1 }}
+                      className="bg-card border border-border rounded-xl p-4 hover:border-primary/50 transition-colors"
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <Icon className="h-5 w-5 text-primary" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-foreground mb-1">
+                            {info.title}
+                          </h3>
+                          {info.details.map((detail, i) => (
+                            <p key={i} className="text-sm text-muted-foreground">
+                              {detail}
+                            </p>
+                          ))}
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+
+              {/* Social Links */}
+              <div className="pt-6">
+                <h3 className="font-semibold text-foreground mb-4">
+                  Follow Us
+                </h3>
+                <div className="flex gap-3">
+                  {socialLinks.map((social) => {
+                    const Icon = social.icon;
+                    return (
+                      <a
+                        key={social.label}
+                        href={social.href}
+                        className="w-10 h-10 bg-secondary hover:bg-primary/10 rounded-lg flex items-center justify-center text-muted-foreground hover:text-primary transition-colors"
+                        aria-label={social.label}
+                      >
+                        <Icon className="h-5 w-5" />
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Contact Form */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="lg:col-span-2"
+            >
+              <div className="bg-card border border-border rounded-2xl p-6 md:p-8">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <MessageSquare className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <h2 className="font-display text-xl font-bold text-foreground">
+                      Send us a Message
+                    </h2>
+                    <p className="text-sm text-muted-foreground">
+                      Fill out the form and we'll respond within 24 hours.
+                    </p>
+                  </div>
+                </div>
+
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="name">Full Name *</Label>
+                      <Input
+                        id="name"
+                        value={formData.name}
+                        onChange={(e) =>
+                          setFormData({ ...formData, name: e.target.value })
+                        }
+                        placeholder="Enter your name"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email Address *</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) =>
+                          setFormData({ ...formData, email: e.target.value })
+                        }
+                        placeholder="Enter your email"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="phone">Phone Number</Label>
+                      <Input
+                        id="phone"
+                        value={formData.phone}
+                        onChange={(e) =>
+                          setFormData({ ...formData, phone: e.target.value })
+                        }
+                        placeholder="Enter your phone"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="subject">Subject *</Label>
+                      <Input
+                        id="subject"
+                        value={formData.subject}
+                        onChange={(e) =>
+                          setFormData({ ...formData, subject: e.target.value })
+                        }
+                        placeholder="What's this about?"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="message">Message *</Label>
+                    <Textarea
+                      id="message"
+                      value={formData.message}
+                      onChange={(e) =>
+                        setFormData({ ...formData, message: e.target.value })
+                      }
+                      placeholder="Tell us how we can help..."
+                      rows={5}
+                      required
+                    />
+                  </div>
+
+                  <Button
+                    type="submit"
+                    className="w-full bg-primary hover:bg-primary/90"
+                    disabled={submitting}
+                  >
+                    {submitting ? (
+                      "Sending..."
+                    ) : (
+                      <>
+                        <Send className="h-4 w-4 mr-2" />
+                        Send Message
+                      </>
+                    )}
+                  </Button>
+                </form>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Map Section */}
+      <section className="py-16 bg-secondary/30">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-8"
+          >
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">
+              Visit Our Office
+            </h2>
+            <p className="text-muted-foreground mt-2">
+              Come meet us in person at our Mumbai office.
+            </p>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-card border border-border rounded-2xl overflow-hidden h-96"
+          >
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.8556397855!2d72.82568831544466!3d19.021614687111826!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7ced6b5f5c3d7%3A0x1e0d8e2b8b8b8b8b!2sMumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Office Location"
+            />
+          </motion.div>
+        </div>
+      </section>
+    </Layout>
+  );
+};
+
+export default Contact;
