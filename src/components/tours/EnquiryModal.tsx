@@ -72,6 +72,25 @@ export const EnquiryModal = ({ isOpen, onClose, tour }: EnquiryModalProps) => {
 
       if (error) throw error;
 
+      // Send email notification to admin
+      try {
+        await supabase.functions.invoke("send-enquiry-notification", {
+          body: {
+            type: "tour",
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            tourName: tour.title,
+            travelDate: data.travel_date,
+            adults: data.adults,
+            children: data.children,
+            message: data.message,
+          },
+        });
+      } catch (emailError) {
+        console.error("Failed to send email notification:", emailError);
+      }
+
       setIsSuccess(true);
       toast.success("Enquiry submitted successfully! We'll contact you soon.");
       

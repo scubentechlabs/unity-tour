@@ -150,6 +150,26 @@ const TaxiBooking = () => {
 
       if (error) throw error;
 
+      // Send email notification to admin
+      try {
+        await supabase.functions.invoke("send-enquiry-notification", {
+          body: {
+            type: "taxi",
+            name,
+            email,
+            phone,
+            pickupLocation,
+            dropLocation,
+            tripType,
+            travelDate: format(pickupDate, "dd MMM yyyy"),
+            vehicleName: selectedVehicle.name,
+            message,
+          },
+        });
+      } catch (emailError) {
+        console.error("Failed to send email notification:", emailError);
+      }
+
       toast({
         title: "Booking Request Submitted!",
         description: "We'll contact you shortly with confirmation and final pricing.",

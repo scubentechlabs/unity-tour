@@ -11,7 +11,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import {
@@ -25,6 +32,7 @@ import {
   Shield,
   Clock,
   HeadphonesIcon,
+  Loader2,
 } from "lucide-react";
 
 const features = [
@@ -67,15 +75,51 @@ const Flights = () => {
   const [returnDate, setReturnDate] = useState<Date>();
   const [passengers, setPassengers] = useState("1");
   const [travelClass, setTravelClass] = useState("economy");
+  const [showContactModal, setShowContactModal] = useState(false);
+  const [contactForm, setContactForm] = useState({ name: "", email: "", phone: "" });
+  const [submitting, setSubmitting] = useState(false);
   const { toast } = useToast();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Search Request Received",
-      description:
-        "Our team will contact you shortly with the best flight options.",
-    });
+    if (!from || !to || !departDate) {
+      toast({ title: "Please fill all required fields", variant: "destructive" });
+      return;
+    }
+    setShowContactModal(true);
+  };
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      await supabase.functions.invoke("send-enquiry-notification", {
+        body: {
+          type: "flight",
+          name: contactForm.name,
+          email: contactForm.email,
+          phone: contactForm.phone,
+          from,
+          to,
+          departDate: departDate ? format(departDate, "dd MMM yyyy") : "",
+          returnDate: returnDate ? format(returnDate, "dd MMM yyyy") : "",
+          passengers,
+          travelClass,
+        },
+      });
+
+      toast({
+        title: "Flight Enquiry Submitted!",
+        description: "Our team will contact you shortly with the best flight options.",
+      });
+      setShowContactModal(false);
+      setContactForm({ name: "", email: "", phone: "" });
+    } catch (error) {
+      console.error("Error:", error);
+      toast({ title: "Failed to submit", variant: "destructive" });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -399,6 +443,37 @@ const Flights = () => {
           </motion.div>
         </div>
       </section>
+
+      {/* Contact Modal */}
+      <Dialog open={showContactModal} onOpenChange={setShowContactModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Complete Your Flight Enquiry</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleContactSubmit} className="space-y-4 mt-4">
+            <div className="p-4 bg-secondary rounded-lg text-sm">
+              <p><strong>Route:</strong> {from} → {to}</p>
+              <p><strong>Date:</strong> {departDate ? format(departDate, "dd MMM yyyy") : ""} {returnDate && `- ${format(returnDate, "dd MMM yyyy")}`}</p>
+              <p><strong>Passengers:</strong> {passengers} | <strong>Class:</strong> {travelClass}</p>
+            </div>
+            <div>
+              <Label>Full Name *</Label>
+              <Input value={contactForm.name} onChange={(e) => setContactForm({...contactForm, name: e.target.value})} required placeholder="Your name" />
+            </div>
+            <div>
+              <Label>Email *</Label>
+              <Input type="email" value={contactForm.email} onChange={(e) => setContactForm({...contactForm, email: e.target.value})} required placeholder="your@email.com" />
+            </div>
+            <div>
+              <Label>Phone *</Label>
+              <Input value={contactForm.phone} onChange={(e) => setContactForm({...contactForm, phone: e.target.value})} required placeholder="+91 98765 43210" />
+            </div>
+            <Button type="submit" className="w-full bg-primary" disabled={submitting}>
+              {submitting ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" />Submitting...</> : "Submit Enquiry"}
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
     </Layout>
   );
 };
