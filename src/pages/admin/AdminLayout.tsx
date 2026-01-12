@@ -17,6 +17,7 @@ import {
   Bell,
   Search,
   CircleUser,
+  Mail,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -34,6 +35,7 @@ const sidebarLinks = [
   { name: "Hero Slides", path: "/admin/hero-slides", icon: Image },
   { name: "Tour Packages", path: "/admin/tours", icon: Package },
   { name: "Enquiries", path: "/admin/enquiries", icon: MessageSquare },
+  { name: "Newsletter", path: "/admin/newsletter", icon: Mail },
   { name: "Taxi Management", path: "/admin/taxi", icon: Car },
   { name: "Admin Users", path: "/admin/users", icon: Users },
   { name: "Settings", path: "/admin/settings", icon: Settings },
