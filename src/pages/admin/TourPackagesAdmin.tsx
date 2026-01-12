@@ -918,7 +918,7 @@ const TourPackagesAdmin = () => {
                         id="meta_title"
                         value={editingTour.meta_title || ""}
                         onChange={(e) => setEditingTour({ ...editingTour, meta_title: e.target.value })}
-                        placeholder="Kashmir Tour Package | Premium Tours"
+                        placeholder="Kashmir Tour Package | Unity Global Tours"
                       />
                     </div>
 
