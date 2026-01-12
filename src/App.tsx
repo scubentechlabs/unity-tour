@@ -11,6 +11,7 @@ import AdminLayout from "./pages/admin/AdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
 import HeroSlidesAdmin from "./pages/admin/HeroSlidesAdmin";
 import TourPackagesAdmin from "./pages/admin/TourPackagesAdmin";
+import EnquiriesAdmin from "./pages/admin/EnquiriesAdmin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,7 +33,7 @@ const App = () => (
             <Route index element={<Dashboard />} />
             <Route path="hero-slides" element={<HeroSlidesAdmin />} />
             <Route path="tours" element={<TourPackagesAdmin />} />
-            <Route path="enquiries" element={<Dashboard />} />
+            <Route path="enquiries" element={<EnquiriesAdmin />} />
             <Route path="users" element={<Dashboard />} />
             <Route path="settings" element={<Dashboard />} />
           </Route>
