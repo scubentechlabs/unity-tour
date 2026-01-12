@@ -61,7 +61,7 @@ export const useDisableDevTools = () => {
       }
     };
 
-    // Add CSS to prevent image selection and dragging
+    // Add CSS to prevent image selection, dragging, and text selection
     const style = document.createElement("style");
     style.id = "image-protection-styles";
     style.textContent = `
@@ -73,6 +73,18 @@ export const useDisableDevTools = () => {
         user-drag: none;
         pointer-events: auto;
         -webkit-touch-callout: none;
+      }
+      body {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      input, textarea {
+        -webkit-user-select: text;
+        -moz-user-select: text;
+        -ms-user-select: text;
+        user-select: text;
       }
     `;
     document.head.appendChild(style);
