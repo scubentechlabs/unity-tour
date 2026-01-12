@@ -169,31 +169,6 @@ export const HeroSlider = () => {
         </>
       )}
 
-      {/* Stats */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.6 }}
-        className="absolute bottom-16 left-0 right-0 z-10"
-      >
-        <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-center gap-8 md:gap-16">
-            {[
-              { value: "15K+", label: "Happy Travelers" },
-              { value: "500+", label: "Destinations" },
-              { value: "98%", label: "Satisfaction Rate" },
-              { value: "24/7", label: "Support" },
-            ].map((stat, index) => (
-              <div key={index} className="text-center">
-                <p className="text-3xl md:text-4xl font-display font-bold text-primary">
-                  {stat.value}
-                </p>
-                <p className="text-sm text-muted-foreground mt-1">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </motion.div>
 
       {/* Scroll Indicator */}
       <motion.div
