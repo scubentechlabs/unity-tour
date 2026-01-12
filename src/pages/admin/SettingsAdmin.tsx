@@ -82,7 +82,7 @@ const SettingsAdmin = () => {
                   Contact Phone
                 </Label>
                 <Input 
-                  defaultValue="+91 98765 43210" 
+                  defaultValue="+91 92270 26000" 
                   className="border-gray-300 focus:border-[#008060] focus:ring-[#008060]"
                 />
               </div>
