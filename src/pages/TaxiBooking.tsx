@@ -432,7 +432,7 @@ const TaxiBooking = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                 <div>
                   <h2 className="font-display text-2xl font-bold text-foreground">
                     Select Your Vehicle
@@ -446,109 +446,178 @@ const TaxiBooking = () => {
                 </Button>
               </div>
 
+              {/* Category Filter Tabs */}
+              <div className="flex flex-wrap gap-2 mb-6">
+                {["all", "sedan", "suv", "muv", "luxury"].map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => {
+                      const el = document.getElementById(`category-${cat}`);
+                      if (cat === "all") {
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      } else if (el) {
+                        el.scrollIntoView({ behavior: "smooth", block: "start" });
+                      }
+                    }}
+                    className="px-4 py-2 rounded-full text-sm font-medium border border-border hover:border-primary hover:bg-primary/5 transition-colors capitalize"
+                  >
+                    {cat === "all" ? "All Vehicles" : cat}
+                  </button>
+                ))}
+              </div>
+
               {loading ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {[1, 2, 3].map((i) => (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {[1, 2, 3, 4].map((i) => (
                     <Card key={i} className="bg-card border-border animate-pulse">
-                      <div className="h-48 bg-muted" />
+                      <div className="h-44 bg-muted" />
                       <CardContent className="p-4 space-y-4">
                         <div className="h-6 bg-muted rounded w-3/4" />
                         <div className="h-4 bg-muted rounded w-1/2" />
+                        <div className="flex gap-2">
+                          <div className="h-6 bg-muted rounded w-16" />
+                          <div className="h-6 bg-muted rounded w-16" />
+                        </div>
                       </CardContent>
                     </Card>
                   ))}
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {vehicles
-                    .filter((v) => v.seating_capacity >= parseInt(passengers))
-                    .map((vehicle) => (
-                      <motion.div
-                        key={vehicle.id}
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        whileHover={{ y: -5 }}
-                      >
-                        <Card className="bg-card border-border overflow-hidden h-full flex flex-col">
-                          <div className="relative h-48 overflow-hidden">
-                            <img
-                              src={vehicle.image_url || "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400"}
-                              alt={vehicle.name}
-                              className="w-full h-full object-cover"
-                            />
-                            <Badge className="absolute top-3 left-3 bg-secondary text-foreground capitalize">
-                              {vehicle.category}
-                            </Badge>
-                          </div>
-                          <CardContent className="p-4 flex-1 flex flex-col">
-                            <h3 className="font-display text-xl font-semibold text-foreground mb-2">
-                              {vehicle.name}
-                            </h3>
-                            
-                            <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-4">
-                              <span className="flex items-center gap-1">
-                                <Users className="h-4 w-4" />
-                                {vehicle.seating_capacity} Seats
-                              </span>
-                              <span className="flex items-center gap-1">
-                                <Briefcase className="h-4 w-4" />
-                                {vehicle.luggage_capacity} Bags
-                              </span>
-                              {vehicle.ac && (
-                                <span className="flex items-center gap-1">
-                                  <Wind className="h-4 w-4" />
-                                  AC
-                                </span>
-                              )}
-                              {vehicle.fuel_type && (
-                                <span className="flex items-center gap-1">
-                                  <Fuel className="h-4 w-4" />
-                                  {vehicle.fuel_type}
-                                </span>
-                              )}
-                            </div>
-
-                            {vehicle.features && vehicle.features.length > 0 && (
-                              <div className="flex flex-wrap gap-1 mb-4">
-                                {vehicle.features.slice(0, 3).map((feature) => (
-                                  <Badge key={feature} variant="outline" className="text-xs">
-                                    {feature}
+                <>
+                  {/* Group vehicles by category */}
+                  {["sedan", "suv", "muv", "luxury"].map((category) => {
+                    const categoryVehicles = vehicles
+                      .filter((v) => v.category === category && v.seating_capacity >= parseInt(passengers));
+                    
+                    if (categoryVehicles.length === 0) return null;
+                    
+                    return (
+                      <div key={category} id={`category-${category}`} className="mb-10">
+                        <div className="flex items-center gap-3 mb-4">
+                          <h3 className="font-display text-xl font-semibold text-foreground capitalize">
+                            {category} Vehicles
+                          </h3>
+                          <Badge variant="secondary" className="text-xs">
+                            {categoryVehicles.length} available
+                          </Badge>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                          {categoryVehicles.map((vehicle, index) => (
+                            <motion.div
+                              key={vehicle.id}
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: index * 0.05 }}
+                              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                              className="group"
+                            >
+                              <Card className="bg-card border-border overflow-hidden h-full flex flex-col hover:border-primary/50 hover:shadow-lg transition-all duration-300">
+                                {/* Image Section */}
+                                <div className="relative h-44 overflow-hidden">
+                                  <img
+                                    src={vehicle.image_url || "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400"}
+                                    alt={vehicle.name}
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                  />
+                                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                                  <Badge className="absolute top-3 left-3 bg-white/90 text-foreground capitalize backdrop-blur-sm">
+                                    {vehicle.category}
                                   </Badge>
-                                ))}
-                              </div>
-                            )}
-
-                            <div className="mt-auto">
-                              <div className="flex items-end justify-between mb-3">
-                                <div>
-                                  <p className="text-xs text-muted-foreground">Estimated Price</p>
-                                  <p className="text-2xl font-bold text-primary">
-                                    ₹{calculateEstimatedPrice(vehicle).toLocaleString()}
-                                  </p>
+                                  {vehicle.ac && (
+                                    <Badge className="absolute top-3 right-3 bg-primary/90 text-primary-foreground backdrop-blur-sm">
+                                      <Wind className="h-3 w-3 mr-1" />
+                                      AC
+                                    </Badge>
+                                  )}
                                 </div>
-                                <p className="text-xs text-muted-foreground">
-                                  ₹{vehicle.base_price_per_km}/km
-                                </p>
-                              </div>
-                              <Button
-                                onClick={() => handleVehicleSelect(vehicle)}
-                                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
-                              >
-                                Select Vehicle
-                              </Button>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </motion.div>
-                    ))}
-                </div>
+
+                                <CardContent className="p-4 flex-1 flex flex-col">
+                                  {/* Vehicle Name */}
+                                  <h4 className="font-display text-lg font-semibold text-foreground mb-1">
+                                    {vehicle.name}
+                                  </h4>
+                                  
+                                  {/* Fuel Type */}
+                                  {vehicle.fuel_type && (
+                                    <p className="text-xs text-muted-foreground mb-3 flex items-center gap-1">
+                                      <Fuel className="h-3 w-3" />
+                                      {vehicle.fuel_type}
+                                    </p>
+                                  )}
+                                  
+                                  {/* Specs Grid */}
+                                  <div className="grid grid-cols-2 gap-2 mb-3">
+                                    <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 rounded-lg px-2 py-1.5">
+                                      <Users className="h-4 w-4 text-primary" />
+                                      <span>{vehicle.seating_capacity} Seats</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 rounded-lg px-2 py-1.5">
+                                      <Briefcase className="h-4 w-4 text-primary" />
+                                      <span>{vehicle.luggage_capacity} Bags</span>
+                                    </div>
+                                  </div>
+
+                                  {/* Features */}
+                                  {vehicle.features && vehicle.features.length > 0 && (
+                                    <div className="flex flex-wrap gap-1 mb-3">
+                                      {vehicle.features.slice(0, 4).map((feature) => (
+                                        <span 
+                                          key={feature} 
+                                          className="inline-flex items-center text-xs text-muted-foreground"
+                                        >
+                                          <Check className="h-3 w-3 mr-1 text-primary" />
+                                          {feature}
+                                        </span>
+                                      ))}
+                                    </div>
+                                  )}
+
+                                  {/* Pricing & CTA */}
+                                  <div className="mt-auto pt-3 border-t border-border">
+                                    <div className="flex items-end justify-between mb-3">
+                                      <div>
+                                        <p className="text-xs text-muted-foreground">Starting from</p>
+                                        <p className="text-xl font-bold text-primary">
+                                          ₹{calculateEstimatedPrice(vehicle).toLocaleString()}
+                                        </p>
+                                      </div>
+                                      <div className="text-right">
+                                        <p className="text-xs text-muted-foreground">₹{vehicle.base_price_per_km}/km</p>
+                                        <p className="text-xs text-muted-foreground">₹{vehicle.base_price_per_day}/day</p>
+                                      </div>
+                                    </div>
+                                    <Button
+                                      onClick={() => handleVehicleSelect(vehicle)}
+                                      className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium group-hover:shadow-md transition-shadow"
+                                    >
+                                      Select This Vehicle
+                                      <ArrowRight className="h-4 w-4 ml-2" />
+                                    </Button>
+                                  </div>
+                                </CardContent>
+                              </Card>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </>
               )}
 
               {!loading && vehicles.filter((v) => v.seating_capacity >= parseInt(passengers)).length === 0 && (
-                <Card className="bg-card border-border p-8 text-center">
-                  <p className="text-muted-foreground">
-                    No vehicles available for {passengers} passengers. Please adjust your search.
+                <Card className="bg-card border-border p-12 text-center">
+                  <Car className="h-16 w-16 text-muted-foreground/30 mx-auto mb-4" />
+                  <h3 className="font-display text-xl font-semibold text-foreground mb-2">
+                    No Vehicles Available
+                  </h3>
+                  <p className="text-muted-foreground mb-4">
+                    No vehicles available for {passengers} passengers. Please adjust your search criteria.
                   </p>
+                  <Button variant="outline" onClick={() => setStep("search")}>
+                    Modify Search
+                  </Button>
                 </Card>
               )}
             </motion.div>
