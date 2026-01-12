@@ -140,7 +140,12 @@ const TourDetail = () => {
           <div className="flex items-center gap-2 text-sm">
             <Link to="/" className="text-muted-foreground hover:text-primary">Home</Link>
             <span className="text-muted-foreground">/</span>
-            <Link to="/domestic-tours" className="text-muted-foreground hover:text-primary">Domestic Tours</Link>
+            <Link 
+              to={tourType === "international" ? "/international-tours" : "/domestic-tours"} 
+              className="text-muted-foreground hover:text-primary"
+            >
+              {tourType === "international" ? "International Tours" : "Domestic Tours"}
+            </Link>
             <span className="text-muted-foreground">/</span>
             <span className="text-foreground">{tour.title}</span>
           </div>
