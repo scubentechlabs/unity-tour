@@ -11,7 +11,7 @@ const testimonials = [
     avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
     rating: 5,
     tour: "Kerala Backwaters",
-    review: "An absolutely magical experience! The houseboat stay was incredible, and the attention to detail from Premium Tours made our honeymoon unforgettable. Highly recommend!",
+    review: "An absolutely magical experience! The houseboat stay was incredible, and the attention to detail from Unity Global Tours made our honeymoon unforgettable. Highly recommend!",
   },
   {
     id: 2,
@@ -29,7 +29,7 @@ const testimonials = [
     avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
     rating: 5,
     tour: "Andaman Islands",
-    review: "Crystal clear waters, pristine beaches, and seamless arrangements. Premium Tours took care of everything, allowing us to just relax and enjoy. Will book again!",
+    review: "Crystal clear waters, pristine beaches, and seamless arrangements. Unity Global Tours took care of everything, allowing us to just relax and enjoy. Will book again!",
   },
   {
     id: 4,
@@ -38,7 +38,7 @@ const testimonials = [
     avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
     rating: 5,
     tour: "Kashmir Valley",
-    review: "Paradise on Earth, and Premium Tours made sure we experienced every bit of it. The local guides were knowledgeable and the accommodations were top-notch.",
+    review: "Paradise on Earth, and Unity Global Tours made sure we experienced every bit of it. The local guides were knowledgeable and the accommodations were top-notch.",
   },
 ];
 
@@ -71,7 +71,7 @@ export const TestimonialsSection = () => {
             What Our <span className="text-primary">Travelers Say</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Real stories from real travelers. See why thousands choose Premium Tours for their adventures.
+            Real stories from real travelers. See why thousands choose Unity Global Tours for their adventures.
           </p>
         </motion.div>
 

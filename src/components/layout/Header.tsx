@@ -43,9 +43,9 @@ export const Header = () => {
               <Phone className="h-4 w-4" />
               +91 98765 43210
             </a>
-            <a href="mailto:info@premiumtours.com" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+            <a href="mailto:info@unityglobaltours.com" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
               <Mail className="h-4 w-4" />
-              info@premiumtours.com
+              info@unityglobaltours.com
             </a>
           </div>
           <div className="flex items-center gap-4">
