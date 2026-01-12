@@ -50,7 +50,7 @@ const TaxiBooking = () => {
   const [loading, setLoading] = useState(true);
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [step, setStep] = useState<"search" | "vehicles" | "booking">("search");
+  const [step, setStep] = useState<"search" | "vehicles" | "booking" | "success">("search");
   
   // Search Form State
   const [tripType, setTripType] = useState(searchParams.get("type") || "one-way");
@@ -170,20 +170,10 @@ const TaxiBooking = () => {
         console.error("Failed to send email notification:", emailError);
       }
 
-      toast({
-        title: "Booking Request Submitted!",
-        description: "We'll contact you shortly with confirmation and final pricing.",
-      });
-      
-      // Reset form
-      setStep("search");
-      setSelectedVehicle(null);
-      setName("");
-      setEmail("");
-      setPhone("");
-      setMessage("");
+      // Go to success step
+      setStep("success");
     } catch (error) {
-      console.error("Error submitting booking:", error);
+      console.error("Error submitting enquiry:", error);
       toast({
         title: "Submission Failed",
         description: "Please try again or contact us directly.",
@@ -192,6 +182,19 @@ const TaxiBooking = () => {
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleNewEnquiry = () => {
+    setStep("search");
+    setSelectedVehicle(null);
+    setName("");
+    setEmail("");
+    setPhone("");
+    setMessage("");
+    setPickupLocation("");
+    setDropLocation("");
+    setPickupDate(undefined);
+    setReturnDate(undefined);
   };
 
   return (
@@ -217,27 +220,37 @@ const TaxiBooking = () => {
           </motion.div>
 
           {/* Progress Steps */}
-          <div className="flex justify-center mt-8">
-            <div className="flex items-center gap-2">
-              {["search", "vehicles", "booking"].map((s, i) => (
-                <div key={s} className="flex items-center">
-                  <div
-                    className={cn(
-                      "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all",
-                      step === s || (step === "vehicles" && i === 0) || (step === "booking" && i <= 1)
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted text-muted-foreground"
+          {step !== "success" && (
+            <div className="flex justify-center mt-8">
+              <div className="flex items-center gap-2">
+                {[
+                  { key: "search", label: "Trip Details" },
+                  { key: "vehicles", label: "Select Vehicle" },
+                  { key: "booking", label: "Your Details" },
+                ].map((s, i) => (
+                  <div key={s.key} className="flex items-center">
+                    <div
+                      className={cn(
+                        "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all",
+                        s.key === "search" && (step === "search" || step === "vehicles" || step === "booking")
+                          ? "bg-primary text-primary-foreground"
+                          : s.key === "vehicles" && (step === "vehicles" || step === "booking")
+                          ? "bg-primary text-primary-foreground"
+                          : s.key === "booking" && step === "booking"
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-muted text-muted-foreground"
+                      )}
+                    >
+                      {i + 1}
+                    </div>
+                    {i < 2 && (
+                      <ChevronRight className="h-4 w-4 mx-2 text-muted-foreground" />
                     )}
-                  >
-                    {i + 1}
                   </div>
-                  {i < 2 && (
-                    <ChevronRight className="h-4 w-4 mx-2 text-muted-foreground" />
-                  )}
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
 
@@ -718,7 +731,7 @@ const TaxiBooking = () => {
                             disabled={submitting}
                             className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground"
                           >
-                            {submitting ? "Submitting..." : "Confirm Booking"}
+                            {submitting ? "Submitting..." : "Submit Enquiry"}
                           </Button>
                         </div>
                       </form>
@@ -806,6 +819,76 @@ const TaxiBooking = () => {
                   </Card>
                 </div>
               </div>
+            </motion.div>
+          )}
+
+          {/* Step 4: Success Message */}
+          {step === "success" && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="max-w-2xl mx-auto text-center"
+            >
+              <Card className="bg-card border-border p-8 md:p-12">
+                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Check className="h-10 w-10 text-green-600" />
+                </div>
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
+                  Thank You!
+                </h2>
+                <p className="text-lg text-muted-foreground mb-2">
+                  Your enquiry has been submitted successfully.
+                </p>
+                <p className="text-muted-foreground mb-8">
+                  Our team will connect with you soon to confirm your booking and provide the best rates.
+                </p>
+                
+                <div className="bg-muted/50 rounded-lg p-6 mb-8 text-left">
+                  <h3 className="font-semibold text-foreground mb-4">Enquiry Summary</h3>
+                  <div className="grid grid-cols-2 gap-3 text-sm">
+                    <div>
+                      <p className="text-muted-foreground">Name</p>
+                      <p className="font-medium text-foreground">{name}</p>
+                    </div>
+                    <div>
+                      <p className="text-muted-foreground">Phone</p>
+                      <p className="font-medium text-foreground">{phone}</p>
+                    </div>
+                    <div>
+                      <p className="text-muted-foreground">Pickup</p>
+                      <p className="font-medium text-foreground">{pickupLocation}</p>
+                    </div>
+                    <div>
+                      <p className="text-muted-foreground">Drop</p>
+                      <p className="font-medium text-foreground">{dropLocation || "Local"}</p>
+                    </div>
+                    <div>
+                      <p className="text-muted-foreground">Date</p>
+                      <p className="font-medium text-foreground">{pickupDate && format(pickupDate, "dd MMM yyyy")}</p>
+                    </div>
+                    <div>
+                      <p className="text-muted-foreground">Vehicle</p>
+                      <p className="font-medium text-foreground">{selectedVehicle?.name}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <Button 
+                    onClick={handleNewEnquiry}
+                    variant="outline"
+                    className="px-8"
+                  >
+                    Submit Another Enquiry
+                  </Button>
+                  <Button 
+                    onClick={() => window.location.href = "/"}
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground px-8"
+                  >
+                    Back to Home
+                  </Button>
+                </div>
+              </Card>
             </motion.div>
           )}
         </div>
