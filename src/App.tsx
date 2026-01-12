@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useDisableDevTools } from "./hooks/useDisableDevTools";
 import Index from "./pages/Index";
 import DomesticTours from "./pages/DomesticTours";
 import InternationalTours from "./pages/InternationalTours";
@@ -27,44 +28,48 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/domestic-tours" element={<DomesticTours />} />
-          <Route path="/international-tours" element={<InternationalTours />} />
-          <Route path="/domestic-tours/:slug" element={<TourDetail />} />
-          <Route path="/international-tours/:slug" element={<TourDetail />} />
-          <Route path="/taxi" element={<TaxiBooking />} />
-          <Route path="/flights" element={<Flights />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/faq" element={<FAQ />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/unsubscribe" element={<Unsubscribe />} />
-          
-          {/* Admin Routes */}
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="hero-slides" element={<HeroSlidesAdmin />} />
-            <Route path="tours" element={<TourPackagesAdmin />} />
-            <Route path="enquiries" element={<EnquiriesAdmin />} />
-            <Route path="newsletter" element={<NewsletterAdmin />} />
-            <Route path="taxi" element={<TaxiAdmin />} />
-            <Route path="users" element={<AdminUsersAdmin />} />
-            <Route path="settings" element={<SettingsAdmin />} />
-          </Route>
-          
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  useDisableDevTools();
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/domestic-tours" element={<DomesticTours />} />
+            <Route path="/international-tours" element={<InternationalTours />} />
+            <Route path="/domestic-tours/:slug" element={<TourDetail />} />
+            <Route path="/international-tours/:slug" element={<TourDetail />} />
+            <Route path="/taxi" element={<TaxiBooking />} />
+            <Route path="/flights" element={<Flights />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/unsubscribe" element={<Unsubscribe />} />
+            
+            {/* Admin Routes */}
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="hero-slides" element={<HeroSlidesAdmin />} />
+              <Route path="tours" element={<TourPackagesAdmin />} />
+              <Route path="enquiries" element={<EnquiriesAdmin />} />
+              <Route path="newsletter" element={<NewsletterAdmin />} />
+              <Route path="taxi" element={<TaxiAdmin />} />
+              <Route path="users" element={<AdminUsersAdmin />} />
+              <Route path="settings" element={<SettingsAdmin />} />
+            </Route>
+            
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
