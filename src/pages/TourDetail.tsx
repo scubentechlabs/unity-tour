@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Layout } from "@/components/layout/Layout";
 import { EnquiryModal } from "@/components/tours/EnquiryModal";
 import { TourDetailSkeleton } from "@/components/skeletons/TourDetailSkeleton";
+import { WishlistButton } from "@/components/WishlistButton";
 import { supabase } from "@/integrations/supabase/client";
 import { useRecentlyViewedTours } from "@/hooks/useRecentlyViewedTours";
 import { Button } from "@/components/ui/button";
@@ -19,7 +20,6 @@ import {
   Phone,
   Download,
   Share2,
-  Heart,
 } from "lucide-react";
 
 interface ItineraryDay {
@@ -383,10 +383,23 @@ const TourDetail = () => {
                     <Share2 className="h-4 w-4 mr-2" />
                     Share
                   </Button>
-                  <Button variant="ghost" size="sm" className="flex-1 text-muted-foreground">
-                    <Heart className="h-4 w-4 mr-2" />
-                    Save
-                  </Button>
+                  <WishlistButton
+                    tour={{
+                      id: tour.id,
+                      title: tour.title,
+                      slug: tour.slug,
+                      location: tour.location,
+                      featured_image: tour.featured_image,
+                      price_per_person: tour.price_per_person,
+                      discounted_price: tour.discounted_price,
+                      duration_days: tour.duration_days,
+                      duration_nights: tour.duration_nights,
+                      tour_type: tourType,
+                      rating: tour.rating,
+                    }}
+                    variant="button"
+                    className="flex-1"
+                  />
                   <Button variant="ghost" size="sm" className="flex-1 text-muted-foreground">
                     <Download className="h-4 w-4 mr-2" />
                     PDF

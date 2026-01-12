@@ -223,7 +223,7 @@ const InternationalTours = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: index * 0.1 }}
                   >
-                    <TourCard tour={tour} />
+                    <TourCard tour={tour} tourType="international" />
                   </motion.div>
                 ))}
               </div>

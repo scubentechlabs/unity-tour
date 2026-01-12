@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { MapPin, Clock, Star, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { WishlistButton } from "@/components/WishlistButton";
 
 interface TourCardProps {
   tour: {
@@ -18,6 +19,7 @@ interface TourCardProps {
     rating: number;
     total_reviews: number;
   };
+  tourType?: "domestic" | "international";
 }
 
 const categoryLabels: Record<string, string> = {
@@ -31,15 +33,19 @@ const categoryLabels: Record<string, string> = {
   heritage: "Heritage",
 };
 
-export const TourCard = ({ tour }: TourCardProps) => {
+export const TourCard = ({ tour, tourType = "domestic" }: TourCardProps) => {
   const displayPrice = tour.discounted_price || tour.price_per_person;
   const hasDiscount = tour.discounted_price && tour.discounted_price < tour.price_per_person;
   const discountPercent = hasDiscount
     ? Math.round(((tour.price_per_person - tour.discounted_price!) / tour.price_per_person) * 100)
     : 0;
 
+  const tourPath = tourType === "international" 
+    ? `/international-tours/${tour.slug}` 
+    : `/domestic-tours/${tour.slug}`;
+
   return (
-    <Link to={`/domestic-tours/${tour.slug}`}>
+    <Link to={tourPath}>
       <div className="group h-full bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-300 hover:shadow-gold">
         {/* Image */}
         <div className="relative h-52 overflow-hidden">
@@ -60,13 +66,30 @@ export const TourCard = ({ tour }: TourCardProps) => {
               </span>
             )}
           </div>
-          <div className="absolute top-3 right-3 flex items-center gap-1 bg-background/80 backdrop-blur-sm px-2 py-1 rounded-lg">
-            <Star className="h-4 w-4 text-primary fill-primary" />
-            <span className="text-sm font-medium text-foreground">{tour.rating}</span>
+          <div className="absolute top-3 right-3 flex items-center gap-2">
+            <WishlistButton
+              tour={{
+                id: tour.id,
+                title: tour.title,
+                slug: tour.slug,
+                location: tour.location,
+                featured_image: tour.featured_image,
+                price_per_person: tour.price_per_person,
+                discounted_price: tour.discounted_price,
+                duration_days: tour.duration_days,
+                duration_nights: tour.duration_nights,
+                tour_type: tourType,
+                rating: tour.rating,
+              }}
+            />
           </div>
-          <div className="absolute bottom-3 left-3">
+          <div className="absolute bottom-3 left-3 flex items-center gap-2">
             <span className="px-2 py-1 bg-background/80 backdrop-blur-sm text-xs font-medium text-foreground rounded">
               {categoryLabels[tour.category] || tour.category}
+            </span>
+            <span className="flex items-center gap-1 bg-background/80 backdrop-blur-sm px-2 py-1 rounded">
+              <Star className="h-3 w-3 text-primary fill-primary" />
+              <span className="text-xs font-medium text-foreground">{tour.rating}</span>
             </span>
           </div>
         </div>
