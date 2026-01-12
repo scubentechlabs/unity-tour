@@ -50,6 +50,9 @@ export const Header = () => {
             <Link to="/faq" className="text-muted-foreground hover:text-primary transition-colors">
               FAQ
             </Link>
+            <Link to="/admin" className="text-muted-foreground hover:text-primary transition-colors">
+              Admin
+            </Link>
             <Link to="/auth" className="text-muted-foreground hover:text-primary transition-colors">
               Login / Register
             </Link>
