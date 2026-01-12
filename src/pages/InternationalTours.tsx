@@ -3,8 +3,9 @@ import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Layout } from "@/components/layout/Layout";
 import { TourCard } from "@/components/tours/TourCard";
+import { TourGridSkeleton } from "@/components/skeletons/TourCardSkeleton";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Search, Filter } from "lucide-react";
+import { Search, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -189,8 +190,11 @@ const InternationalTours = () => {
 
           {/* Tours Grid */}
           {loading ? (
-            <div className="flex items-center justify-center py-20">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <div className="space-y-6">
+              <div className="flex justify-between items-center">
+                <div className="h-5 w-40 bg-muted animate-pulse rounded" />
+              </div>
+              <TourGridSkeleton count={8} />
             </div>
           ) : tours.length === 0 ? (
             <div className="text-center py-20 bg-card rounded-2xl border border-border">

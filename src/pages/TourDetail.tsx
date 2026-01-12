@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Layout } from "@/components/layout/Layout";
 import { EnquiryModal } from "@/components/tours/EnquiryModal";
+import { TourDetailSkeleton } from "@/components/skeletons/TourDetailSkeleton";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -15,8 +16,6 @@ import {
   X,
   Calendar,
   Phone,
-  ChevronLeft,
-  Loader2,
   Download,
   Share2,
   Heart,
@@ -91,13 +90,7 @@ const TourDetail = () => {
   };
 
   if (loading) {
-    return (
-      <Layout>
-        <div className="min-h-screen flex items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        </div>
-      </Layout>
-    );
+    return <TourDetailSkeleton />;
   }
 
   if (!tour) {
