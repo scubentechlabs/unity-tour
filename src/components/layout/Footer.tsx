@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { 
   MapPin, 
@@ -8,11 +9,16 @@ import {
   Instagram, 
   Twitter, 
   Youtube,
-  Send
+  Send,
+  CheckCircle,
+  Loader2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
 import logo from "@/assets/logo.png";
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const quickLinks = [
   { name: "Domestic Tours", path: "/domestic-tours" },
@@ -41,6 +47,41 @@ const popularDestinations = [
 ];
 
 export const Footer = () => {
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [error, setError] = useState("");
+  const { toast } = useToast();
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    if (!email.trim()) {
+      setError("Please enter your email address");
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    setIsSubmitting(false);
+    setIsSubscribed(true);
+    setEmail("");
+
+    toast({
+      title: "Successfully subscribed!",
+      description: "Thank you for subscribing to our newsletter.",
+    });
+  };
+
   return (
     <footer className="bg-secondary border-t border-border">
       {/* Newsletter Section */}
@@ -53,17 +94,46 @@ export const Footer = () => {
             <p className="text-muted-foreground mb-6">
               Get exclusive deals, travel tips, and destination guides straight to your inbox.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-              <Input 
-                type="email" 
-                placeholder="Enter your email" 
-                className="bg-background border-border"
-              />
-              <Button className="bg-gradient-gold hover:opacity-90 text-primary-foreground font-semibold shadow-gold">
-                <Send className="h-4 w-4 mr-2" />
-                Subscribe
-              </Button>
-            </div>
+            
+            {isSubscribed ? (
+              <div className="flex items-center justify-center gap-2 text-primary">
+                <CheckCircle className="h-5 w-5" />
+                <span className="font-medium">You're subscribed! Check your inbox for updates.</span>
+              </div>
+            ) : (
+              <form onSubmit={handleSubscribe} className="max-w-md mx-auto">
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <div className="flex-1">
+                    <Input 
+                      type="email" 
+                      placeholder="Enter your email" 
+                      className={`bg-background border-border ${error ? 'border-destructive' : ''}`}
+                      value={email}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        if (error) setError("");
+                      }}
+                      disabled={isSubmitting}
+                    />
+                  </div>
+                  <Button 
+                    type="submit"
+                    className="bg-gradient-gold hover:opacity-90 text-primary-foreground font-semibold shadow-gold"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    ) : (
+                      <Send className="h-4 w-4 mr-2" />
+                    )}
+                    {isSubmitting ? "Subscribing..." : "Subscribe"}
+                  </Button>
+                </div>
+                {error && (
+                  <p className="text-destructive text-sm mt-2 text-left">{error}</p>
+                )}
+              </form>
+            )}
           </div>
         </div>
       </div>
