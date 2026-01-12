@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -22,7 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Pencil, Trash2, Loader2, GripVertical, Eye } from "lucide-react";
+import { Plus, Pencil, Trash2, Loader2, Upload, X } from "lucide-react";
 
 interface HeroSlide {
   id: string;
@@ -54,6 +54,8 @@ const HeroSlidesAdmin = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingSlide, setEditingSlide] = useState<Partial<HeroSlide>>(defaultSlide);
   const [isEditing, setIsEditing] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -73,6 +75,57 @@ const HeroSlidesAdmin = () => {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const uploadImage = async (file: File) => {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+    const filePath = `slides/${fileName}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('hero-slides')
+      .upload(filePath, file);
+
+    if (uploadError) {
+      throw uploadError;
+    }
+
+    const { data: { publicUrl } } = supabase.storage
+      .from('hero-slides')
+      .getPublicUrl(filePath);
+
+    return publicUrl;
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast({ title: "Error", description: "Please upload an image file", variant: "destructive" });
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({ title: "Error", description: "Image size should be less than 5MB", variant: "destructive" });
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const url = await uploadImage(file);
+      setEditingSlide({ ...editingSlide, image_url: url });
+      toast({ title: "Success", description: "Image uploaded successfully" });
+    } catch (error: any) {
+      toast({ title: "Upload failed", description: error.message, variant: "destructive" });
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     }
   };
 
@@ -228,24 +281,74 @@ const HeroSlidesAdmin = () => {
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="image_url">Image URL *</Label>
-                <Input
-                  id="image_url"
-                  value={editingSlide.image_url || ""}
-                  onChange={(e) => setEditingSlide({ ...editingSlide, image_url: e.target.value })}
-                  placeholder="https://example.com/image.jpg"
-                  required
-                />
+              <div className="space-y-3">
+                <Label>Slide Image *</Label>
+                
+                {/* Upload Button */}
+                <div className="flex gap-2">
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                    id="slide-image-upload"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploading}
+                    className="flex-1"
+                  >
+                    {uploading ? (
+                      <>
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        Uploading...
+                      </>
+                    ) : (
+                      <>
+                        <Upload className="h-4 w-4 mr-2" />
+                        Upload Image
+                      </>
+                    )}
+                  </Button>
+                </div>
+                
+                {/* Or use URL */}
+                <div className="flex gap-2 items-center">
+                  <span className="text-xs text-muted-foreground">or</span>
+                  <Input
+                    value={editingSlide.image_url || ""}
+                    onChange={(e) => setEditingSlide({ ...editingSlide, image_url: e.target.value })}
+                    placeholder="Paste image URL..."
+                    className="flex-1"
+                  />
+                </div>
+                
+                {/* Preview */}
                 {editingSlide.image_url && (
-                  <div className="mt-2 rounded-lg overflow-hidden border border-border h-32">
+                  <div className="relative rounded-lg overflow-hidden border border-border h-40 group">
                     <img
                       src={editingSlide.image_url}
                       alt="Preview"
                       className="w-full h-full object-cover"
                       onError={(e) => (e.currentTarget.style.display = "none")}
                     />
+                    <button
+                      type="button"
+                      onClick={() => setEditingSlide({ ...editingSlide, image_url: "" })}
+                      className="absolute top-2 right-2 p-1.5 bg-destructive rounded-full text-destructive-foreground opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
                   </div>
+                )}
+                
+                {!editingSlide.image_url && (
+                  <p className="text-xs text-muted-foreground">
+                    Recommended: 1920x1080px (16:9 aspect ratio) for best display
+                  </p>
                 )}
               </div>
 
@@ -302,7 +405,7 @@ const HeroSlidesAdmin = () => {
                 <Button
                   type="submit"
                   className="bg-gradient-gold hover:opacity-90 text-primary-foreground"
-                  disabled={saving}
+                  disabled={saving || !editingSlide.image_url}
                 >
                   {saving ? <Loader2 className="h-5 w-5 animate-spin" /> : isEditing ? "Update" : "Create"}
                 </Button>
