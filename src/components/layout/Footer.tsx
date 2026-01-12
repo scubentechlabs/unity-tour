@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import logo from "@/assets/logo.png";
 
 const quickLinks = [
   { name: "Domestic Tours", path: "/domestic-tours" },
@@ -72,16 +73,12 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 bg-gradient-gold rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-display font-bold text-xl">PT</span>
-              </div>
-              <div>
-                <h2 className="font-display text-xl font-bold text-foreground">
-                  Premium <span className="text-primary">Tours</span>
-                </h2>
-                <p className="text-xs text-muted-foreground">Travel in Luxury</p>
-              </div>
+            <div className="mb-6">
+              <img 
+                src={logo} 
+                alt="Unity Global Tours" 
+                className="h-20 w-auto"
+              />
             </div>
             <p className="text-muted-foreground text-sm mb-6">
               Your trusted partner for premium travel experiences. We curate unforgettable journeys 
@@ -188,7 +185,7 @@ export const Footer = () => {
       <div className="border-t border-border">
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-            <p>© 2024 Premium Tours & Travels. All rights reserved.</p>
+            <p>© 2024 Unity Global Tours. All rights reserved.</p>
             <div className="flex gap-6">
               <Link to="/terms" className="hover:text-primary transition-colors">Terms</Link>
               <Link to="/privacy" className="hover:text-primary transition-colors">Privacy</Link>

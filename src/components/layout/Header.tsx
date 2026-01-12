@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/logo.png";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -71,16 +72,12 @@ export const Header = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-gradient-gold rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-display font-bold text-xl">PT</span>
-              </div>
-              <div className="hidden sm:block">
-                <h1 className="font-display text-xl font-bold text-foreground">
-                  Premium <span className="text-primary">Tours</span>
-                </h1>
-                <p className="text-xs text-muted-foreground">Travel in Luxury</p>
-              </div>
+            <Link to="/" className="flex items-center">
+              <img 
+                src={logo} 
+                alt="Unity Global Tours" 
+                className="h-16 w-auto"
+              />
             </Link>
 
             {/* Desktop Navigation */}
