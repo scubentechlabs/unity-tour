@@ -36,8 +36,8 @@ const contactInfo = [
   {
     icon: MapPin,
     title: "Address",
-    details: ["123 Travel Plaza, MG Road", "Mumbai, Maharashtra 400001"],
-    action: "https://maps.google.com",
+    details: ["4, Unique Plaza, Somnath Bypass Road, Bhalpara", "Veraval - 362268 (Gir-Somnath)"],
+    action: "https://maps.google.com/?q=Unique+Plaza+Somnath+Bypass+Road+Veraval",
   },
   {
     icon: Clock,
@@ -344,7 +344,7 @@ const Contact = () => {
             className="bg-card border border-border rounded-2xl overflow-hidden h-96"
           >
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.8556397855!2d72.82568831544466!3d19.021614687111826!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7ced6b5f5c3d7%3A0x1e0d8e2b8b8b8b8b!2sMumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3726.5!2d70.3629!3d20.9067!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sVeraval%2C%20Gujarat!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin"
               width="100%"
               height="100%"
               style={{ border: 0 }}
