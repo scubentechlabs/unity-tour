@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Layout } from "@/components/layout/Layout";
 import { EnquiryModal } from "@/components/tours/EnquiryModal";
 import { TourDetailSkeleton } from "@/components/skeletons/TourDetailSkeleton";
 import { supabase } from "@/integrations/supabase/client";
+import { useRecentlyViewedTours } from "@/hooks/useRecentlyViewedTours";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -54,10 +55,15 @@ interface TourPackage {
 
 const TourDetail = () => {
   const { slug } = useParams<{ slug: string }>();
+  const location = useLocation();
   const [tour, setTour] = useState<TourPackage | null>(null);
   const [loading, setLoading] = useState(true);
   const [isEnquiryOpen, setIsEnquiryOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
+  const { addTour } = useRecentlyViewedTours();
+
+  // Determine tour type from URL
+  const tourType = location.pathname.includes("/international-tours/") ? "international" : "domestic";
 
   useEffect(() => {
     if (slug) {
@@ -78,10 +84,26 @@ const TourDetail = () => {
       const itineraryData = Array.isArray(data.itinerary) 
         ? (data.itinerary as unknown as ItineraryDay[]) 
         : [];
-      setTour({
+      const tourData = {
         ...data,
         itinerary: itineraryData,
-      } as unknown as TourPackage);
+      } as unknown as TourPackage;
+      
+      setTour(tourData);
+
+      // Add to recently viewed
+      addTour({
+        id: tourData.id,
+        title: tourData.title,
+        slug: tourData.slug,
+        location: tourData.location,
+        featured_image: tourData.featured_image,
+        price_per_person: tourData.price_per_person,
+        discounted_price: tourData.discounted_price,
+        duration_days: tourData.duration_days,
+        duration_nights: tourData.duration_nights,
+        tour_type: tourType,
+      });
     } catch (error) {
       console.error("Error fetching tour:", error);
     } finally {
