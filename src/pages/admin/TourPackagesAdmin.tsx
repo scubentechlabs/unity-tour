@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Pencil, Trash2, Loader2, Eye, X, MapPin, Star } from "lucide-react";
+import { Plus, Pencil, Trash2, Loader2, Eye, X, MapPin, Star, Upload, Image } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 interface ItineraryDay {
@@ -129,6 +129,12 @@ const TourPackagesAdmin = () => {
   const [newHighlight, setNewHighlight] = useState("");
   const [newImage, setNewImage] = useState("");
   const [newItinerary, setNewItinerary] = useState<ItineraryDay>({ day: 1, title: "", description: "" });
+  
+  // For image uploads
+  const [uploadingFeatured, setUploadingFeatured] = useState(false);
+  const [uploadingGallery, setUploadingGallery] = useState(false);
+  const featuredInputRef = useRef<HTMLInputElement>(null);
+  const galleryInputRef = useRef<HTMLInputElement>(null);
   
   const { toast } = useToast();
 
@@ -278,7 +284,98 @@ const TourPackagesAdmin = () => {
     setEditingTour({ ...editingTour, itinerary: updated });
   };
 
-  const filteredTours = filterType === "all" 
+  const uploadImage = async (file: File, isFeatured: boolean = false) => {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+    const filePath = `${isFeatured ? 'featured' : 'gallery'}/${fileName}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('tour-images')
+      .upload(filePath, file);
+
+    if (uploadError) {
+      throw uploadError;
+    }
+
+    const { data: { publicUrl } } = supabase.storage
+      .from('tour-images')
+      .getPublicUrl(filePath);
+
+    return publicUrl;
+  };
+
+  const handleFeaturedImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast({ title: "Error", description: "Please upload an image file", variant: "destructive" });
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({ title: "Error", description: "Image size should be less than 5MB", variant: "destructive" });
+      return;
+    }
+
+    setUploadingFeatured(true);
+    try {
+      const url = await uploadImage(file, true);
+      setEditingTour({ ...editingTour, featured_image: url });
+      toast({ title: "Success", description: "Featured image uploaded" });
+    } catch (error: any) {
+      toast({ title: "Upload failed", description: error.message, variant: "destructive" });
+    } finally {
+      setUploadingFeatured(false);
+      if (featuredInputRef.current) {
+        featuredInputRef.current.value = '';
+      }
+    }
+  };
+
+  const handleGalleryImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setUploadingGallery(true);
+    const newImages: string[] = [];
+
+    try {
+      for (const file of Array.from(files)) {
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+          toast({ title: "Skipped", description: `${file.name} is not an image`, variant: "destructive" });
+          continue;
+        }
+
+        // Validate file size (max 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+          toast({ title: "Skipped", description: `${file.name} is too large (max 5MB)`, variant: "destructive" });
+          continue;
+        }
+
+        const url = await uploadImage(file, false);
+        newImages.push(url);
+      }
+
+      if (newImages.length > 0) {
+        const currentImages = editingTour.images || [];
+        setEditingTour({ ...editingTour, images: [...currentImages, ...newImages] });
+        toast({ title: "Success", description: `${newImages.length} image(s) uploaded` });
+      }
+    } catch (error: any) {
+      toast({ title: "Upload failed", description: error.message, variant: "destructive" });
+    } finally {
+      setUploadingGallery(false);
+      if (galleryInputRef.current) {
+        galleryInputRef.current.value = '';
+      }
+    }
+  };
+
+  const filteredTours = filterType === "all"
     ? tours 
     : tours.filter(t => t.tour_type === filterType);
 
@@ -674,53 +771,145 @@ const TourPackagesAdmin = () => {
 
                   {/* Media & SEO Tab */}
                   <TabsContent value="media" className="space-y-5 mt-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="featured_image">Featured Image URL</Label>
-                      <Input
-                        id="featured_image"
-                        value={editingTour.featured_image || ""}
-                        onChange={(e) => setEditingTour({ ...editingTour, featured_image: e.target.value })}
-                        placeholder="https://example.com/image.jpg"
-                      />
-                      {editingTour.featured_image && (
-                        <div className="mt-2 rounded-lg overflow-hidden border border-border h-40">
-                          <img
-                            src={editingTour.featured_image}
-                            alt="Preview"
-                            className="w-full h-full object-cover"
-                            onError={(e) => (e.currentTarget.style.display = "none")}
+                    <div className="space-y-3">
+                      <Label>Featured Image</Label>
+                      <div className="flex flex-col gap-3">
+                        {/* Upload Button */}
+                        <div className="flex gap-2">
+                          <input
+                            ref={featuredInputRef}
+                            type="file"
+                            accept="image/*"
+                            onChange={handleFeaturedImageUpload}
+                            className="hidden"
+                            id="featured-upload"
+                          />
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => featuredInputRef.current?.click()}
+                            disabled={uploadingFeatured}
+                            className="flex-1"
+                          >
+                            {uploadingFeatured ? (
+                              <>
+                                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                Uploading...
+                              </>
+                            ) : (
+                              <>
+                                <Upload className="h-4 w-4 mr-2" />
+                                Upload Featured Image
+                              </>
+                            )}
+                          </Button>
+                        </div>
+                        
+                        {/* Or use URL */}
+                        <div className="flex gap-2 items-center">
+                          <span className="text-xs text-muted-foreground">or</span>
+                          <Input
+                            value={editingTour.featured_image || ""}
+                            onChange={(e) => setEditingTour({ ...editingTour, featured_image: e.target.value })}
+                            placeholder="Paste image URL..."
+                            className="flex-1"
                           />
                         </div>
-                      )}
+                        
+                        {/* Preview */}
+                        {editingTour.featured_image && (
+                          <div className="relative rounded-lg overflow-hidden border border-border h-40 group">
+                            <img
+                              src={editingTour.featured_image}
+                              alt="Preview"
+                              className="w-full h-full object-cover"
+                              onError={(e) => (e.currentTarget.style.display = "none")}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setEditingTour({ ...editingTour, featured_image: "" })}
+                              className="absolute top-2 right-2 p-1.5 bg-destructive rounded-full text-destructive-foreground opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </div>
 
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       <Label>Gallery Images</Label>
+                      
+                      {/* Upload Button */}
                       <div className="flex gap-2">
+                        <input
+                          ref={galleryInputRef}
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          onChange={handleGalleryImageUpload}
+                          className="hidden"
+                          id="gallery-upload"
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => galleryInputRef.current?.click()}
+                          disabled={uploadingGallery}
+                          className="flex-1"
+                        >
+                          {uploadingGallery ? (
+                            <>
+                              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                              Uploading...
+                            </>
+                          ) : (
+                            <>
+                              <Image className="h-4 w-4 mr-2" />
+                              Upload Gallery Images
+                            </>
+                          )}
+                        </Button>
+                      </div>
+                      
+                      {/* Or use URL */}
+                      <div className="flex gap-2 items-center">
+                        <span className="text-xs text-muted-foreground">or</span>
                         <Input
                           value={newImage}
                           onChange={(e) => setNewImage(e.target.value)}
-                          placeholder="Add image URL..."
+                          placeholder="Paste image URL..."
                           onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addArrayItem("images", newImage, setNewImage))}
+                          className="flex-1"
                         />
-                        <Button type="button" onClick={() => addArrayItem("images", newImage, setNewImage)}>
+                        <Button type="button" variant="outline" onClick={() => addArrayItem("images", newImage, setNewImage)}>
                           <Plus className="h-4 w-4" />
                         </Button>
                       </div>
-                      <div className="grid grid-cols-4 gap-2 mt-2">
-                        {editingTour.images?.map((img, i) => (
-                          <div key={i} className="relative group aspect-video rounded overflow-hidden bg-secondary">
-                            <img src={img} alt="" className="w-full h-full object-cover" />
-                            <button
-                              type="button"
-                              onClick={() => removeArrayItem("images", i)}
-                              className="absolute top-1 right-1 p-1 bg-destructive rounded text-destructive-foreground opacity-0 group-hover:opacity-100 transition-opacity"
-                            >
-                              <X className="h-3 w-3" />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
+                      
+                      {/* Gallery Grid */}
+                      {editingTour.images && editingTour.images.length > 0 ? (
+                        <div className="grid grid-cols-3 md:grid-cols-4 gap-2 mt-2">
+                          {editingTour.images.map((img, i) => (
+                            <div key={i} className="relative group aspect-video rounded-lg overflow-hidden bg-secondary border border-border">
+                              <img src={img} alt="" className="w-full h-full object-cover" />
+                              <button
+                                type="button"
+                                onClick={() => removeArrayItem("images", i)}
+                                className="absolute top-1 right-1 p-1 bg-destructive rounded-full text-destructive-foreground opacity-0 group-hover:opacity-100 transition-opacity"
+                              >
+                                <X className="h-3 w-3" />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="border-2 border-dashed border-border rounded-lg p-8 text-center text-muted-foreground">
+                          <Image className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                          <p className="text-sm">No gallery images added yet</p>
+                          <p className="text-xs mt-1">Upload images or paste URLs above</p>
+                        </div>
+                      )}
                     </div>
 
                     <div className="space-y-2">
