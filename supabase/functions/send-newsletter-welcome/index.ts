@@ -2,6 +2,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 const ADMIN_EMAIL = Deno.env.get("ADMIN_EMAIL");
+const SITE_URL = Deno.env.get("SUPABASE_URL")?.replace('.supabase.co', '') || "https://unityglobaltours.com";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -104,8 +105,14 @@ const handler = async (req: Request): Promise<Response> => {
               <p style="color: #999999; margin: 0 0 10px 0; font-size: 14px;">
                 Unity Global Tours | Premium Travel Experiences
               </p>
-              <p style="color: #666666; margin: 0; font-size: 12px;">
+              <p style="color: #666666; margin: 0 0 15px 0; font-size: 12px;">
                 You're receiving this because you subscribed at ${email}
+              </p>
+              <p style="margin: 0;">
+                <a href="https://unityglobaltours.com/unsubscribe?email=${encodeURIComponent(email)}" 
+                   style="color: #888888; font-size: 11px; text-decoration: underline;">
+                  Unsubscribe from this newsletter
+                </a>
               </p>
             </div>
           </div>

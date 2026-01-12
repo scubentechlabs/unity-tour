@@ -22,6 +22,7 @@ import NewsletterAdmin from "./pages/admin/NewsletterAdmin";
 import TaxiAdmin from "./pages/admin/TaxiAdmin";
 import AdminUsersAdmin from "./pages/admin/AdminUsersAdmin";
 import SettingsAdmin from "./pages/admin/SettingsAdmin";
+import Unsubscribe from "./pages/Unsubscribe";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ const App = () => (
           <Route path="/contact" element={<Contact />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/unsubscribe" element={<Unsubscribe />} />
           
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>
