@@ -93,6 +93,13 @@ export const Footer = () => {
         title: "Successfully subscribed!",
         description: "Thank you for subscribing to our newsletter.",
       });
+
+      // Send welcome email (fire and forget - don't block UI)
+      supabase.functions.invoke("send-newsletter-welcome", {
+        body: { email: email.trim().toLowerCase() },
+      }).catch((err) => {
+        console.error("Failed to send welcome email:", err);
+      });
     } catch (err) {
       console.error("Newsletter subscription error:", err);
       toast({
