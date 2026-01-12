@@ -38,6 +38,7 @@ interface EnquiryModalProps {
 export const EnquiryModal = ({ isOpen, onClose, tour }: EnquiryModalProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [submittedData, setSubmittedData] = useState<EnquiryFormData | null>(null);
 
   const {
     register,
@@ -91,14 +92,9 @@ export const EnquiryModal = ({ isOpen, onClose, tour }: EnquiryModalProps) => {
         console.error("Failed to send email notification:", emailError);
       }
 
+      setSubmittedData(data);
       setIsSuccess(true);
-      toast.success("Enquiry submitted successfully! We'll contact you soon.");
-      
-      setTimeout(() => {
-        reset();
-        setIsSuccess(false);
-        onClose();
-      }, 2000);
+      toast.success("Enquiry submitted successfully!");
     } catch (error) {
       console.error("Error submitting enquiry:", error);
       toast.error("Failed to submit enquiry. Please try again.");
@@ -111,26 +107,113 @@ export const EnquiryModal = ({ isOpen, onClose, tour }: EnquiryModalProps) => {
     if (!isSubmitting) {
       reset();
       setIsSuccess(false);
+      setSubmittedData(null);
       onClose();
     }
   };
 
+  const handleNewEnquiry = () => {
+    reset();
+    setIsSuccess(false);
+    setSubmittedData(null);
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-lg bg-card border-border">
+      <DialogContent className="sm:max-w-lg bg-card border-border max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="font-display text-xl text-foreground">
             {isSuccess ? "Enquiry Submitted!" : "Send Enquiry"}
           </DialogTitle>
         </DialogHeader>
 
-        {isSuccess ? (
-          <div className="py-8 text-center">
-            <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-foreground mb-2">Thank You!</h3>
-            <p className="text-muted-foreground">
-              Your enquiry for <span className="text-primary font-medium">{tour.title}</span> has been received. 
-              Our team will contact you within 24 hours.
+        {isSuccess && submittedData ? (
+          <div className="py-6 space-y-6">
+            {/* Success Icon */}
+            <div className="text-center">
+              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CheckCircle className="h-12 w-12 text-green-600" />
+              </div>
+              <h3 className="text-2xl font-display font-bold text-foreground mb-2">Thank You!</h3>
+              <p className="text-muted-foreground">
+                Your enquiry has been submitted successfully.
+              </p>
+              <p className="text-muted-foreground">
+                Our team will connect with you soon.
+              </p>
+            </div>
+
+            {/* Enquiry Summary */}
+            <div className="bg-secondary/50 rounded-xl p-4 space-y-3">
+              <h4 className="font-semibold text-foreground flex items-center gap-2">
+                <Users className="h-4 w-4 text-primary" />
+                Enquiry Summary
+              </h4>
+              
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Tour Package</span>
+                  <span className="font-medium text-foreground">{tour.title}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Name</span>
+                  <span className="font-medium text-foreground">{submittedData.name}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Email</span>
+                  <span className="font-medium text-foreground">{submittedData.email}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Phone</span>
+                  <span className="font-medium text-foreground">{submittedData.phone}</span>
+                </div>
+                {submittedData.travel_date && (
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Travel Date</span>
+                    <span className="font-medium text-foreground">
+                      {new Date(submittedData.travel_date).toLocaleDateString('en-IN', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                      })}
+                    </span>
+                  </div>
+                )}
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Travelers</span>
+                  <span className="font-medium text-foreground">
+                    {submittedData.adults} Adult{submittedData.adults > 1 ? 's' : ''}
+                    {submittedData.children > 0 && `, ${submittedData.children} Child${submittedData.children > 1 ? 'ren' : ''}`}
+                  </span>
+                </div>
+                {submittedData.message && (
+                  <div className="pt-2 border-t border-border">
+                    <span className="text-muted-foreground block mb-1">Message</span>
+                    <span className="font-medium text-foreground">{submittedData.message}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                onClick={handleNewEnquiry}
+                className="flex-1"
+              >
+                New Enquiry
+              </Button>
+              <Button
+                onClick={handleClose}
+                className="flex-1 bg-gradient-gold hover:opacity-90 text-primary-foreground"
+              >
+                Close
+              </Button>
+            </div>
+
+            <p className="text-xs text-muted-foreground text-center">
+              We typically respond within 24 hours. For urgent queries, please call us.
             </p>
           </div>
         ) : (
