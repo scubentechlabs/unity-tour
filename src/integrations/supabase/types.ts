@@ -14,7 +14,167 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      tour_enquiries: {
+        Row: {
+          admin_notes: string | null
+          adults: number | null
+          children: number | null
+          created_at: string
+          email: string
+          id: string
+          message: string | null
+          name: string
+          phone: string
+          quoted_price: number | null
+          status: Database["public"]["Enums"]["enquiry_status"] | null
+          tour_package_id: string | null
+          travel_date: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          adults?: number | null
+          children?: number | null
+          created_at?: string
+          email: string
+          id?: string
+          message?: string | null
+          name: string
+          phone: string
+          quoted_price?: number | null
+          status?: Database["public"]["Enums"]["enquiry_status"] | null
+          tour_package_id?: string | null
+          travel_date?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          adults?: number | null
+          children?: number | null
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string | null
+          name?: string
+          phone?: string
+          quoted_price?: number | null
+          status?: Database["public"]["Enums"]["enquiry_status"] | null
+          tour_package_id?: string | null
+          travel_date?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tour_enquiries_tour_package_id_fkey"
+            columns: ["tour_package_id"]
+            isOneToOne: false
+            referencedRelation: "tour_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tour_packages: {
+        Row: {
+          category: Database["public"]["Enums"]["tour_category"]
+          country: string | null
+          created_at: string
+          description: string | null
+          discounted_price: number | null
+          duration_days: number
+          duration_nights: number
+          exclusions: string[] | null
+          featured_image: string | null
+          highlights: string[] | null
+          hotel_details: Json | null
+          id: string
+          images: string[] | null
+          inclusions: string[] | null
+          is_active: boolean | null
+          is_featured: boolean | null
+          itinerary: Json | null
+          location: string
+          max_group_size: number | null
+          meta_description: string | null
+          meta_title: string | null
+          min_group_size: number | null
+          price_per_person: number
+          rating: number | null
+          slug: string
+          state: string | null
+          title: string
+          total_reviews: number | null
+          tour_type: Database["public"]["Enums"]["tour_type"]
+          updated_at: string
+        }
+        Insert: {
+          category?: Database["public"]["Enums"]["tour_category"]
+          country?: string | null
+          created_at?: string
+          description?: string | null
+          discounted_price?: number | null
+          duration_days: number
+          duration_nights: number
+          exclusions?: string[] | null
+          featured_image?: string | null
+          highlights?: string[] | null
+          hotel_details?: Json | null
+          id?: string
+          images?: string[] | null
+          inclusions?: string[] | null
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          itinerary?: Json | null
+          location: string
+          max_group_size?: number | null
+          meta_description?: string | null
+          meta_title?: string | null
+          min_group_size?: number | null
+          price_per_person: number
+          rating?: number | null
+          slug: string
+          state?: string | null
+          title: string
+          total_reviews?: number | null
+          tour_type?: Database["public"]["Enums"]["tour_type"]
+          updated_at?: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["tour_category"]
+          country?: string | null
+          created_at?: string
+          description?: string | null
+          discounted_price?: number | null
+          duration_days?: number
+          duration_nights?: number
+          exclusions?: string[] | null
+          featured_image?: string | null
+          highlights?: string[] | null
+          hotel_details?: Json | null
+          id?: string
+          images?: string[] | null
+          inclusions?: string[] | null
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          itinerary?: Json | null
+          location?: string
+          max_group_size?: number | null
+          meta_description?: string | null
+          meta_title?: string | null
+          min_group_size?: number | null
+          price_per_person?: number
+          rating?: number | null
+          slug?: string
+          state?: string | null
+          title?: string
+          total_reviews?: number | null
+          tour_type?: Database["public"]["Enums"]["tour_type"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +183,22 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      enquiry_status:
+        | "pending"
+        | "quoted"
+        | "confirmed"
+        | "completed"
+        | "cancelled"
+      tour_category:
+        | "adventure"
+        | "honeymoon"
+        | "family"
+        | "pilgrimage"
+        | "wildlife"
+        | "beach"
+        | "hill_station"
+        | "heritage"
+      tour_type: "domestic" | "international"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +325,25 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      enquiry_status: [
+        "pending",
+        "quoted",
+        "confirmed",
+        "completed",
+        "cancelled",
+      ],
+      tour_category: [
+        "adventure",
+        "honeymoon",
+        "family",
+        "pilgrimage",
+        "wildlife",
+        "beach",
+        "hill_station",
+        "heritage",
+      ],
+      tour_type: ["domestic", "international"],
+    },
   },
 } as const
