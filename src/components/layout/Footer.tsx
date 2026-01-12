@@ -254,8 +254,8 @@ export const Footer = () => {
               <li className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 text-primary mt-0.5" />
                 <span className="text-muted-foreground text-sm">
-                  123 Travel Street, Business Hub,<br />
-                  Mumbai, Maharashtra 400001
+                  4, Unique Plaza, Somnath Bypass Road,<br />
+                  Bhalpara, Veraval - 362268 (Gir-Somnath)
                 </span>
               </li>
               <li className="flex items-center gap-3">
