@@ -277,6 +277,40 @@ export const Footer = () => {
                 </span>
               </li>
             </ul>
+            
+            {/* Social Media Links */}
+            <div className="mt-6">
+              <h4 className="font-display text-sm font-semibold text-foreground mb-3">Follow Us</h4>
+              <div className="flex gap-3">
+                <a 
+                  href="https://www.facebook.com/unityglobaltours" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 bg-muted hover:bg-primary/10 rounded-lg flex items-center justify-center text-muted-foreground hover:text-primary transition-colors"
+                  aria-label="Facebook"
+                >
+                  <Facebook className="h-4 w-4" />
+                </a>
+                <a 
+                  href="https://www.instagram.com/unityglobaltours" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 bg-muted hover:bg-primary/10 rounded-lg flex items-center justify-center text-muted-foreground hover:text-primary transition-colors"
+                  aria-label="Instagram"
+                >
+                  <Instagram className="h-4 w-4" />
+                </a>
+                <a 
+                  href="https://www.youtube.com/@unityglobaltours" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 bg-muted hover:bg-primary/10 rounded-lg flex items-center justify-center text-muted-foreground hover:text-primary transition-colors"
+                  aria-label="YouTube"
+                >
+                  <Youtube className="h-4 w-4" />
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
