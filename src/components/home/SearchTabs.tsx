@@ -74,7 +74,7 @@ export const SearchTabs = () => {
   };
 
   return (
-    <section className="relative z-20 -mt-20 pb-12">
+    <section className="relative z-20 py-12 bg-background">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
