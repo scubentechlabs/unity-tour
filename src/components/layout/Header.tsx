@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { WishlistSheet } from "@/components/WishlistSheet";
 import logo from "@/assets/logo.png";
 
 const navLinks = [
@@ -98,7 +99,8 @@ export const Header = () => {
             </nav>
 
             {/* CTA Button */}
-            <div className="hidden lg:flex items-center gap-4">
+            <div className="hidden lg:flex items-center gap-2">
+              <WishlistSheet />
               <Button className="bg-gradient-gold hover:opacity-90 text-primary-foreground font-semibold shadow-gold">
                 Book Now
               </Button>
