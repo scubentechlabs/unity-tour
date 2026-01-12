@@ -13,9 +13,9 @@ import { format } from "date-fns";
 type TabType = "domestic" | "international" | "taxi";
 
 const tabs = [
+  { id: "taxi" as TabType, label: "Taxi Booking", icon: Car },
   { id: "domestic" as TabType, label: "Domestic Tours", icon: Mountain },
   { id: "international" as TabType, label: "International Tours", icon: Globe },
-  { id: "taxi" as TabType, label: "Taxi Booking", icon: Car },
 ];
 
 const domesticDestinations = [
@@ -30,7 +30,7 @@ const internationalDestinations = [
 
 export const SearchTabs = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<TabType>("domestic");
+  const [activeTab, setActiveTab] = useState<TabType>("taxi");
   
   // Domestic Tour State
   const [domesticDestination, setDomesticDestination] = useState("");
