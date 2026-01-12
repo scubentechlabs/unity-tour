@@ -39,9 +39,9 @@ export const Header = () => {
       <div className="hidden lg:block bg-secondary border-b border-border">
         <div className="container mx-auto px-4 py-2 flex justify-between items-center text-sm">
           <div className="flex items-center gap-6">
-            <a href="tel:+919876543210" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+            <a href="tel:+919227026000" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
               <Phone className="h-4 w-4" />
-              +91 98765 43210
+              +91 92270 26000
             </a>
             <a href="mailto:info@unityglobaltours.com" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
               <Mail className="h-4 w-4" />

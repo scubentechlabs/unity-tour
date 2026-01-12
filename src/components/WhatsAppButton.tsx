@@ -2,7 +2,7 @@ import { MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
 
 const WhatsAppButton = () => {
-  const phoneNumber = "919876543210"; // Replace with actual WhatsApp number
+  const phoneNumber = "919227026000"; // Unity Global Tours WhatsApp
   const message = "Hello! I'm interested in your travel services. Can you help me?";
   
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;

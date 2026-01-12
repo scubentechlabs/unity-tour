@@ -24,8 +24,8 @@ const contactInfo = [
   {
     icon: Phone,
     title: "Phone",
-    details: ["+91 98765 43210", "+91 87654 32109"],
-    action: "tel:+919876543210",
+    details: ["+91 92270 26000"],
+    action: "tel:+919227026000",
   },
   {
     icon: Mail,

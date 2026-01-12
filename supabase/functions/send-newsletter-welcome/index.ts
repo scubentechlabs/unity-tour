@@ -96,7 +96,7 @@ const handler = async (req: Request): Promise<Response> => {
               </div>
               
               <p style="color: #666666; line-height: 1.6; margin: 30px 0 0 0;">
-                Have questions? Feel free to reply to this email or call us at <strong>+91 98765 43210</strong>.
+                Have questions? Feel free to reply to this email or call us at <strong>+91 92270 26000</strong>.
               </p>
             </div>
             
