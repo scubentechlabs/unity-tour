@@ -62,7 +62,9 @@ const priceRanges = [
 
 export const TourFilters = ({ filters, onFilterChange }: FiltersProps) => {
   const handleChange = (key: string, value: string) => {
-    onFilterChange({ ...filters, [key]: value });
+    // Convert "all" back to empty string for filtering logic
+    const filterValue = value === "all" ? "" : value;
+    onFilterChange({ ...filters, [key]: filterValue });
   };
 
   const clearFilters = () => {
@@ -110,12 +112,12 @@ export const TourFilters = ({ filters, onFilterChange }: FiltersProps) => {
         {/* State */}
         <div>
           <label className="text-sm font-medium text-foreground mb-2 block">Destination</label>
-          <Select value={filters.state} onValueChange={(v) => handleChange("state", v)}>
+          <Select value={filters.state || "all"} onValueChange={(v) => handleChange("state", v)}>
             <SelectTrigger className="bg-background">
               <SelectValue placeholder="All States" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All States</SelectItem>
+              <SelectItem value="all">All States</SelectItem>
               {states.map((state) => (
                 <SelectItem key={state} value={state}>
                   {state}
@@ -128,12 +130,12 @@ export const TourFilters = ({ filters, onFilterChange }: FiltersProps) => {
         {/* Category */}
         <div>
           <label className="text-sm font-medium text-foreground mb-2 block">Category</label>
-          <Select value={filters.category} onValueChange={(v) => handleChange("category", v)}>
+          <Select value={filters.category || "all"} onValueChange={(v) => handleChange("category", v)}>
             <SelectTrigger className="bg-background">
               <SelectValue placeholder="All Categories" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Categories</SelectItem>
+              <SelectItem value="all">All Categories</SelectItem>
               {categories.map((cat) => (
                 <SelectItem key={cat.value} value={cat.value}>
                   {cat.label}
@@ -146,12 +148,12 @@ export const TourFilters = ({ filters, onFilterChange }: FiltersProps) => {
         {/* Duration */}
         <div>
           <label className="text-sm font-medium text-foreground mb-2 block">Duration</label>
-          <Select value={filters.duration} onValueChange={(v) => handleChange("duration", v)}>
+          <Select value={filters.duration || "all"} onValueChange={(v) => handleChange("duration", v)}>
             <SelectTrigger className="bg-background">
               <SelectValue placeholder="Any Duration" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Any Duration</SelectItem>
+              <SelectItem value="all">Any Duration</SelectItem>
               {durations.map((dur) => (
                 <SelectItem key={dur.value} value={dur.value}>
                   {dur.label}
@@ -164,12 +166,12 @@ export const TourFilters = ({ filters, onFilterChange }: FiltersProps) => {
         {/* Price Range */}
         <div>
           <label className="text-sm font-medium text-foreground mb-2 block">Budget</label>
-          <Select value={filters.priceRange} onValueChange={(v) => handleChange("priceRange", v)}>
+          <Select value={filters.priceRange || "all"} onValueChange={(v) => handleChange("priceRange", v)}>
             <SelectTrigger className="bg-background">
               <SelectValue placeholder="Any Budget" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Any Budget</SelectItem>
+              <SelectItem value="all">Any Budget</SelectItem>
               {priceRanges.map((price) => (
                 <SelectItem key={price.value} value={price.value}>
                   {price.label}
