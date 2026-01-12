@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { Layout } from "@/components/layout/Layout";
 import { TourFilters } from "@/components/tours/TourFilters";
 import { TourCard } from "@/components/tours/TourCard";
+import { TourGridSkeleton } from "@/components/skeletons/TourCardSkeleton";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2 } from "lucide-react";
 
 interface TourPackage {
   id: string;
@@ -134,8 +134,11 @@ const DomesticTours = () => {
             {/* Tours Grid */}
             <div className="lg:col-span-3">
               {loading ? (
-                <div className="flex items-center justify-center py-20">
-                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <div className="space-y-6">
+                  <div className="flex justify-between items-center">
+                    <div className="h-5 w-32 bg-muted animate-pulse rounded" />
+                  </div>
+                  <TourGridSkeleton count={6} />
                 </div>
               ) : tours.length === 0 ? (
                 <div className="text-center py-20 bg-card rounded-2xl border border-border">
