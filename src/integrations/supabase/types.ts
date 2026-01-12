@@ -83,6 +83,137 @@ export type Database = {
         }
         Relationships: []
       }
+      taxi_enquiries: {
+        Row: {
+          admin_notes: string | null
+          created_at: string
+          drop_location: string | null
+          email: string
+          estimated_distance: number | null
+          estimated_price: number | null
+          id: string
+          message: string | null
+          name: string
+          passengers: number | null
+          phone: string
+          pickup_date: string
+          pickup_location: string
+          pickup_time: string | null
+          quoted_price: number | null
+          return_date: string | null
+          status: string
+          trip_type: string
+          updated_at: string
+          user_id: string | null
+          vehicle_id: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          created_at?: string
+          drop_location?: string | null
+          email: string
+          estimated_distance?: number | null
+          estimated_price?: number | null
+          id?: string
+          message?: string | null
+          name: string
+          passengers?: number | null
+          phone: string
+          pickup_date: string
+          pickup_location: string
+          pickup_time?: string | null
+          quoted_price?: number | null
+          return_date?: string | null
+          status?: string
+          trip_type?: string
+          updated_at?: string
+          user_id?: string | null
+          vehicle_id?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          created_at?: string
+          drop_location?: string | null
+          email?: string
+          estimated_distance?: number | null
+          estimated_price?: number | null
+          id?: string
+          message?: string | null
+          name?: string
+          passengers?: number | null
+          phone?: string
+          pickup_date?: string
+          pickup_location?: string
+          pickup_time?: string | null
+          quoted_price?: number | null
+          return_date?: string | null
+          status?: string
+          trip_type?: string
+          updated_at?: string
+          user_id?: string | null
+          vehicle_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "taxi_enquiries_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "taxi_vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      taxi_vehicles: {
+        Row: {
+          ac: boolean
+          base_price_per_day: number
+          base_price_per_km: number
+          category: string
+          created_at: string
+          features: string[] | null
+          fuel_type: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean
+          luggage_capacity: number
+          name: string
+          seating_capacity: number
+          updated_at: string
+        }
+        Insert: {
+          ac?: boolean
+          base_price_per_day?: number
+          base_price_per_km?: number
+          category?: string
+          created_at?: string
+          features?: string[] | null
+          fuel_type?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          luggage_capacity?: number
+          name: string
+          seating_capacity?: number
+          updated_at?: string
+        }
+        Update: {
+          ac?: boolean
+          base_price_per_day?: number
+          base_price_per_km?: number
+          category?: string
+          created_at?: string
+          features?: string[] | null
+          fuel_type?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          luggage_capacity?: number
+          name?: string
+          seating_capacity?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       tour_enquiries: {
         Row: {
           admin_notes: string | null

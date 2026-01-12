@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import DomesticTours from "./pages/DomesticTours";
 import TourDetail from "./pages/TourDetail";
+import TaxiBooking from "./pages/TaxiBooking";
 import Auth from "./pages/Auth";
 import AdminLayout from "./pages/admin/AdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/domestic-tours" element={<DomesticTours />} />
           <Route path="/domestic-tours/:slug" element={<TourDetail />} />
+          <Route path="/taxi" element={<TaxiBooking />} />
           <Route path="/auth" element={<Auth />} />
           
           {/* Admin Routes */}
