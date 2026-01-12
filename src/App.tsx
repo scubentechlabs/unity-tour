@@ -18,6 +18,7 @@ import Dashboard from "./pages/admin/Dashboard";
 import HeroSlidesAdmin from "./pages/admin/HeroSlidesAdmin";
 import TourPackagesAdmin from "./pages/admin/TourPackagesAdmin";
 import EnquiriesAdmin from "./pages/admin/EnquiriesAdmin";
+import NewsletterAdmin from "./pages/admin/NewsletterAdmin";
 import TaxiAdmin from "./pages/admin/TaxiAdmin";
 import AdminUsersAdmin from "./pages/admin/AdminUsersAdmin";
 import SettingsAdmin from "./pages/admin/SettingsAdmin";
@@ -50,6 +51,7 @@ const App = () => (
             <Route path="hero-slides" element={<HeroSlidesAdmin />} />
             <Route path="tours" element={<TourPackagesAdmin />} />
             <Route path="enquiries" element={<EnquiriesAdmin />} />
+            <Route path="newsletter" element={<NewsletterAdmin />} />
             <Route path="taxi" element={<TaxiAdmin />} />
             <Route path="users" element={<AdminUsersAdmin />} />
             <Route path="settings" element={<SettingsAdmin />} />
