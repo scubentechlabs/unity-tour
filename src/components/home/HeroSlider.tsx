@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, MapPin, Calendar, Car, Search } from "lucide-react";
+import { ChevronLeft, ChevronRight, MapPin, Calendar, Car, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -205,6 +205,21 @@ export const HeroSlider = () => {
                       </div>
                       <span className="text-sm font-medium">Best Rates</span>
                     </div>
+                  </motion.div>
+
+                  {/* Phone CTA Button */}
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.6 }}
+                    className="mt-6"
+                  >
+                    <a href="tel:+919227026000">
+                      <Button className="h-12 px-6 bg-gradient-gold hover:opacity-90 text-primary-foreground font-semibold shadow-gold">
+                        <Phone className="h-5 w-5 mr-2" />
+                        Call Now: +91 92270 26000
+                      </Button>
+                    </a>
                   </motion.div>
                 </div>
 
