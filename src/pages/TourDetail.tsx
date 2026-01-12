@@ -76,10 +76,13 @@ const TourDetail = () => {
         .single();
 
       if (error) throw error;
+      const itineraryData = Array.isArray(data.itinerary) 
+        ? (data.itinerary as unknown as ItineraryDay[]) 
+        : [];
       setTour({
         ...data,
-        itinerary: Array.isArray(data.itinerary) ? data.itinerary : [],
-      } as TourPackage);
+        itinerary: itineraryData,
+      } as unknown as TourPackage);
     } catch (error) {
       console.error("Error fetching tour:", error);
     } finally {
