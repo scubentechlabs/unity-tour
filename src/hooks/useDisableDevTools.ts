@@ -53,14 +53,44 @@ export const useDisableDevTools = () => {
       }
     };
 
+    // Disable image dragging
+    const handleDragStart = (e: DragEvent) => {
+      if (e.target instanceof HTMLImageElement) {
+        e.preventDefault();
+        return false;
+      }
+    };
+
+    // Add CSS to prevent image selection and dragging
+    const style = document.createElement("style");
+    style.id = "image-protection-styles";
+    style.textContent = `
+      img {
+        -webkit-user-drag: none;
+        -khtml-user-drag: none;
+        -moz-user-drag: none;
+        -o-user-drag: none;
+        user-drag: none;
+        pointer-events: auto;
+        -webkit-touch-callout: none;
+      }
+    `;
+    document.head.appendChild(style);
+
     // Add event listeners
     document.addEventListener("contextmenu", handleContextMenu);
     document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("dragstart", handleDragStart);
 
     // Cleanup
     return () => {
       document.removeEventListener("contextmenu", handleContextMenu);
       document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("dragstart", handleDragStart);
+      const existingStyle = document.getElementById("image-protection-styles");
+      if (existingStyle) {
+        existingStyle.remove();
+      }
     };
   }, []);
 };
