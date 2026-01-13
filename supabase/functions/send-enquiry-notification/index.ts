@@ -287,7 +287,7 @@ const handler = async (req: Request): Promise<Response> => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "Unity Global Tours <onboarding@resend.dev>",
+        from: "Unity Global Tours <noreply@unity.scubentechlabs.in>",
         to: [adminEmail],
         subject: adminSubject,
         html: adminHtml,
@@ -309,7 +309,7 @@ const handler = async (req: Request): Promise<Response> => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "Unity Global Tours <onboarding@resend.dev>",
+        from: "Unity Global Tours <noreply@unity.scubentechlabs.in>",
         to: [data.email],
         subject: userSubject,
         html: userHtml,

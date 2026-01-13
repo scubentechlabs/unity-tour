@@ -21,7 +21,7 @@ async function sendEmail(to: string, subject: string, html: string): Promise<any
       Authorization: `Bearer ${RESEND_API_KEY}`,
     },
     body: JSON.stringify({
-      from: "Unity Global Tours <onboarding@resend.dev>",
+      from: "Unity Global Tours <noreply@unity.scubentechlabs.in>",
       to: [to],
       subject,
       html,
