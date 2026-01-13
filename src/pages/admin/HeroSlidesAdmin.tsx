@@ -249,8 +249,8 @@ const HeroSlidesAdmin = () => {
                 <Label className="text-[#303030]">Slide Image</Label>
                 <Tabs value={imageInputType} onValueChange={(v) => setImageInputType(v as "upload" | "url")}>
                   <TabsList className="grid w-full grid-cols-2 bg-[#f6f6f7]">
-                    <TabsTrigger value="upload" className="data-[state=active]:bg-white">Upload</TabsTrigger>
-                    <TabsTrigger value="url" className="data-[state=active]:bg-white">URL</TabsTrigger>
+                    <TabsTrigger value="upload" className="text-gray-700 data-[state=active]:bg-white data-[state=active]:text-gray-900">Upload</TabsTrigger>
+                    <TabsTrigger value="url" className="text-gray-700 data-[state=active]:bg-white data-[state=active]:text-gray-900">URL</TabsTrigger>
                   </TabsList>
                   <TabsContent value="upload" className="mt-3">
                     <div

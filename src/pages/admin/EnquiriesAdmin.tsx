@@ -479,22 +479,22 @@ const EnquiriesAdmin = () => {
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
         <TabsList className="grid w-full grid-cols-4 h-auto p-1 bg-gray-100">
-          <TabsTrigger value="taxi" className="flex items-center gap-2 py-3 text-gray-600 data-[state=active]:bg-orange-500 data-[state=active]:text-white">
+          <TabsTrigger value="taxi" className="flex items-center gap-2 py-3 text-gray-700 data-[state=active]:bg-orange-500 data-[state=active]:text-white">
             <Car className="h-4 w-4" />
             <span className="hidden sm:inline">Taxi</span>
             <Badge variant="secondary" className="ml-1 bg-gray-200 text-gray-700">{stats.taxi}</Badge>
           </TabsTrigger>
-          <TabsTrigger value="domestic" className="flex items-center gap-2 py-3 text-gray-600 data-[state=active]:bg-emerald-500 data-[state=active]:text-white">
+          <TabsTrigger value="domestic" className="flex items-center gap-2 py-3 text-gray-700 data-[state=active]:bg-emerald-500 data-[state=active]:text-white">
             <Home className="h-4 w-4" />
             <span className="hidden sm:inline">Domestic</span>
             <Badge variant="secondary" className="ml-1 bg-gray-200 text-gray-700">{stats.domestic}</Badge>
           </TabsTrigger>
-          <TabsTrigger value="international" className="flex items-center gap-2 py-3 text-gray-600 data-[state=active]:bg-purple-500 data-[state=active]:text-white">
+          <TabsTrigger value="international" className="flex items-center gap-2 py-3 text-gray-700 data-[state=active]:bg-purple-500 data-[state=active]:text-white">
             <Globe className="h-4 w-4" />
             <span className="hidden sm:inline">International</span>
             <Badge variant="secondary" className="ml-1 bg-gray-200 text-gray-700">{stats.international}</Badge>
           </TabsTrigger>
-          <TabsTrigger value="flight" className="flex items-center gap-2 py-3 text-gray-600 data-[state=active]:bg-sky-500 data-[state=active]:text-white">
+          <TabsTrigger value="flight" className="flex items-center gap-2 py-3 text-gray-700 data-[state=active]:bg-sky-500 data-[state=active]:text-white">
             <Plane className="h-4 w-4" />
             <span className="hidden sm:inline">Flight</span>
             <Badge variant="secondary" className="ml-1 bg-gray-200 text-gray-700">{stats.flight}</Badge>
