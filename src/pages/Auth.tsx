@@ -1,20 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Mail, Lock, User } from "lucide-react";
+import { Loader2, Mail, Lock, Eye, EyeOff, Phone, ShieldCheck } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 const Auth = () => {
-  const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -23,26 +22,13 @@ const Auth = () => {
     setLoading(true);
 
     try {
-      if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        if (error) throw error;
-        toast({ title: "Welcome back!", description: "You have successfully logged in." });
-        navigate("/");
-      } else {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: { name },
-          },
-        });
-        if (error) throw error;
-        toast({ title: "Account created!", description: "You can now log in to your account." });
-        setIsLogin(true);
-      }
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (error) throw error;
+      toast({ title: "Welcome back!", description: "You have successfully logged in." });
+      navigate("/admin");
     } catch (error: any) {
       toast({
         title: "Error",
@@ -55,109 +41,135 @@ const Auth = () => {
   };
 
   return (
-    <Layout>
-      <section className="min-h-[80vh] flex items-center justify-center py-16">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="max-w-md mx-auto"
-          >
-            <div className="bg-card border border-border rounded-2xl p-8">
-              <div className="text-center mb-8">
-                <h1 className="font-display text-3xl font-bold text-foreground mb-2">
-                  {isLogin ? "Welcome Back" : "Create Account"}
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center p-4">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4 }}
+        className="w-full max-w-4xl"
+      >
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row">
+          {/* Left Side - Branding */}
+          <div className="bg-gradient-to-b from-slate-100 to-slate-200 p-8 md:p-12 flex flex-col items-center justify-center md:w-2/5">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-center"
+            >
+              <img 
+                src={logo} 
+                alt="Unity Global Tours" 
+                className="h-20 w-auto mx-auto mb-6"
+              />
+              
+              <div className="w-24 h-24 bg-gradient-to-br from-primary to-primary/80 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                <ShieldCheck className="h-12 w-12 text-primary-foreground" />
+              </div>
+              
+              <h2 className="text-xl font-bold text-foreground mb-2">
+                Welcome Back!
+              </h2>
+              <p className="text-muted-foreground text-sm max-w-[200px]">
+                Manage your tours, bookings, and customer relationships with Unity Global Tours.
+              </p>
+            </motion.div>
+          </div>
+
+          {/* Right Side - Login Form */}
+          <div className="p-8 md:p-12 md:w-3/5">
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              <div className="mb-8">
+                <h1 className="text-2xl font-bold text-foreground mb-1">
+                  Sign in to Your Account
                 </h1>
-                <p className="text-muted-foreground">
-                  {isLogin
-                    ? "Sign in to access your account"
-                    : "Register to start your journey"}
+                <p className="text-primary text-sm">
+                  Access the admin dashboard
                 </p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-5">
-                {!isLogin && (
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Full Name</Label>
-                    <div className="relative">
-                      <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                      <Input
-                        id="name"
-                        type="text"
-                        placeholder="John Doe"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="pl-10 h-12"
-                        required={!isLogin}
-                      />
-                    </div>
-                  </div>
-                )}
-
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email Address</Label>
+                  <Label htmlFor="email" className="text-sm font-medium text-foreground">
+                    Email
+                  </Label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                     <Input
                       id="email"
                       type="email"
-                      placeholder="you@example.com"
+                      placeholder="Enter your email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="pl-10 h-12"
+                      className="h-12 pr-10 border-slate-300 focus:border-primary"
                       required
                     />
+                    <Mail className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password" className="text-sm font-medium text-foreground">
+                    Password
+                  </Label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                     <Input
                       id="password"
-                      type="password"
-                      placeholder="••••••••"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter your password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="pl-10 h-12"
+                      className="h-12 pr-10 border-slate-300 focus:border-primary"
                       required
                       minLength={6}
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-5 w-5" />
+                      ) : (
+                        <Eye className="h-5 w-5" />
+                      )}
+                    </button>
                   </div>
                 </div>
 
                 <Button
                   type="submit"
-                  className="w-full h-12 bg-gradient-gold hover:opacity-90 text-primary-foreground font-semibold shadow-gold"
+                  className="w-full h-12 bg-[#1e3a5f] hover:bg-[#162d4a] text-white font-semibold rounded-lg shadow-md"
                   disabled={loading}
                 >
                   {loading ? (
                     <Loader2 className="h-5 w-5 animate-spin" />
-                  ) : isLogin ? (
-                    "Sign In"
                   ) : (
-                    "Create Account"
+                    "Sign In"
                   )}
                 </Button>
               </form>
 
-              <div className="mt-6 text-center">
-                <button
-                  type="button"
-                  onClick={() => setIsLogin(!isLogin)}
-                  className="text-primary hover:underline text-sm"
-                >
-                  {isLogin
-                    ? "Don't have an account? Sign up"
-                    : "Already have an account? Sign in"}
-                </button>
+              <div className="mt-8 text-center">
+                <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                  <Phone className="h-4 w-4" />
+                  <span>Need help? Contact</span>
+                  <a 
+                    href="mailto:support@unityglobaltours.com" 
+                    className="text-primary hover:underline font-medium"
+                  >
+                    support@unityglobaltours.com
+                  </a>
+                </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
-      </section>
-    </Layout>
+      </motion.div>
+    </div>
   );
 };
 
