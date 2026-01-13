@@ -22,6 +22,7 @@ import logo from "@/assets/logo.png";
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const quickLinks = [
+  { name: "Our Services", path: "/services" },
   { name: "Domestic Tours", path: "/domestic-tours" },
   { name: "International Tours", path: "/international-tours" },
   { name: "Taxi Booking", path: "/taxi" },

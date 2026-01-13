@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useDisableDevTools } from "./hooks/useDisableDevTools";
 import Index from "./pages/Index";
+import Services from "./pages/Services";
 import DomesticTours from "./pages/DomesticTours";
 import InternationalTours from "./pages/InternationalTours";
 import TourDetail from "./pages/TourDetail";
@@ -39,6 +40,7 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/services" element={<Services />} />
             <Route path="/domestic-tours" element={<DomesticTours />} />
             <Route path="/international-tours" element={<InternationalTours />} />
             <Route path="/domestic-tours/:slug" element={<TourDetail />} />
