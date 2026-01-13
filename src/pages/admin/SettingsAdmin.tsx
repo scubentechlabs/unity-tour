@@ -72,7 +72,7 @@ const SettingsAdmin = () => {
                   Contact Email
                 </Label>
                 <Input 
-                  defaultValue="info@unityglobaltours.com" 
+                  defaultValue="booking@unityglobaltours.com" 
                   className="border-gray-300 focus:border-[#008060] focus:ring-[#008060]"
                 />
               </div>
@@ -82,7 +82,7 @@ const SettingsAdmin = () => {
                   Contact Phone
                 </Label>
                 <Input 
-                  defaultValue="+91 92270 26000" 
+                  defaultValue="+91 70050 50020" 
                   className="border-gray-300 focus:border-[#008060] focus:ring-[#008060]"
                 />
               </div>

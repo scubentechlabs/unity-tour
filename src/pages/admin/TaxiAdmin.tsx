@@ -151,14 +151,14 @@ const TaxiAdmin = () => {
         <TabsList className="bg-gray-100 p-1 rounded-lg">
           <TabsTrigger 
             value="vehicles" 
-            className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-md px-4 py-2 text-sm font-medium"
+            className="text-gray-700 data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm rounded-md px-4 py-2 text-sm font-medium"
           >
             <Car className="h-4 w-4 mr-2" />
             Vehicles ({vehicles.length})
           </TabsTrigger>
           <TabsTrigger 
             value="enquiries"
-            className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-md px-4 py-2 text-sm font-medium"
+            className="text-gray-700 data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm rounded-md px-4 py-2 text-sm font-medium"
           >
             <MessageSquare className="h-4 w-4 mr-2" />
             Enquiries ({enquiries.length})

@@ -429,11 +429,11 @@ const TourPackagesAdmin = () => {
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-6 mt-4">
                 <Tabs defaultValue="basic" className="w-full">
-                  <TabsList className="grid grid-cols-4 w-full">
-                    <TabsTrigger value="basic">Basic Info</TabsTrigger>
-                    <TabsTrigger value="details">Details</TabsTrigger>
-                    <TabsTrigger value="itinerary">Itinerary</TabsTrigger>
-                    <TabsTrigger value="media">Media & SEO</TabsTrigger>
+                  <TabsList className="grid grid-cols-4 w-full bg-gray-100">
+                    <TabsTrigger value="basic" className="text-gray-700 data-[state=active]:bg-white data-[state=active]:text-gray-900">Basic Info</TabsTrigger>
+                    <TabsTrigger value="details" className="text-gray-700 data-[state=active]:bg-white data-[state=active]:text-gray-900">Details</TabsTrigger>
+                    <TabsTrigger value="itinerary" className="text-gray-700 data-[state=active]:bg-white data-[state=active]:text-gray-900">Itinerary</TabsTrigger>
+                    <TabsTrigger value="media" className="text-gray-700 data-[state=active]:bg-white data-[state=active]:text-gray-900">Media & SEO</TabsTrigger>
                   </TabsList>
 
                   {/* Basic Info Tab */}
