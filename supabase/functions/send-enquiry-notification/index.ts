@@ -9,7 +9,7 @@ const corsHeaders = {
 };
 
 interface EnquiryNotification {
-  type: "tour" | "taxi" | "contact" | "flight";
+  type: "tour" | "taxi" | "contact" | "flight" | "taxi-status-update";
   name: string;
   email: string;
   phone: string;
@@ -29,6 +29,10 @@ interface EnquiryNotification {
   passengers?: string;
   travelClass?: string;
   subject?: string;
+  // Status update fields
+  oldStatus?: string;
+  newStatus?: string;
+  quotedPrice?: number;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -224,6 +228,95 @@ const handler = async (req: Request): Promise<Response> => {
           </div>
         `;
         break;
+
+      case "taxi-status-update":
+        // Status update - only send to user
+        const statusMessages: Record<string, { emoji: string; title: string; message: string }> = {
+          quoted: { 
+            emoji: "💰", 
+            title: "Quote Ready for Your Taxi Booking", 
+            message: `Great news! We have prepared a quote for your taxi booking.${data.quotedPrice ? ` The quoted price is <strong>₹${data.quotedPrice.toLocaleString()}</strong>.` : ''} Please review and confirm your booking.`
+          },
+          confirmed: { 
+            emoji: "✅", 
+            title: "Your Taxi Booking is Confirmed!", 
+            message: "Your taxi booking has been confirmed. Our driver will be ready at the scheduled time. We'll send you the driver details closer to your travel date."
+          },
+          completed: { 
+            emoji: "🎉", 
+            title: "Trip Completed - Thank You!", 
+            message: "Thank you for traveling with Unity Global Tours! We hope you had a pleasant journey. We'd love to serve you again."
+          },
+          cancelled: { 
+            emoji: "❌", 
+            title: "Booking Cancelled", 
+            message: "Your taxi booking has been cancelled. If you did not request this cancellation, please contact us immediately."
+          }
+        };
+
+        const statusInfo = statusMessages[data.newStatus || ""] || { 
+          emoji: "📝", 
+          title: "Booking Status Update", 
+          message: `Your booking status has been updated to: ${data.newStatus}`
+        };
+
+        userSubject = `${statusInfo.emoji} ${statusInfo.title}`;
+        userHtml = `
+          ${baseStyles}
+          <div class="container">
+            <div class="header"><h1>${statusInfo.emoji} ${statusInfo.title}</h1></div>
+            <div class="content">
+              <p>Dear <strong>${data.name}</strong>,</p>
+              <p>${statusInfo.message}</p>
+              
+              <div class="highlight">
+                <h2 style="margin-top: 0;">Your Trip Details</h2>
+                <div class="field"><span class="label">Trip Type:</span> <span class="value">${data.tripType || "One Way"}</span></div>
+                <div class="field"><span class="label">Pickup:</span> <span class="value">${data.pickupLocation || "Not specified"}</span></div>
+                <div class="field"><span class="label">Drop:</span> <span class="value">${data.dropLocation || "Local"}</span></div>
+                <div class="field"><span class="label">Date:</span> <span class="value">${data.travelDate || "Not specified"}</span></div>
+                ${data.vehicleName ? `<div class="field"><span class="label">Vehicle:</span> <span class="value">${data.vehicleName}</span></div>` : ""}
+                ${data.quotedPrice ? `<div class="field"><span class="label">Quote:</span> <span class="value" style="color: #008060; font-weight: bold;">₹${data.quotedPrice.toLocaleString()}</span></div>` : ""}
+                <div class="field"><span class="label">Status:</span> <span class="value" style="text-transform: capitalize; font-weight: bold;">${data.newStatus}</span></div>
+              </div>
+              
+              <p>If you have any questions, feel free to contact us anytime.</p>
+              <p>Best regards,<br><strong>Unity Global Tours Team</strong></p>
+            </div>
+            <div class="footer">
+              Unity Global Tours | Your Journey, Our Passion<br>
+              This is an automated notification. Please do not reply directly.
+            </div>
+          </div>
+        `;
+
+        // Only send to user for status updates (no admin notification needed)
+        console.log(`Sending status update email to: ${data.email}`);
+        
+        const statusUserRes = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${RESEND_API_KEY}`,
+          },
+          body: JSON.stringify({
+            from: "Unity Global Tours <noreply@unity.scubentechlabs.in>",
+            to: [data.email],
+            subject: userSubject,
+            html: userHtml,
+          }),
+        });
+
+        const statusEmailResponse = await statusUserRes.json();
+        console.log("Status update email response:", statusEmailResponse);
+
+        return new Response(JSON.stringify({ 
+          success: statusUserRes.ok, 
+          userEmail: statusEmailResponse 
+        }), {
+          status: statusUserRes.ok ? 200 : 500,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
 
       case "contact":
         // Admin notification
