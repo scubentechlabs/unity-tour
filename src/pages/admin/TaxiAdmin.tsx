@@ -73,7 +73,44 @@ const TaxiAdmin = () => {
   };
 
   const handleUpdateEnquiryStatus = async (id: string, status: string) => {
-    await supabase.from("taxi_enquiries").update({ status }).eq("id", id);
+    // Find the enquiry to get customer details
+    const enquiry = enquiries.find(e => e.id === id);
+    
+    const { error } = await supabase.from("taxi_enquiries").update({ status }).eq("id", id);
+    
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+      return;
+    }
+
+    // Send status update email notification
+    if (enquiry && status !== "pending") {
+      try {
+        await supabase.functions.invoke("send-enquiry-notification", {
+          body: {
+            type: "taxi-status-update",
+            name: enquiry.name,
+            email: enquiry.email,
+            phone: enquiry.phone,
+            pickupLocation: enquiry.pickup_location,
+            dropLocation: enquiry.drop_location,
+            tripType: enquiry.trip_type,
+            travelDate: enquiry.pickup_date ? format(new Date(enquiry.pickup_date), "dd MMM yyyy") : undefined,
+            vehicleName: enquiry.taxi_vehicles?.name,
+            oldStatus: enquiry.status,
+            newStatus: status,
+            quotedPrice: enquiry.quoted_price
+          }
+        });
+        toast({ title: "Status updated", description: "Customer has been notified via email" });
+      } catch (emailError) {
+        console.error("Failed to send status notification:", emailError);
+        toast({ title: "Status updated", description: "Note: Email notification failed" });
+      }
+    } else {
+      toast({ title: "Status updated" });
+    }
+    
     fetchData();
   };
 
