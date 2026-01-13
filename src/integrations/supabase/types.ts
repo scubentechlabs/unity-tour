@@ -41,6 +41,69 @@ export type Database = {
         }
         Relationships: []
       }
+      flight_enquiries: {
+        Row: {
+          admin_notes: string | null
+          arrival_city: string
+          class: string
+          created_at: string
+          departure_city: string
+          departure_date: string
+          email: string
+          id: string
+          message: string | null
+          name: string
+          passengers: number
+          phone: string
+          quoted_price: number | null
+          return_date: string | null
+          status: string
+          trip_type: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          arrival_city: string
+          class?: string
+          created_at?: string
+          departure_city: string
+          departure_date: string
+          email: string
+          id?: string
+          message?: string | null
+          name: string
+          passengers?: number
+          phone: string
+          quoted_price?: number | null
+          return_date?: string | null
+          status?: string
+          trip_type?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          arrival_city?: string
+          class?: string
+          created_at?: string
+          departure_city?: string
+          departure_date?: string
+          email?: string
+          id?: string
+          message?: string | null
+          name?: string
+          passengers?: number
+          phone?: string
+          quoted_price?: number | null
+          return_date?: string | null
+          status?: string
+          trip_type?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       hero_slides: {
         Row: {
           button_link: string | null

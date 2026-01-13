@@ -26,6 +26,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { 
   Loader2, 
@@ -39,8 +40,12 @@ import {
   MessageSquare,
   Search,
   Download,
-  Clock,
-  IndianRupee
+  IndianRupee,
+  Car,
+  Plane,
+  Globe,
+  Home,
+  ArrowRight
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
@@ -49,9 +54,10 @@ interface TourPackage {
   id: string;
   title: string;
   slug: string;
+  tour_type: string;
 }
 
-interface Enquiry {
+interface TourEnquiry {
   id: string;
   name: string;
   email: string;
@@ -70,25 +76,70 @@ interface Enquiry {
   tour_packages?: TourPackage | null;
 }
 
+interface TaxiEnquiry {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  message: string | null;
+  pickup_location: string;
+  drop_location: string | null;
+  pickup_date: string;
+  pickup_time: string | null;
+  return_date: string | null;
+  trip_type: string;
+  passengers: number | null;
+  status: string;
+  quoted_price: number | null;
+  admin_notes: string | null;
+  created_at: string;
+  taxi_vehicles?: { name: string } | null;
+}
+
+interface FlightEnquiry {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  message: string | null;
+  trip_type: string;
+  departure_city: string;
+  arrival_city: string;
+  departure_date: string;
+  return_date: string | null;
+  passengers: number;
+  class: string;
+  status: string;
+  quoted_price: number | null;
+  admin_notes: string | null;
+  created_at: string;
+}
+
 const statusOptions = [
-  { value: "pending", label: "Pending", color: "bg-[#fff3cd] text-[#856404]" },
-  { value: "quoted", label: "Quoted", color: "bg-[#cce5ff] text-[#004085]" },
-  { value: "confirmed", label: "Confirmed", color: "bg-[#d4edda] text-[#155724]" },
-  { value: "completed", label: "Completed", color: "bg-[#e3f1ee] text-[#008060]" },
-  { value: "cancelled", label: "Cancelled", color: "bg-[#f8d7da] text-[#721c24]" },
+  { value: "pending", label: "Pending", color: "bg-amber-100 text-amber-800 border-amber-200" },
+  { value: "quoted", label: "Quoted", color: "bg-blue-100 text-blue-800 border-blue-200" },
+  { value: "confirmed", label: "Confirmed", color: "bg-emerald-100 text-emerald-800 border-emerald-200" },
+  { value: "completed", label: "Completed", color: "bg-green-100 text-green-800 border-green-200" },
+  { value: "cancelled", label: "Cancelled", color: "bg-red-100 text-red-800 border-red-200" },
 ];
 
 const EnquiriesAdmin = () => {
-  const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
+  const [domesticEnquiries, setDomesticEnquiries] = useState<TourEnquiry[]>([]);
+  const [internationalEnquiries, setInternationalEnquiries] = useState<TourEnquiry[]>([]);
+  const [taxiEnquiries, setTaxiEnquiries] = useState<TaxiEnquiry[]>([]);
+  const [flightEnquiries, setFlightEnquiries] = useState<FlightEnquiry[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry | null>(null);
+  const [selectedEnquiry, setSelectedEnquiry] = useState<any>(null);
+  const [selectedType, setSelectedType] = useState<string>("");
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [isQuoteDialogOpen, setIsQuoteDialogOpen] = useState(false);
-  const [quoteEnquiry, setQuoteEnquiry] = useState<Enquiry | null>(null);
+  const [quoteEnquiry, setQuoteEnquiry] = useState<any>(null);
+  const [quoteType, setQuoteType] = useState<string>("");
   const [quotePrice, setQuotePrice] = useState<string>("");
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState("taxi");
   
   const [editStatus, setEditStatus] = useState<string>("");
   const [editQuotedPrice, setEditQuotedPrice] = useState<string>("");
@@ -97,25 +148,35 @@ const EnquiriesAdmin = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    fetchEnquiries();
+    fetchAllEnquiries();
   }, []);
 
-  const fetchEnquiries = async () => {
+  const fetchAllEnquiries = async () => {
     try {
-      const { data, error } = await supabase
-        .from("tour_enquiries")
-        .select(`
-          *,
-          tour_packages (
-            id,
-            title,
-            slug
-          )
-        `)
-        .order("created_at", { ascending: false });
+      const [tourRes, taxiRes, flightRes] = await Promise.all([
+        supabase
+          .from("tour_enquiries")
+          .select(`*, tour_packages (id, title, slug, tour_type)`)
+          .order("created_at", { ascending: false }),
+        supabase
+          .from("taxi_enquiries")
+          .select(`*, taxi_vehicles(name)`)
+          .order("created_at", { ascending: false }),
+        supabase
+          .from("flight_enquiries")
+          .select(`*`)
+          .order("created_at", { ascending: false }),
+      ]);
 
-      if (error) throw error;
-      setEnquiries((data as unknown as Enquiry[]) || []);
+      if (tourRes.error) throw tourRes.error;
+      if (taxiRes.error) throw taxiRes.error;
+      if (flightRes.error) throw flightRes.error;
+
+      const allTourEnquiries = (tourRes.data as unknown as TourEnquiry[]) || [];
+      setDomesticEnquiries(allTourEnquiries.filter(e => e.tour_packages?.tour_type === "domestic"));
+      setInternationalEnquiries(allTourEnquiries.filter(e => e.tour_packages?.tour_type === "international"));
+      setTaxiEnquiries((taxiRes.data as unknown as TaxiEnquiry[]) || []);
+      setFlightEnquiries((flightRes.data as unknown as FlightEnquiry[]) || []);
     } catch (error: any) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     } finally {
@@ -123,26 +184,35 @@ const EnquiriesAdmin = () => {
     }
   };
 
-  const handleViewDetails = (enquiry: Enquiry) => {
+  const handleViewDetails = (enquiry: any, type: string) => {
     setSelectedEnquiry(enquiry);
+    setSelectedType(type);
     setEditStatus(enquiry.status);
     setEditQuotedPrice(enquiry.quoted_price?.toString() || "");
     setEditAdminNotes(enquiry.admin_notes || "");
     setIsDetailOpen(true);
   };
 
+  const getTableName = (type: string) => {
+    switch (type) {
+      case "taxi": return "taxi_enquiries";
+      case "flight": return "flight_enquiries";
+      default: return "tour_enquiries";
+    }
+  };
+
   const handleUpdateEnquiry = async () => {
     if (!selectedEnquiry) return;
     setSaving(true);
 
+    const tableName = getTableName(selectedType);
     const statusChanged = editStatus !== selectedEnquiry.status;
-    const newStatus = editStatus;
 
     try {
       const { error } = await supabase
-        .from("tour_enquiries")
+        .from(tableName)
         .update({
-          status: editStatus as Enquiry["status"],
+          status: editStatus,
           quoted_price: editQuotedPrice ? parseFloat(editQuotedPrice) : null,
           admin_notes: editAdminNotes || null,
         })
@@ -150,35 +220,13 @@ const EnquiriesAdmin = () => {
 
       if (error) throw error;
       
-      // Send status update email if status changed and not pending
-      if (statusChanged && newStatus !== "pending") {
-        try {
-          await supabase.functions.invoke("send-enquiry-notification", {
-            body: {
-              type: "tour-status-update",
-              name: selectedEnquiry.name,
-              email: selectedEnquiry.email,
-              phone: selectedEnquiry.phone,
-              tourName: selectedEnquiry.tour_packages?.title,
-              travelDate: selectedEnquiry.travel_date ? format(new Date(selectedEnquiry.travel_date), "dd MMM yyyy") : undefined,
-              adults: selectedEnquiry.adults,
-              children: selectedEnquiry.children,
-              oldStatus: selectedEnquiry.status,
-              newStatus: newStatus,
-              quotedPrice: editQuotedPrice ? parseFloat(editQuotedPrice) : selectedEnquiry.quoted_price
-            }
-          });
-          toast({ title: "Success", description: "Enquiry updated and customer notified via email" });
-        } catch (emailError) {
-          console.error("Failed to send status notification:", emailError);
-          toast({ title: "Success", description: "Enquiry updated (email notification failed)" });
-        }
-      } else {
-        toast({ title: "Success", description: "Enquiry updated successfully" });
+      if (statusChanged && editStatus !== "pending") {
+        await sendStatusNotification(selectedEnquiry, selectedType, editStatus, editQuotedPrice ? parseFloat(editQuotedPrice) : null);
       }
       
+      toast({ title: "Success", description: "Enquiry updated successfully" });
       setIsDetailOpen(false);
-      fetchEnquiries();
+      fetchAllEnquiries();
     } catch (error: any) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     } finally {
@@ -186,53 +234,72 @@ const EnquiriesAdmin = () => {
     }
   };
 
-  const handleQuickStatusUpdate = async (id: string, newStatus: string) => {
-    const enquiry = enquiries.find(e => e.id === id);
-    
-    // If changing to 'quoted', open the quote dialog instead
-    if (newStatus === "quoted" && enquiry) {
+  const sendStatusNotification = async (enquiry: any, type: string, newStatus: string, quotedPrice?: number | null) => {
+    try {
+      const notificationType = type === "taxi" ? "taxi-status-update" : type === "flight" ? "flight-status-update" : "tour-status-update";
+      
+      const body: any = {
+        type: notificationType,
+        name: enquiry.name,
+        email: enquiry.email,
+        phone: enquiry.phone,
+        oldStatus: enquiry.status,
+        newStatus: newStatus,
+        quotedPrice: quotedPrice || enquiry.quoted_price
+      };
+
+      if (type === "taxi") {
+        body.pickupLocation = enquiry.pickup_location;
+        body.dropLocation = enquiry.drop_location;
+        body.tripType = enquiry.trip_type;
+        body.travelDate = enquiry.pickup_date ? format(new Date(enquiry.pickup_date), "dd MMM yyyy") : undefined;
+        body.vehicleName = enquiry.taxi_vehicles?.name;
+      } else if (type === "flight") {
+        body.departureCity = enquiry.departure_city;
+        body.arrivalCity = enquiry.arrival_city;
+        body.travelDate = enquiry.departure_date ? format(new Date(enquiry.departure_date), "dd MMM yyyy") : undefined;
+        body.passengers = enquiry.passengers;
+        body.flightClass = enquiry.class;
+      } else {
+        body.tourName = enquiry.tour_packages?.title;
+        body.travelDate = enquiry.travel_date ? format(new Date(enquiry.travel_date), "dd MMM yyyy") : undefined;
+        body.adults = enquiry.adults;
+        body.children = enquiry.children;
+      }
+
+      await supabase.functions.invoke("send-enquiry-notification", { body });
+    } catch (error) {
+      console.error("Failed to send notification:", error);
+    }
+  };
+
+  const handleQuickStatusUpdate = async (id: string, newStatus: string, type: string, enquiry: any) => {
+    if (newStatus === "quoted") {
       setQuoteEnquiry(enquiry);
+      setQuoteType(type);
       setQuotePrice(enquiry.quoted_price?.toString() || "");
       setIsQuoteDialogOpen(true);
       return;
     }
     
+    const tableName = getTableName(type);
+    
     try {
       const { error } = await supabase
-        .from("tour_enquiries")
-        .update({ status: newStatus as Enquiry["status"] })
+        .from(tableName)
+        .update({ status: newStatus })
         .eq("id", id);
 
       if (error) throw error;
       
-      // Send status update email notification
-      if (enquiry && newStatus !== "pending") {
-        try {
-          await supabase.functions.invoke("send-enquiry-notification", {
-            body: {
-              type: "tour-status-update",
-              name: enquiry.name,
-              email: enquiry.email,
-              phone: enquiry.phone,
-              tourName: enquiry.tour_packages?.title,
-              travelDate: enquiry.travel_date ? format(new Date(enquiry.travel_date), "dd MMM yyyy") : undefined,
-              adults: enquiry.adults,
-              children: enquiry.children,
-              oldStatus: enquiry.status,
-              newStatus: newStatus,
-              quotedPrice: enquiry.quoted_price
-            }
-          });
-          toast({ title: "Status updated", description: "Customer has been notified via email" });
-        } catch (emailError) {
-          console.error("Failed to send status notification:", emailError);
-          toast({ title: "Status updated", description: "Note: Email notification failed" });
-        }
+      if (newStatus !== "pending") {
+        await sendStatusNotification(enquiry, type, newStatus);
+        toast({ title: "Status updated", description: "Customer notified via email" });
       } else {
         toast({ title: "Status updated" });
       }
       
-      fetchEnquiries();
+      fetchAllEnquiries();
     } catch (error: any) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     }
@@ -249,45 +316,23 @@ const EnquiriesAdmin = () => {
     }
     
     setSaving(true);
+    const tableName = getTableName(quoteType);
     
     try {
       const { error } = await supabase
-        .from("tour_enquiries")
-        .update({ 
-          status: "quoted" as Enquiry["status"],
-          quoted_price: price 
-        })
+        .from(tableName)
+        .update({ status: "quoted", quoted_price: price })
         .eq("id", quoteEnquiry.id);
 
       if (error) throw error;
       
-      // Send quote notification email
-      try {
-        await supabase.functions.invoke("send-enquiry-notification", {
-          body: {
-            type: "tour-status-update",
-            name: quoteEnquiry.name,
-            email: quoteEnquiry.email,
-            phone: quoteEnquiry.phone,
-            tourName: quoteEnquiry.tour_packages?.title,
-            travelDate: quoteEnquiry.travel_date ? format(new Date(quoteEnquiry.travel_date), "dd MMM yyyy") : undefined,
-            adults: quoteEnquiry.adults,
-            children: quoteEnquiry.children,
-            oldStatus: quoteEnquiry.status,
-            newStatus: "quoted",
-            quotedPrice: price
-          }
-        });
-        toast({ title: "Quote sent!", description: `₹${price.toLocaleString()} quote sent to ${quoteEnquiry.email}` });
-      } catch (emailError) {
-        console.error("Failed to send quote notification:", emailError);
-        toast({ title: "Quote saved", description: "Note: Email notification failed" });
-      }
+      await sendStatusNotification(quoteEnquiry, quoteType, "quoted", price);
+      toast({ title: "Quote sent!", description: `₹${price.toLocaleString()} quote sent to ${quoteEnquiry.email}` });
       
       setIsQuoteDialogOpen(false);
       setQuoteEnquiry(null);
       setQuotePrice("");
-      fetchEnquiries();
+      fetchAllEnquiries();
     } catch (error: any) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     } finally {
@@ -295,112 +340,114 @@ const EnquiriesAdmin = () => {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: string, type: string) => {
     if (!confirm("Are you sure you want to delete this enquiry?")) return;
 
+    const tableName = getTableName(type);
+
     try {
-      const { error } = await supabase.from("tour_enquiries").delete().eq("id", id);
+      const { error } = await supabase.from(tableName).delete().eq("id", id);
       if (error) throw error;
       toast({ title: "Deleted", description: "Enquiry deleted successfully" });
-      fetchEnquiries();
+      fetchAllEnquiries();
     } catch (error: any) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     }
   };
 
-  const exportToCSV = () => {
-    const headers = ["Name", "Email", "Phone", "Tour", "Travel Date", "Adults", "Children", "Status", "Quoted Price", "Created At"];
-    const csvData = filteredEnquiries.map(e => [
-      e.name,
-      e.email,
-      e.phone,
-      e.tour_packages?.title || "N/A",
-      e.travel_date || "N/A",
-      e.adults || 0,
-      e.children || 0,
-      e.status,
-      e.quoted_price || "N/A",
-      format(new Date(e.created_at), "yyyy-MM-dd HH:mm")
-    ]);
-    
-    const csv = [headers, ...csvData].map(row => row.join(",")).join("\n");
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `enquiries-${format(new Date(), "yyyy-MM-dd")}.csv`;
-    a.click();
+  const getStatusColor = (status: string) => {
+    return statusOptions.find(s => s.value === status)?.color || "bg-gray-100 text-gray-600";
   };
 
-  const filteredEnquiries = enquiries.filter(e => {
-    const matchesStatus = filterStatus === "all" || e.status === filterStatus;
-    const matchesSearch = searchQuery === "" || 
-      e.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      e.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      e.phone.includes(searchQuery) ||
-      e.tour_packages?.title?.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesStatus && matchesSearch;
-  });
-
-  const getStatusColor = (status: string) => {
-    return statusOptions.find(s => s.value === status)?.color || "bg-[#f6f6f7] text-[#637381]";
+  const filterEnquiries = (enquiries: any[]) => {
+    return enquiries.filter(e => {
+      const matchesStatus = filterStatus === "all" || e.status === filterStatus;
+      const matchesSearch = searchQuery === "" || 
+        e.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        e.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        e.phone.includes(searchQuery);
+      return matchesStatus && matchesSearch;
+    });
   };
 
   const stats = {
-    total: enquiries.length,
-    pending: enquiries.filter(e => e.status === "pending").length,
-    quoted: enquiries.filter(e => e.status === "quoted").length,
-    confirmed: enquiries.filter(e => e.status === "confirmed").length,
+    taxi: taxiEnquiries.length,
+    domestic: domesticEnquiries.length,
+    international: internationalEnquiries.length,
+    flight: flightEnquiries.length,
+    total: taxiEnquiries.length + domesticEnquiries.length + internationalEnquiries.length + flightEnquiries.length,
+    pending: [...taxiEnquiries, ...domesticEnquiries, ...internationalEnquiries, ...flightEnquiries].filter(e => e.status === "pending").length,
   };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-[#008060]" />
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
 
   return (
-    <div className="space-y-6 max-w-7xl">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-[#303030]">Tour Enquiries</h1>
-          <p className="text-[#637381] text-sm mt-1">
-            Manage and respond to customer enquiries
+          <h1 className="text-2xl font-bold text-foreground">All Enquiries</h1>
+          <p className="text-muted-foreground text-sm mt-1">
+            Manage all booking enquiries in one place
           </p>
         </div>
-        <Button onClick={exportToCSV} variant="outline" className="border-[#e1e3e5] text-[#303030] hover:bg-[#f6f6f7]">
-          <Download className="h-4 w-4 mr-2" />
-          Export CSV
-        </Button>
+        {stats.pending > 0 && (
+          <Badge className="bg-amber-100 text-amber-800 border-amber-200 px-3 py-1.5">
+            {stats.pending} pending enquiries
+          </Badge>
+        )}
       </div>
 
-      {/* Stats */}
+      {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="bg-white border-[#e1e3e5]">
+        <Card className="bg-gradient-to-br from-orange-500 to-orange-600 text-white border-0">
           <CardContent className="p-4">
-            <p className="text-2xl font-semibold text-[#303030]">{stats.total}</p>
-            <p className="text-sm text-[#637381]">Total Enquiries</p>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-3xl font-bold">{stats.taxi}</p>
+                <p className="text-sm text-orange-100">Taxi Bookings</p>
+              </div>
+              <Car className="h-8 w-8 text-orange-200" />
+            </div>
           </CardContent>
         </Card>
-        <Card className="bg-white border-[#e1e3e5]">
+        <Card className="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white border-0">
           <CardContent className="p-4">
-            <p className="text-2xl font-semibold text-[#856404]">{stats.pending}</p>
-            <p className="text-sm text-[#637381]">Pending</p>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-3xl font-bold">{stats.domestic}</p>
+                <p className="text-sm text-emerald-100">Domestic Tours</p>
+              </div>
+              <Home className="h-8 w-8 text-emerald-200" />
+            </div>
           </CardContent>
         </Card>
-        <Card className="bg-white border-[#e1e3e5]">
+        <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white border-0">
           <CardContent className="p-4">
-            <p className="text-2xl font-semibold text-[#004085]">{stats.quoted}</p>
-            <p className="text-sm text-[#637381]">Quoted</p>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-3xl font-bold">{stats.international}</p>
+                <p className="text-sm text-purple-100">International Tours</p>
+              </div>
+              <Globe className="h-8 w-8 text-purple-200" />
+            </div>
           </CardContent>
         </Card>
-        <Card className="bg-white border-[#e1e3e5]">
+        <Card className="bg-gradient-to-br from-sky-500 to-sky-600 text-white border-0">
           <CardContent className="p-4">
-            <p className="text-2xl font-semibold text-[#155724]">{stats.confirmed}</p>
-            <p className="text-sm text-[#637381]">Confirmed</p>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-3xl font-bold">{stats.flight}</p>
+                <p className="text-sm text-sky-100">Flight Bookings</p>
+              </div>
+              <Plane className="h-8 w-8 text-sky-200" />
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -408,16 +455,16 @@ const EnquiriesAdmin = () => {
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#8c9196]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by name, email, phone, or tour..."
-            className="pl-10 border-[#e1e3e5] focus:border-[#008060] bg-white"
+            placeholder="Search by name, email, or phone..."
+            className="pl-10"
           />
         </div>
         <Select value={filterStatus} onValueChange={setFilterStatus}>
-          <SelectTrigger className="w-full sm:w-48 border-[#e1e3e5] bg-white">
+          <SelectTrigger className="w-full sm:w-48">
             <SelectValue placeholder="Filter by status" />
           </SelectTrigger>
           <SelectContent>
@@ -429,200 +476,523 @@ const EnquiriesAdmin = () => {
         </Select>
       </div>
 
-      {/* Enquiries Table */}
-      <Card className="bg-white border-[#e1e3e5]">
-        <CardContent className="p-0">
-          <Table>
-            <TableHeader>
-              <TableRow className="border-[#e1e3e5] hover:bg-transparent">
-                <TableHead className="text-[#637381] font-medium">Customer</TableHead>
-                <TableHead className="text-[#637381] font-medium hidden md:table-cell">Tour Package</TableHead>
-                <TableHead className="text-[#637381] font-medium hidden lg:table-cell">Travel Date</TableHead>
-                <TableHead className="text-[#637381] font-medium hidden sm:table-cell">Travelers</TableHead>
-                <TableHead className="text-[#637381] font-medium">Status</TableHead>
-                <TableHead className="text-[#637381] font-medium hidden md:table-cell">Quoted</TableHead>
-                <TableHead className="text-[#637381] font-medium text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredEnquiries.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={7} className="text-center py-12 text-[#8c9196]">
-                    <MessageSquare className="h-12 w-12 mx-auto mb-3 text-[#d2d5d8]" />
-                    <p className="font-medium text-[#303030]">No enquiries found</p>
-                    <p className="text-sm">
-                      {searchQuery || filterStatus !== "all" 
-                        ? "Try adjusting your filters" 
-                        : "Enquiries will appear here"}
-                    </p>
-                  </TableCell>
-                </TableRow>
-              ) : (
-                filteredEnquiries.map((enquiry) => (
-                  <TableRow key={enquiry.id} className="border-[#e1e3e5]">
-                    <TableCell>
-                      <div>
-                        <p className="font-medium text-[#303030]">{enquiry.name}</p>
-                        <p className="text-sm text-[#637381]">{enquiry.email}</p>
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      <p className="text-sm text-[#303030] line-clamp-1">
-                        {enquiry.tour_packages?.title || "—"}
-                      </p>
-                    </TableCell>
-                    <TableCell className="hidden lg:table-cell">
-                      {enquiry.travel_date ? (
-                        <span className="text-sm text-[#303030]">{format(new Date(enquiry.travel_date), "dd MMM yyyy")}</span>
-                      ) : (
-                        <span className="text-[#8c9196]">—</span>
-                      )}
-                    </TableCell>
-                    <TableCell className="hidden sm:table-cell">
-                      <span className="text-sm text-[#303030]">
-                        {enquiry.adults || 0} Adults, {enquiry.children || 0} Kids
-                      </span>
-                    </TableCell>
-                    <TableCell>
-                      <Select
-                        value={enquiry.status}
-                        onValueChange={(v) => handleQuickStatusUpdate(enquiry.id, v)}
-                      >
-                        <SelectTrigger className={`h-8 w-28 text-xs border-0 ${getStatusColor(enquiry.status)}`}>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {statusOptions.map(s => (
-                            <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      {enquiry.quoted_price ? (
-                        <span className="font-medium text-[#008060]">₹{enquiry.quoted_price.toLocaleString()}</span>
-                      ) : (
-                        <span className="text-[#8c9196]">—</span>
-                      )}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex items-center justify-end gap-1">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleViewDetails(enquiry)}
-                          className="h-8 w-8 text-[#637381] hover:text-[#303030] hover:bg-[#f6f6f7]"
-                        >
-                          <Eye className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleDelete(enquiry.id)}
-                          className="h-8 w-8 text-[#637381] hover:text-red-600 hover:bg-red-50"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
+      {/* Tabs */}
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+        <TabsList className="grid w-full grid-cols-4 h-auto p-1 bg-muted">
+          <TabsTrigger value="taxi" className="flex items-center gap-2 py-3 data-[state=active]:bg-orange-500 data-[state=active]:text-white">
+            <Car className="h-4 w-4" />
+            <span className="hidden sm:inline">Taxi</span>
+            <Badge variant="secondary" className="ml-1">{stats.taxi}</Badge>
+          </TabsTrigger>
+          <TabsTrigger value="domestic" className="flex items-center gap-2 py-3 data-[state=active]:bg-emerald-500 data-[state=active]:text-white">
+            <Home className="h-4 w-4" />
+            <span className="hidden sm:inline">Domestic</span>
+            <Badge variant="secondary" className="ml-1">{stats.domestic}</Badge>
+          </TabsTrigger>
+          <TabsTrigger value="international" className="flex items-center gap-2 py-3 data-[state=active]:bg-purple-500 data-[state=active]:text-white">
+            <Globe className="h-4 w-4" />
+            <span className="hidden sm:inline">International</span>
+            <Badge variant="secondary" className="ml-1">{stats.international}</Badge>
+          </TabsTrigger>
+          <TabsTrigger value="flight" className="flex items-center gap-2 py-3 data-[state=active]:bg-sky-500 data-[state=active]:text-white">
+            <Plane className="h-4 w-4" />
+            <span className="hidden sm:inline">Flight</span>
+            <Badge variant="secondary" className="ml-1">{stats.flight}</Badge>
+          </TabsTrigger>
+        </TabsList>
+
+        {/* Taxi Tab */}
+        <TabsContent value="taxi" className="mt-4">
+          <Card>
+            <CardContent className="p-0">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-muted/50">
+                    <TableHead>Customer</TableHead>
+                    <TableHead className="hidden md:table-cell">Trip Details</TableHead>
+                    <TableHead className="hidden lg:table-cell">Date</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="hidden sm:table-cell">Quote</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+                </TableHeader>
+                <TableBody>
+                  {filterEnquiries(taxiEnquiries).length === 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={6} className="text-center py-12 text-muted-foreground">
+                        <Car className="h-12 w-12 mx-auto mb-3 opacity-30" />
+                        <p className="font-medium">No taxi enquiries found</p>
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    filterEnquiries(taxiEnquiries).map((enquiry) => (
+                      <TableRow key={enquiry.id}>
+                        <TableCell>
+                          <div>
+                            <p className="font-medium">{enquiry.name}</p>
+                            <p className="text-sm text-muted-foreground">{enquiry.phone}</p>
+                          </div>
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">
+                          <div className="max-w-[200px]">
+                            <p className="text-sm truncate">{enquiry.pickup_location}</p>
+                            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                              <ArrowRight className="h-3 w-3" />
+                              <span className="truncate">{enquiry.drop_location || "Local"}</span>
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell className="hidden lg:table-cell">
+                          {format(new Date(enquiry.pickup_date), "dd MMM yyyy")}
+                        </TableCell>
+                        <TableCell>
+                          <Select value={enquiry.status} onValueChange={(v) => handleQuickStatusUpdate(enquiry.id, v, "taxi", enquiry)}>
+                            <SelectTrigger className={`h-8 w-28 text-xs border ${getStatusColor(enquiry.status)}`}>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {statusOptions.map(s => (
+                                <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </TableCell>
+                        <TableCell className="hidden sm:table-cell">
+                          {enquiry.quoted_price ? (
+                            <span className="text-primary font-semibold">₹{enquiry.quoted_price.toLocaleString()}</span>
+                          ) : (
+                            <span className="text-muted-foreground">—</span>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex items-center justify-end gap-1">
+                            <Button variant="ghost" size="icon" onClick={() => handleViewDetails(enquiry, "taxi")}>
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                            <Button variant="ghost" size="icon" onClick={() => handleDelete(enquiry.id, "taxi")}>
+                              <Trash2 className="h-4 w-4 text-destructive" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Domestic Tours Tab */}
+        <TabsContent value="domestic" className="mt-4">
+          <Card>
+            <CardContent className="p-0">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-muted/50">
+                    <TableHead>Customer</TableHead>
+                    <TableHead className="hidden md:table-cell">Tour Package</TableHead>
+                    <TableHead className="hidden lg:table-cell">Travel Date</TableHead>
+                    <TableHead className="hidden sm:table-cell">Travelers</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="hidden md:table-cell">Quote</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filterEnquiries(domesticEnquiries).length === 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={7} className="text-center py-12 text-muted-foreground">
+                        <Home className="h-12 w-12 mx-auto mb-3 opacity-30" />
+                        <p className="font-medium">No domestic tour enquiries found</p>
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    filterEnquiries(domesticEnquiries).map((enquiry) => (
+                      <TableRow key={enquiry.id}>
+                        <TableCell>
+                          <div>
+                            <p className="font-medium">{enquiry.name}</p>
+                            <p className="text-sm text-muted-foreground">{enquiry.email}</p>
+                          </div>
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">
+                          <p className="text-sm line-clamp-1">{enquiry.tour_packages?.title || "—"}</p>
+                        </TableCell>
+                        <TableCell className="hidden lg:table-cell">
+                          {enquiry.travel_date ? format(new Date(enquiry.travel_date), "dd MMM yyyy") : "—"}
+                        </TableCell>
+                        <TableCell className="hidden sm:table-cell">
+                          <div className="flex items-center gap-1">
+                            <Users className="h-4 w-4 text-muted-foreground" />
+                            <span>{(enquiry.adults || 0) + (enquiry.children || 0)}</span>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Select value={enquiry.status} onValueChange={(v) => handleQuickStatusUpdate(enquiry.id, v, "domestic", enquiry)}>
+                            <SelectTrigger className={`h-8 w-28 text-xs border ${getStatusColor(enquiry.status)}`}>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {statusOptions.map(s => (
+                                <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">
+                          {enquiry.quoted_price ? (
+                            <span className="text-primary font-semibold">₹{enquiry.quoted_price.toLocaleString()}</span>
+                          ) : (
+                            <span className="text-muted-foreground">—</span>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex items-center justify-end gap-1">
+                            <Button variant="ghost" size="icon" onClick={() => handleViewDetails(enquiry, "domestic")}>
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                            <Button variant="ghost" size="icon" onClick={() => handleDelete(enquiry.id, "domestic")}>
+                              <Trash2 className="h-4 w-4 text-destructive" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* International Tours Tab */}
+        <TabsContent value="international" className="mt-4">
+          <Card>
+            <CardContent className="p-0">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-muted/50">
+                    <TableHead>Customer</TableHead>
+                    <TableHead className="hidden md:table-cell">Tour Package</TableHead>
+                    <TableHead className="hidden lg:table-cell">Travel Date</TableHead>
+                    <TableHead className="hidden sm:table-cell">Travelers</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="hidden md:table-cell">Quote</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filterEnquiries(internationalEnquiries).length === 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={7} className="text-center py-12 text-muted-foreground">
+                        <Globe className="h-12 w-12 mx-auto mb-3 opacity-30" />
+                        <p className="font-medium">No international tour enquiries found</p>
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    filterEnquiries(internationalEnquiries).map((enquiry) => (
+                      <TableRow key={enquiry.id}>
+                        <TableCell>
+                          <div>
+                            <p className="font-medium">{enquiry.name}</p>
+                            <p className="text-sm text-muted-foreground">{enquiry.email}</p>
+                          </div>
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">
+                          <p className="text-sm line-clamp-1">{enquiry.tour_packages?.title || "—"}</p>
+                        </TableCell>
+                        <TableCell className="hidden lg:table-cell">
+                          {enquiry.travel_date ? format(new Date(enquiry.travel_date), "dd MMM yyyy") : "—"}
+                        </TableCell>
+                        <TableCell className="hidden sm:table-cell">
+                          <div className="flex items-center gap-1">
+                            <Users className="h-4 w-4 text-muted-foreground" />
+                            <span>{(enquiry.adults || 0) + (enquiry.children || 0)}</span>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Select value={enquiry.status} onValueChange={(v) => handleQuickStatusUpdate(enquiry.id, v, "international", enquiry)}>
+                            <SelectTrigger className={`h-8 w-28 text-xs border ${getStatusColor(enquiry.status)}`}>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {statusOptions.map(s => (
+                                <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">
+                          {enquiry.quoted_price ? (
+                            <span className="text-primary font-semibold">₹{enquiry.quoted_price.toLocaleString()}</span>
+                          ) : (
+                            <span className="text-muted-foreground">—</span>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex items-center justify-end gap-1">
+                            <Button variant="ghost" size="icon" onClick={() => handleViewDetails(enquiry, "international")}>
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                            <Button variant="ghost" size="icon" onClick={() => handleDelete(enquiry.id, "international")}>
+                              <Trash2 className="h-4 w-4 text-destructive" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Flight Tab */}
+        <TabsContent value="flight" className="mt-4">
+          <Card>
+            <CardContent className="p-0">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-muted/50">
+                    <TableHead>Customer</TableHead>
+                    <TableHead className="hidden md:table-cell">Route</TableHead>
+                    <TableHead className="hidden lg:table-cell">Date</TableHead>
+                    <TableHead className="hidden sm:table-cell">Class</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="hidden md:table-cell">Quote</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filterEnquiries(flightEnquiries).length === 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={7} className="text-center py-12 text-muted-foreground">
+                        <Plane className="h-12 w-12 mx-auto mb-3 opacity-30" />
+                        <p className="font-medium">No flight enquiries found</p>
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    filterEnquiries(flightEnquiries).map((enquiry) => (
+                      <TableRow key={enquiry.id}>
+                        <TableCell>
+                          <div>
+                            <p className="font-medium">{enquiry.name}</p>
+                            <p className="text-sm text-muted-foreground">{enquiry.phone}</p>
+                          </div>
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">
+                          <div className="flex items-center gap-1">
+                            <span className="font-medium">{enquiry.departure_city}</span>
+                            <ArrowRight className="h-3 w-3 text-muted-foreground" />
+                            <span className="font-medium">{enquiry.arrival_city}</span>
+                          </div>
+                          <Badge variant="outline" className="text-xs mt-1 capitalize">{enquiry.trip_type}</Badge>
+                        </TableCell>
+                        <TableCell className="hidden lg:table-cell">
+                          {format(new Date(enquiry.departure_date), "dd MMM yyyy")}
+                        </TableCell>
+                        <TableCell className="hidden sm:table-cell">
+                          <Badge variant="secondary" className="capitalize">{enquiry.class}</Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Select value={enquiry.status} onValueChange={(v) => handleQuickStatusUpdate(enquiry.id, v, "flight", enquiry)}>
+                            <SelectTrigger className={`h-8 w-28 text-xs border ${getStatusColor(enquiry.status)}`}>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {statusOptions.map(s => (
+                                <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">
+                          {enquiry.quoted_price ? (
+                            <span className="text-primary font-semibold">₹{enquiry.quoted_price.toLocaleString()}</span>
+                          ) : (
+                            <span className="text-muted-foreground">—</span>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex items-center justify-end gap-1">
+                            <Button variant="ghost" size="icon" onClick={() => handleViewDetails(enquiry, "flight")}>
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                            <Button variant="ghost" size="icon" onClick={() => handleDelete(enquiry.id, "flight")}>
+                              <Trash2 className="h-4 w-4 text-destructive" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+
+      {/* Quote Dialog */}
+      <Dialog open={isQuoteDialogOpen} onOpenChange={setIsQuoteDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <IndianRupee className="h-5 w-5 text-primary" />
+              Enter Quote Price
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            {quoteEnquiry && (
+              <div className="bg-muted p-3 rounded-lg text-sm space-y-1">
+                <p><strong>Customer:</strong> {quoteEnquiry.name}</p>
+                <p><strong>Email:</strong> {quoteEnquiry.email}</p>
+              </div>
+            )}
+            <div className="space-y-2">
+              <Label>Quoted Price (₹)</Label>
+              <div className="relative">
+                <IndianRupee className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="number"
+                  value={quotePrice}
+                  onChange={(e) => setQuotePrice(e.target.value)}
+                  placeholder="Enter price"
+                  className="pl-10"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <Button variant="outline" onClick={() => setIsQuoteDialogOpen(false)} className="flex-1">
+              Cancel
+            </Button>
+            <Button onClick={handleSubmitQuote} disabled={saving} className="flex-1">
+              {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+              Send Quote
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Detail Dialog */}
       <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-[#303030]">Enquiry Details</DialogTitle>
+            <DialogTitle>Enquiry Details</DialogTitle>
           </DialogHeader>
-          
           {selectedEnquiry && (
-            <div className="space-y-6 mt-4">
+            <div className="space-y-6 py-4">
               {/* Customer Info */}
-              <div className="bg-[#f6f6f7] rounded-lg p-4 space-y-3">
-                <h4 className="font-medium text-[#303030]">Customer Information</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex items-center gap-2 text-sm">
-                    <Users className="h-4 w-4 text-[#008060]" />
-                    <span className="text-[#303030]">{selectedEnquiry.name}</span>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-4">
+                  <div>
+                    <Label className="text-muted-foreground text-xs">Customer Name</Label>
+                    <p className="font-medium">{selectedEnquiry.name}</p>
                   </div>
-                  <div className="flex items-center gap-2 text-sm">
-                    <Mail className="h-4 w-4 text-[#008060]" />
-                    <a href={`mailto:${selectedEnquiry.email}`} className="text-[#008060] hover:underline">
+                  <div>
+                    <Label className="text-muted-foreground text-xs">Email</Label>
+                    <p className="flex items-center gap-2">
+                      <Mail className="h-4 w-4 text-muted-foreground" />
                       {selectedEnquiry.email}
-                    </a>
+                    </p>
                   </div>
-                  <div className="flex items-center gap-2 text-sm">
-                    <Phone className="h-4 w-4 text-[#008060]" />
-                    <a href={`tel:${selectedEnquiry.phone}`} className="text-[#008060] hover:underline">
+                  <div>
+                    <Label className="text-muted-foreground text-xs">Phone</Label>
+                    <p className="flex items-center gap-2">
+                      <Phone className="h-4 w-4 text-muted-foreground" />
                       {selectedEnquiry.phone}
-                    </a>
+                    </p>
                   </div>
-                  <div className="flex items-center gap-2 text-sm">
-                    <Clock className="h-4 w-4 text-[#008060]" />
-                    <span className="text-[#637381]">
-                      {format(new Date(selectedEnquiry.created_at), "dd MMM yyyy, hh:mm a")}
-                    </span>
-                  </div>
+                </div>
+                <div className="space-y-4">
+                  {selectedType === "taxi" && (
+                    <>
+                      <div>
+                        <Label className="text-muted-foreground text-xs">Pickup</Label>
+                        <p className="flex items-center gap-2">
+                          <MapPin className="h-4 w-4 text-muted-foreground" />
+                          {selectedEnquiry.pickup_location}
+                        </p>
+                      </div>
+                      <div>
+                        <Label className="text-muted-foreground text-xs">Drop</Label>
+                        <p>{selectedEnquiry.drop_location || "Local"}</p>
+                      </div>
+                      <div>
+                        <Label className="text-muted-foreground text-xs">Date</Label>
+                        <p className="flex items-center gap-2">
+                          <Calendar className="h-4 w-4 text-muted-foreground" />
+                          {format(new Date(selectedEnquiry.pickup_date), "dd MMM yyyy")}
+                        </p>
+                      </div>
+                    </>
+                  )}
+                  {(selectedType === "domestic" || selectedType === "international") && (
+                    <>
+                      <div>
+                        <Label className="text-muted-foreground text-xs">Tour Package</Label>
+                        <p>{selectedEnquiry.tour_packages?.title || "—"}</p>
+                      </div>
+                      <div>
+                        <Label className="text-muted-foreground text-xs">Travel Date</Label>
+                        <p className="flex items-center gap-2">
+                          <Calendar className="h-4 w-4 text-muted-foreground" />
+                          {selectedEnquiry.travel_date ? format(new Date(selectedEnquiry.travel_date), "dd MMM yyyy") : "—"}
+                        </p>
+                      </div>
+                      <div>
+                        <Label className="text-muted-foreground text-xs">Travelers</Label>
+                        <p className="flex items-center gap-2">
+                          <Users className="h-4 w-4 text-muted-foreground" />
+                          {selectedEnquiry.adults || 0} Adults, {selectedEnquiry.children || 0} Children
+                        </p>
+                      </div>
+                    </>
+                  )}
+                  {selectedType === "flight" && (
+                    <>
+                      <div>
+                        <Label className="text-muted-foreground text-xs">Route</Label>
+                        <p className="flex items-center gap-2">
+                          <Plane className="h-4 w-4 text-muted-foreground" />
+                          {selectedEnquiry.departure_city} → {selectedEnquiry.arrival_city}
+                        </p>
+                      </div>
+                      <div>
+                        <Label className="text-muted-foreground text-xs">Departure Date</Label>
+                        <p className="flex items-center gap-2">
+                          <Calendar className="h-4 w-4 text-muted-foreground" />
+                          {format(new Date(selectedEnquiry.departure_date), "dd MMM yyyy")}
+                        </p>
+                      </div>
+                      <div>
+                        <Label className="text-muted-foreground text-xs">Passengers / Class</Label>
+                        <p className="flex items-center gap-2">
+                          <Users className="h-4 w-4 text-muted-foreground" />
+                          {selectedEnquiry.passengers} • <span className="capitalize">{selectedEnquiry.class}</span>
+                        </p>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
 
-              {/* Tour & Travel Info */}
-              <div className="bg-[#f6f6f7] rounded-lg p-4 space-y-3">
-                <h4 className="font-medium text-[#303030]">Tour Details</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex items-start gap-2 text-sm">
-                    <MapPin className="h-4 w-4 text-[#008060] mt-0.5" />
-                    <div>
-                      <p className="text-[#637381]">Tour Package</p>
-                      <p className="text-[#303030] font-medium">
-                        {selectedEnquiry.tour_packages?.title || "Not specified"}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-2 text-sm">
-                    <Calendar className="h-4 w-4 text-[#008060] mt-0.5" />
-                    <div>
-                      <p className="text-[#637381]">Travel Date</p>
-                      <p className="text-[#303030] font-medium">
-                        {selectedEnquiry.travel_date 
-                          ? format(new Date(selectedEnquiry.travel_date), "dd MMM yyyy")
-                          : "Not specified"}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-2 text-sm">
-                    <Users className="h-4 w-4 text-[#008060] mt-0.5" />
-                    <div>
-                      <p className="text-[#637381]">Travelers</p>
-                      <p className="text-[#303030] font-medium">
-                        {selectedEnquiry.adults || 0} Adults, {selectedEnquiry.children || 0} Children
-                      </p>
-                    </div>
-                  </div>
+              {selectedEnquiry.message && (
+                <div>
+                  <Label className="text-muted-foreground text-xs">Message</Label>
+                  <p className="bg-muted p-3 rounded-lg text-sm mt-1">{selectedEnquiry.message}</p>
                 </div>
+              )}
 
-                {selectedEnquiry.message && (
-                  <div className="pt-3 border-t border-[#e1e3e5]">
-                    <p className="text-[#637381] text-sm mb-1">Message</p>
-                    <p className="text-[#303030] text-sm">{selectedEnquiry.message}</p>
-                  </div>
-                )}
-              </div>
-
-              {/* Admin Actions */}
-              <div className="space-y-4">
-                <h4 className="font-medium text-[#303030]">Update Enquiry</h4>
-                
+              <div className="border-t pt-4 space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label className="text-[#303030]">Status</Label>
+                    <Label>Status</Label>
                     <Select value={editStatus} onValueChange={setEditStatus}>
-                      <SelectTrigger className="border-[#e1e3e5]">
+                      <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -632,133 +1002,38 @@ const EnquiriesAdmin = () => {
                       </SelectContent>
                     </Select>
                   </div>
-
                   <div className="space-y-2">
-                    <Label className="text-[#303030]">Quoted Price (₹)</Label>
+                    <Label>Quoted Price (₹)</Label>
                     <div className="relative">
-                      <IndianRupee className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#8c9196]" />
+                      <IndianRupee className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
                         type="number"
                         value={editQuotedPrice}
                         onChange={(e) => setEditQuotedPrice(e.target.value)}
                         placeholder="Enter price"
-                        className="pl-10 border-[#e1e3e5]"
+                        className="pl-10"
                       />
                     </div>
                   </div>
                 </div>
-
                 <div className="space-y-2">
-                  <Label className="text-[#303030]">Admin Notes</Label>
+                  <Label>Admin Notes</Label>
                   <Textarea
                     value={editAdminNotes}
                     onChange={(e) => setEditAdminNotes(e.target.value)}
-                    placeholder="Internal notes about this enquiry..."
+                    placeholder="Internal notes..."
                     rows={3}
-                    className="border-[#e1e3e5]"
                   />
                 </div>
-
-                <div className="flex justify-end gap-3 pt-4 border-t border-[#e1e3e5]">
-                  <Button
-                    variant="outline"
-                    onClick={() => setIsDetailOpen(false)}
-                    className="border-[#e1e3e5] text-[#303030] hover:bg-[#f6f6f7]"
-                  >
-                    Cancel
-                  </Button>
-                  <Button 
-                    onClick={handleUpdateEnquiry} 
-                    disabled={saving}
-                    className="bg-[#008060] hover:bg-[#006e52] text-white"
-                  >
-                    {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                    Save changes
-                  </Button>
-                </div>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
-
-      {/* Quote Price Dialog */}
-      <Dialog open={isQuoteDialogOpen} onOpenChange={setIsQuoteDialogOpen}>
-        <DialogContent className="max-w-md bg-white">
-          <DialogHeader>
-            <DialogTitle className="text-[#303030]">Send Quote to Customer</DialogTitle>
-          </DialogHeader>
-          
-          {quoteEnquiry && (
-            <div className="space-y-4 mt-4">
-              {/* Customer Info Summary */}
-              <div className="bg-[#f6f6f7] rounded-lg p-4 space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-[#637381]">Customer</span>
-                  <span className="text-sm font-medium text-[#303030]">{quoteEnquiry.name}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-[#637381]">Tour</span>
-                  <span className="text-sm font-medium text-[#303030] text-right max-w-[200px] truncate">
-                    {quoteEnquiry.tour_packages?.title || "General Enquiry"}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-[#637381]">Travelers</span>
-                  <span className="text-sm font-medium text-[#303030]">
-                    {quoteEnquiry.adults || 1} Adults{quoteEnquiry.children ? `, ${quoteEnquiry.children} Kids` : ""}
-                  </span>
-                </div>
-                {quoteEnquiry.travel_date && (
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-[#637381]">Travel Date</span>
-                    <span className="text-sm font-medium text-[#303030]">
-                      {format(new Date(quoteEnquiry.travel_date), "dd MMM yyyy")}
-                    </span>
-                  </div>
-                )}
               </div>
 
-              {/* Quote Price Input */}
-              <div className="space-y-2">
-                <Label className="text-sm font-medium text-[#303030]">Quoted Price (₹)</Label>
-                <div className="relative">
-                  <IndianRupee className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#637381]" />
-                  <Input
-                    type="number"
-                    value={quotePrice}
-                    onChange={(e) => setQuotePrice(e.target.value)}
-                    placeholder="Enter quoted price"
-                    className="pl-10 border-[#e1e3e5] focus:border-[#008060] text-lg font-semibold"
-                    min="0"
-                    step="100"
-                  />
-                </div>
-                <p className="text-xs text-[#637381]">
-                  This price will be sent to {quoteEnquiry.email}
-                </p>
-              </div>
-
-              {/* Actions */}
-              <div className="flex gap-3 pt-2">
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setIsQuoteDialogOpen(false);
-                    setQuoteEnquiry(null);
-                    setQuotePrice("");
-                  }}
-                  className="flex-1 border-[#e1e3e5] text-[#303030] hover:bg-[#f6f6f7]"
-                >
+              <div className="flex gap-3 pt-4">
+                <Button variant="outline" onClick={() => setIsDetailOpen(false)} className="flex-1">
                   Cancel
                 </Button>
-                <Button 
-                  onClick={handleSubmitQuote} 
-                  disabled={saving || !quotePrice}
-                  className="flex-1 bg-[#008060] hover:bg-[#006e52] text-white"
-                >
-                  {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                  Send Quote
+                <Button onClick={handleUpdateEnquiry} disabled={saving} className="flex-1">
+                  {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+                  Save Changes
                 </Button>
               </div>
             </div>
