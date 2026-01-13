@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,7 @@ export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -101,7 +102,10 @@ export const Header = () => {
             {/* CTA Button */}
             <div className="hidden lg:flex items-center gap-2">
               <WishlistSheet />
-              <Button className="bg-gradient-gold hover:opacity-90 text-primary-foreground font-semibold shadow-gold">
+              <Button 
+                onClick={() => navigate("/booking")}
+                className="bg-gradient-gold hover:opacity-90 text-primary-foreground font-semibold shadow-gold"
+              >
                 Book Now
               </Button>
             </div>
@@ -143,7 +147,10 @@ export const Header = () => {
                   <Link to="/auth" className="block px-4 py-3 text-sm text-muted-foreground">
                     Login / Register
                   </Link>
-                  <Button className="w-full mt-2 bg-gradient-gold hover:opacity-90 text-primary-foreground font-semibold">
+                  <Button 
+                    onClick={() => navigate("/booking")}
+                    className="w-full mt-2 bg-gradient-gold hover:opacity-90 text-primary-foreground font-semibold"
+                  >
                     Book Now
                   </Button>
                 </div>
