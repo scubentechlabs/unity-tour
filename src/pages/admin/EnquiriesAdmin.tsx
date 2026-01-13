@@ -132,6 +132,9 @@ const EnquiriesAdmin = () => {
     if (!selectedEnquiry) return;
     setSaving(true);
 
+    const statusChanged = editStatus !== selectedEnquiry.status;
+    const newStatus = editStatus;
+
     try {
       const { error } = await supabase
         .from("tour_enquiries")
@@ -144,7 +147,33 @@ const EnquiriesAdmin = () => {
 
       if (error) throw error;
       
-      toast({ title: "Success", description: "Enquiry updated successfully" });
+      // Send status update email if status changed and not pending
+      if (statusChanged && newStatus !== "pending") {
+        try {
+          await supabase.functions.invoke("send-enquiry-notification", {
+            body: {
+              type: "tour-status-update",
+              name: selectedEnquiry.name,
+              email: selectedEnquiry.email,
+              phone: selectedEnquiry.phone,
+              tourName: selectedEnquiry.tour_packages?.title,
+              travelDate: selectedEnquiry.travel_date ? format(new Date(selectedEnquiry.travel_date), "dd MMM yyyy") : undefined,
+              adults: selectedEnquiry.adults,
+              children: selectedEnquiry.children,
+              oldStatus: selectedEnquiry.status,
+              newStatus: newStatus,
+              quotedPrice: editQuotedPrice ? parseFloat(editQuotedPrice) : selectedEnquiry.quoted_price
+            }
+          });
+          toast({ title: "Success", description: "Enquiry updated and customer notified via email" });
+        } catch (emailError) {
+          console.error("Failed to send status notification:", emailError);
+          toast({ title: "Success", description: "Enquiry updated (email notification failed)" });
+        }
+      } else {
+        toast({ title: "Success", description: "Enquiry updated successfully" });
+      }
+      
       setIsDetailOpen(false);
       fetchEnquiries();
     } catch (error: any) {
@@ -155,6 +184,8 @@ const EnquiriesAdmin = () => {
   };
 
   const handleQuickStatusUpdate = async (id: string, newStatus: string) => {
+    const enquiry = enquiries.find(e => e.id === id);
+    
     try {
       const { error } = await supabase
         .from("tour_enquiries")
@@ -162,8 +193,35 @@ const EnquiriesAdmin = () => {
         .eq("id", id);
 
       if (error) throw error;
+      
+      // Send status update email notification
+      if (enquiry && newStatus !== "pending") {
+        try {
+          await supabase.functions.invoke("send-enquiry-notification", {
+            body: {
+              type: "tour-status-update",
+              name: enquiry.name,
+              email: enquiry.email,
+              phone: enquiry.phone,
+              tourName: enquiry.tour_packages?.title,
+              travelDate: enquiry.travel_date ? format(new Date(enquiry.travel_date), "dd MMM yyyy") : undefined,
+              adults: enquiry.adults,
+              children: enquiry.children,
+              oldStatus: enquiry.status,
+              newStatus: newStatus,
+              quotedPrice: enquiry.quoted_price
+            }
+          });
+          toast({ title: "Status updated", description: "Customer has been notified via email" });
+        } catch (emailError) {
+          console.error("Failed to send status notification:", emailError);
+          toast({ title: "Status updated", description: "Note: Email notification failed" });
+        }
+      } else {
+        toast({ title: "Status updated" });
+      }
+      
       fetchEnquiries();
-      toast({ title: "Status updated" });
     } catch (error: any) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     }
