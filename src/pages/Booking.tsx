@@ -82,8 +82,7 @@ const Booking = () => {
     setIsSubmitting(true);
 
     try {
-      // For now, we'll create a general enquiry
-      // This can be extended to create specific enquiries based on service type
+      // Save to database
       const { error } = await supabase
         .from("tour_enquiries")
         .insert({
@@ -97,9 +96,30 @@ const Booking = () => {
 
       if (error) throw error;
 
+      // Send confirmation email via edge function
+      try {
+        await supabase.functions.invoke("send-enquiry-notification", {
+          body: {
+            type: "booking",
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            serviceType: formData.serviceType,
+            destination: formData.destination,
+            travelDate: formData.travelDate,
+            travelers: formData.travelers,
+            message: formData.message,
+          },
+        });
+        console.log("Booking confirmation email sent successfully");
+      } catch (emailError) {
+        console.error("Failed to send confirmation email:", emailError);
+        // Don't fail the whole submission if email fails
+      }
+
       toast({
         title: "Booking Request Submitted!",
-        description: "Our team will contact you within 24 hours with the best options.",
+        description: "Our team will contact you within 24 hours with the best options. A confirmation email has been sent.",
       });
 
       setFormData({
