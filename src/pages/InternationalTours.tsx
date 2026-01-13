@@ -155,28 +155,28 @@ const InternationalTours = () => {
                 />
               </div>
               <Select 
-                value={filters.country} 
-                onValueChange={(v) => setFilters({ ...filters, country: v })}
+                value={filters.country || "all"} 
+                onValueChange={(v) => setFilters({ ...filters, country: v === "all" ? "" : v })}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select country" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Countries</SelectItem>
+                  <SelectItem value="all">All Countries</SelectItem>
                   {countries.map((country) => (
                     <SelectItem key={country} value={country}>{country}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
               <Select 
-                value={filters.category} 
-                onValueChange={(v) => setFilters({ ...filters, category: v })}
+                value={filters.category || "all"} 
+                onValueChange={(v) => setFilters({ ...filters, category: v === "all" ? "" : v })}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Categories</SelectItem>
+                  <SelectItem value="all">All Categories</SelectItem>
                   {categories.map((cat) => (
                     <SelectItem key={cat.value} value={cat.value}>{cat.label}</SelectItem>
                   ))}
