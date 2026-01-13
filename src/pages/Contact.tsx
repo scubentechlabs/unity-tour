@@ -23,25 +23,25 @@ const contactInfo = [
   {
     icon: Phone,
     title: "Phone",
-    details: ["+91 92270 26000"],
-    action: "tel:+919227026000",
+    details: ["+91 70050 50020", "+91 70050 50030", "+91 70050 50040"],
+    action: "tel:+917005050020",
   },
   {
     icon: Mail,
     title: "Email",
-    details: ["info@unityglobaltours.com", "support@unityglobaltours.com"],
-    action: "mailto:info@unityglobaltours.com",
+    details: ["booking@unityglobaltours.com"],
+    action: "mailto:booking@unityglobaltours.com",
   },
   {
     icon: MapPin,
     title: "Address",
-    details: ["4, Unique Plaza, Somnath Bypass Road, Bhalpara", "Veraval - 362268 (Gir-Somnath)"],
-    action: "https://maps.google.com/?q=Unique+Plaza+Somnath+Bypass+Road+Veraval",
+    details: ["4, Unique Plaza, Somnath Bypass Road, Bhalpara", "Veraval, Gujarat 362268 (India)"],
+    action: "https://maps.google.com/?q=Unique+Plaza+Somnath+Bypass+Road+Veraval+Gujarat",
   },
   {
     icon: Clock,
     title: "Working Hours",
-    details: ["Mon - Sat: 9:00 AM - 7:00 PM", "Sunday: 10:00 AM - 4:00 PM"],
+    details: ["Daily: 9:00 AM - 9:00 PM"],
   },
 ];
 
@@ -332,7 +332,7 @@ const Contact = () => {
               Visit Our Office
             </h2>
             <p className="text-muted-foreground mt-2">
-              Come meet us in person at our Mumbai office.
+              Come meet us in person at our Veraval office.
             </p>
           </motion.div>
           <motion.div

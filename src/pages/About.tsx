@@ -12,9 +12,9 @@ import {
 } from "lucide-react";
 
 const stats = [
-  { value: "15+", label: "Years Experience" },
-  { value: "50K+", label: "Happy Travelers" },
-  { value: "500+", label: "Destinations" },
+  { value: "10+", label: "Years Experience" },
+  { value: "25K+", label: "Happy Travelers" },
+  { value: "100+", label: "Destinations" },
   { value: "24/7", label: "Customer Support" },
 ];
 
@@ -41,27 +41,13 @@ const values = [
   },
 ];
 
-const team = [
-  {
-    name: "Rajesh Kumar",
-    role: "Founder & CEO",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-  },
-  {
-    name: "Priya Sharma",
-    role: "Operations Head",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-  },
-  {
-    name: "Amit Patel",
-    role: "Tour Manager",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-  },
-  {
-    name: "Sneha Reddy",
-    role: "Customer Relations",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-  },
+const services = [
+  "Local and Outstation Taxi Services",
+  "Airport Transfers",
+  "Pilgrimage Tours (Somnath, Dwarka, etc.)",
+  "Customised Tour Packages",
+  "Corporate Travel Solutions",
+  "Domestic & International Tours",
 ];
 
 const About = () => {
@@ -132,26 +118,25 @@ const About = () => {
             >
               <span className="text-primary font-medium">Our Story</span>
               <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mt-2 mb-6">
-                Crafting Dream Vacations Since 2008
+                Your Trusted Travel Partner
               </h2>
               <div className="space-y-4 text-muted-foreground">
                 <p>
-                  Unity Global Tours was founded with a simple mission: to make travel 
-                  accessible, enjoyable, and memorable for everyone. What started as a 
-                  small team of passionate travelers has grown into one of India's most 
-                  trusted tour operators.
+                  Unity Global Tours is a dedicated tour and travel company specializing in 
+                  well-planned, comfortable, and affordable travel solutions. Whether you're 
+                  traveling for leisure, business, education, or religious purposes, we ensure 
+                  every journey is seamless and memorable.
                 </p>
                 <p>
-                  Over the years, we've helped thousands of families, couples, and solo 
-                  travelers explore incredible destinations across India and the world. 
-                  Our commitment to quality, personalized service, and attention to detail 
-                  has earned us the trust of our customers.
+                  Based in Veraval, Gujarat, we serve travelers across Somnath, Diu, Talala, 
+                  Sasan-Gir, Dwarka, Rajkot, Hirasar Airport, Jamnagar, Bhavnagar, Morbi, 
+                  and Ahmedabad. Our extensive network allows us to provide reliable services 
+                  across Gujarat and beyond.
                 </p>
                 <p>
-                  Today, we continue to innovate and expand our offerings, bringing you 
-                  curated experiences that go beyond the ordinary. From adventure treks 
-                  in the Himalayas to romantic getaways in the Maldives, we're here to 
-                  turn your travel dreams into reality.
+                  From local taxi services to international tour packages, we bring expertise 
+                  and personalized attention to every booking. Our team is committed to making 
+                  global travel accessible and stress-free for all our customers.
                 </p>
               </div>
             </motion.div>
@@ -167,7 +152,7 @@ const About = () => {
                 className="rounded-2xl shadow-2xl"
               />
               <div className="absolute -bottom-6 -left-6 bg-primary text-primary-foreground p-6 rounded-xl shadow-lg">
-                <p className="text-3xl font-bold">15+</p>
+                <p className="text-3xl font-bold">10+</p>
                 <p className="text-sm opacity-90">Years of Excellence</p>
               </div>
             </motion.div>
@@ -192,9 +177,9 @@ const About = () => {
                 Our Mission
               </h3>
               <p className="text-muted-foreground">
-                To provide exceptional travel experiences that create lasting memories, 
-                foster cultural understanding, and inspire a love for exploration. We 
-                strive to make every journey safe, comfortable, and truly unforgettable.
+                To deliver high-quality travel experiences that combine comfort, reliability, 
+                and value. We aim to make global travel accessible and stress-free, ensuring 
+                every journey exceeds expectations and creates lasting memories.
               </p>
             </motion.div>
             <motion.div
@@ -211,9 +196,9 @@ const About = () => {
                 Our Vision
               </h3>
               <p className="text-muted-foreground">
-                To be the most trusted and innovative travel company, recognized for 
-                our commitment to customer satisfaction, sustainable tourism practices, 
-                and our contribution to making travel accessible to all.
+                To become a globally recognized travel brand known for integrity, innovation, 
+                and personalized service. We strive to bring people together through travel 
+                and create meaningful connections across cultures.
               </p>
             </motion.div>
           </div>
@@ -262,7 +247,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* Team Section */}
+      {/* Services Section */}
       <section className="py-16 md:py-24 bg-secondary/30">
         <div className="container mx-auto px-4">
           <motion.div
@@ -271,37 +256,30 @@ const About = () => {
             viewport={{ once: true }}
             className="text-center max-w-2xl mx-auto mb-12"
           >
-            <span className="text-primary font-medium">Our Team</span>
+            <span className="text-primary font-medium">Our Services</span>
             <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mt-2">
-              Meet The Experts
+              What We Offer
             </h2>
             <p className="text-muted-foreground mt-4">
-              Our dedicated team of travel enthusiasts is here to make your journey seamless.
+              Comprehensive travel solutions for all your needs.
             </p>
           </motion.div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {team.map((member, index) => (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            {services.map((service, index) => (
               <motion.div
-                key={member.name}
+                key={service}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-card border border-border rounded-xl overflow-hidden group"
+                className="bg-card border border-border rounded-xl p-6 text-center hover:border-primary/50 transition-colors"
               >
-                <div className="aspect-square overflow-hidden">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
+                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle className="h-6 w-6 text-primary" />
                 </div>
-                <div className="p-4 text-center">
-                  <h3 className="font-display font-bold text-foreground">
-                    {member.name}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">{member.role}</p>
-                </div>
+                <h3 className="font-display font-semibold text-foreground">
+                  {service}
+                </h3>
               </motion.div>
             ))}
           </div>
