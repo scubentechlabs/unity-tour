@@ -9,7 +9,7 @@ const corsHeaders = {
 };
 
 interface EnquiryNotification {
-  type: "tour" | "taxi" | "contact" | "flight" | "taxi-status-update" | "tour-status-update";
+  type: "tour" | "taxi" | "contact" | "flight" | "taxi-status-update" | "tour-status-update" | "booking";
   name: string;
   email: string;
   phone: string;
@@ -33,6 +33,10 @@ interface EnquiryNotification {
   oldStatus?: string;
   newStatus?: string;
   quotedPrice?: number;
+  // Booking page fields
+  serviceType?: string;
+  destination?: string;
+  travelers?: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -446,6 +450,80 @@ const handler = async (req: Request): Promise<Response> => {
             </div>
             <div class="footer">
               Unity Global Tours | Your Journey, Our Passion<br>
+              This is an automated confirmation email. Please do not reply directly.
+            </div>
+          </div>
+        `;
+        break;
+
+      case "booking":
+        // Admin notification for booking request
+        const serviceLabels: Record<string, string> = {
+          "domestic-tour": "Domestic Tour Package",
+          "international-tour": "International Tour Package",
+          "taxi-booking": "Taxi/Car Rental",
+          "flight-booking": "Flight Booking",
+          "hotel-booking": "Hotel Booking",
+          "visa-services": "Visa Services",
+          "group-booking": "Group Booking",
+          "custom-package": "Custom Package",
+        };
+        const serviceLabel = serviceLabels[data.serviceType || ""] || data.serviceType || "General Enquiry";
+        
+        adminSubject = `📋 New Booking Request: ${serviceLabel}`;
+        adminHtml = `
+          ${baseStyles}
+          <div class="container">
+            <div class="header"><h1>📋 New Booking Request</h1></div>
+            <div class="content">
+              <h2>Customer Details</h2>
+              <div class="field"><span class="label">Name:</span> <span class="value">${data.name}</span></div>
+              <div class="field"><span class="label">Email:</span> <span class="value">${data.email}</span></div>
+              <div class="field"><span class="label">Phone:</span> <span class="value">${data.phone}</span></div>
+              <h2>Booking Details</h2>
+              <div class="field"><span class="label">Service Type:</span> <span class="value">${serviceLabel}</span></div>
+              <div class="field"><span class="label">Destination:</span> <span class="value">${data.destination || "Not specified"}</span></div>
+              <div class="field"><span class="label">Travel Date:</span> <span class="value">${data.travelDate || "Flexible"}</span></div>
+              <div class="field"><span class="label">Travelers:</span> <span class="value">${data.travelers || "Not specified"}</span></div>
+              ${data.message ? `<h2>Additional Requirements</h2><p>${data.message}</p>` : ""}
+            </div>
+            <div class="footer">Unity Global Tours - Admin Notification</div>
+          </div>
+        `;
+        
+        // User confirmation for booking
+        userSubject = `✅ Booking Request Received - ${serviceLabel}`;
+        userHtml = `
+          ${baseStyles}
+          <div class="container">
+            <div class="header"><h1>📋 Thank You for Your Booking Request!</h1></div>
+            <div class="content">
+              <p>Dear <strong>${data.name}</strong>,</p>
+              <p>Thank you for choosing Unity Global Tours! We have received your booking request and our travel experts will get back to you within 24 hours with the best options tailored to your needs.</p>
+              
+              <div class="highlight">
+                <h2 style="margin-top: 0;">Your Booking Summary</h2>
+                <div class="field"><span class="label">Service:</span> <span class="value">${serviceLabel}</span></div>
+                <div class="field"><span class="label">Destination:</span> <span class="value">${data.destination || "To be discussed"}</span></div>
+                <div class="field"><span class="label">Travel Date:</span> <span class="value">${data.travelDate || "Flexible"}</span></div>
+                <div class="field"><span class="label">Travelers:</span> <span class="value">${data.travelers || "To be confirmed"}</span></div>
+              </div>
+              
+              <h2>What Happens Next?</h2>
+              <ol style="color: #555; padding-left: 20px;">
+                <li>Our travel expert will review your request</li>
+                <li>We'll prepare customized options and quotes</li>
+                <li>You'll receive a call/email within 24 hours</li>
+                <li>Once confirmed, we'll handle all arrangements</li>
+              </ol>
+              
+              <p>For urgent assistance, feel free to call us at <strong>+91 70050 50020</strong> or reach out via WhatsApp.</p>
+              <p>We look forward to making your travel dreams come true!</p>
+              <p>Best regards,<br><strong>Unity Global Tours Team</strong></p>
+            </div>
+            <div class="footer">
+              Unity Global Tours | Your Journey, Our Passion<br>
+              📞 +91 70050 50020 | ✉️ booking@unityglobaltours.com<br>
               This is an automated confirmation email. Please do not reply directly.
             </div>
           </div>
