@@ -7,7 +7,6 @@ import { WishlistSheet } from "@/components/WishlistSheet";
 import logo from "@/assets/logo.png";
 
 const navLinks = [
-  { name: "Home", path: "/" },
   { name: "Taxi Booking", path: "/taxi" },
   { name: "Domestic Tours", path: "/domestic-tours" },
   { name: "International Tours", path: "/international-tours" },
