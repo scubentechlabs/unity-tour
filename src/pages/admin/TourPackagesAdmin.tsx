@@ -382,7 +382,7 @@ const TourPackagesAdmin = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <Loader2 className="h-8 w-8 animate-spin text-[#008060]" />
       </div>
     );
   }
@@ -392,16 +392,16 @@ const TourPackagesAdmin = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="font-display text-2xl md:text-3xl font-bold text-foreground">
+          <h1 className="text-2xl font-semibold text-gray-900">
             Tour Packages
           </h1>
-          <p className="text-muted-foreground mt-1">
+          <p className="text-gray-500 mt-1">
             Manage domestic and international tour packages
           </p>
         </div>
         <div className="flex items-center gap-3">
           <Select value={filterType} onValueChange={setFilterType}>
-            <SelectTrigger className="w-40">
+            <SelectTrigger className="w-40 border-gray-300 bg-white">
               <SelectValue placeholder="Filter" />
             </SelectTrigger>
             <SelectContent>
@@ -418,12 +418,12 @@ const TourPackagesAdmin = () => {
             }
           }}>
             <DialogTrigger asChild>
-              <Button className="bg-gradient-gold hover:opacity-90 text-primary-foreground shadow-gold">
+              <Button className="bg-[#008060] hover:bg-[#006e52] text-white">
                 <Plus className="h-5 w-5 mr-2" />
                 Add Tour
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
               <DialogHeader>
                 <DialogTitle>{isEditing ? "Edit Tour Package" : "Add New Tour Package"}</DialogTitle>
               </DialogHeader>
@@ -935,13 +935,13 @@ const TourPackagesAdmin = () => {
                   </TabsContent>
                 </Tabs>
 
-                <div className="flex justify-end gap-3 pt-4 border-t border-border">
-                  <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
+                <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
+                  <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)} className="border-gray-300">
                     Cancel
                   </Button>
                   <Button
                     type="submit"
-                    className="bg-gradient-gold hover:opacity-90 text-primary-foreground"
+                    className="bg-[#008060] hover:bg-[#006e52] text-white"
                     disabled={saving}
                   >
                     {saving ? <Loader2 className="h-5 w-5 animate-spin" /> : isEditing ? "Update Tour" : "Create Tour"}
@@ -955,21 +955,21 @@ const TourPackagesAdmin = () => {
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-card border border-border rounded-xl p-4">
-          <p className="text-2xl font-bold text-foreground">{tours.length}</p>
-          <p className="text-sm text-muted-foreground">Total Tours</p>
+        <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+          <p className="text-2xl font-semibold text-gray-900">{tours.length}</p>
+          <p className="text-sm text-gray-500">Total Tours</p>
         </div>
-        <div className="bg-card border border-border rounded-xl p-4">
-          <p className="text-2xl font-bold text-foreground">{tours.filter(t => t.tour_type === "domestic").length}</p>
-          <p className="text-sm text-muted-foreground">Domestic</p>
+        <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+          <p className="text-2xl font-semibold text-gray-900">{tours.filter(t => t.tour_type === "domestic").length}</p>
+          <p className="text-sm text-gray-500">Domestic</p>
         </div>
-        <div className="bg-card border border-border rounded-xl p-4">
-          <p className="text-2xl font-bold text-foreground">{tours.filter(t => t.tour_type === "international").length}</p>
-          <p className="text-sm text-muted-foreground">International</p>
+        <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+          <p className="text-2xl font-semibold text-gray-900">{tours.filter(t => t.tour_type === "international").length}</p>
+          <p className="text-sm text-gray-500">International</p>
         </div>
-        <div className="bg-card border border-border rounded-xl p-4">
-          <p className="text-2xl font-bold text-foreground">{tours.filter(t => t.is_featured).length}</p>
-          <p className="text-sm text-muted-foreground">Featured</p>
+        <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+          <p className="text-2xl font-semibold text-gray-900">{tours.filter(t => t.is_featured).length}</p>
+          <p className="text-sm text-gray-500">Featured</p>
         </div>
       </div>
 
@@ -977,36 +977,38 @@ const TourPackagesAdmin = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-card border border-border rounded-xl overflow-hidden"
+        className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden"
       >
         <Table>
           <TableHeader>
-            <TableRow>
-              <TableHead className="w-20">Image</TableHead>
-              <TableHead>Tour Name</TableHead>
-              <TableHead className="hidden md:table-cell">Type</TableHead>
-              <TableHead className="hidden lg:table-cell">Duration</TableHead>
-              <TableHead className="hidden md:table-cell">Price</TableHead>
-              <TableHead className="w-24">Status</TableHead>
-              <TableHead className="w-32 text-right">Actions</TableHead>
+            <TableRow className="bg-gray-50 border-b border-gray-200">
+              <TableHead className="w-20 text-gray-600 font-medium">Image</TableHead>
+              <TableHead className="text-gray-600 font-medium">Tour Name</TableHead>
+              <TableHead className="hidden md:table-cell text-gray-600 font-medium">Type</TableHead>
+              <TableHead className="hidden lg:table-cell text-gray-600 font-medium">Duration</TableHead>
+              <TableHead className="hidden md:table-cell text-gray-600 font-medium">Price</TableHead>
+              <TableHead className="w-24 text-gray-600 font-medium">Status</TableHead>
+              <TableHead className="w-32 text-right text-gray-600 font-medium">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredTours.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-12 text-muted-foreground">
-                  No tour packages found. Add your first tour to get started.
+                <TableCell colSpan={7} className="text-center py-12 text-gray-500">
+                  <MapPin className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                  <p className="font-medium text-gray-900">No tour packages found</p>
+                  <p className="text-sm">Add your first tour to get started</p>
                 </TableCell>
               </TableRow>
             ) : (
               filteredTours.map((tour) => (
-                <TableRow key={tour.id}>
+                <TableRow key={tour.id} className="border-gray-100 hover:bg-gray-50">
                   <TableCell>
-                    <div className="w-16 h-12 rounded overflow-hidden bg-secondary">
+                    <div className="w-16 h-12 rounded overflow-hidden bg-gray-100">
                       {tour.featured_image ? (
                         <img src={tour.featured_image} alt={tour.title} className="w-full h-full object-cover" />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                        <div className="w-full h-full flex items-center justify-center text-gray-400">
                           <MapPin className="h-4 w-4" />
                         </div>
                       )}
@@ -1014,26 +1016,26 @@ const TourPackagesAdmin = () => {
                   </TableCell>
                   <TableCell>
                     <div>
-                      <p className="font-medium text-foreground line-clamp-1">{tour.title}</p>
-                      <p className="text-sm text-muted-foreground flex items-center gap-1">
+                      <p className="font-medium text-gray-900 line-clamp-1">{tour.title}</p>
+                      <p className="text-sm text-gray-500 flex items-center gap-1">
                         <MapPin className="h-3 w-3" />
                         {tour.location}
                       </p>
                     </div>
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
-                    <Badge variant={tour.tour_type === "domestic" ? "default" : "secondary"}>
+                    <Badge className={tour.tour_type === "domestic" ? "bg-emerald-100 text-emerald-800 border-emerald-200" : "bg-purple-100 text-purple-800 border-purple-200"}>
                       {tour.tour_type}
                     </Badge>
                   </TableCell>
-                  <TableCell className="hidden lg:table-cell">
+                  <TableCell className="hidden lg:table-cell text-gray-700">
                     {tour.duration_days}D / {tour.duration_nights}N
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
                     <div>
-                      <span className="font-medium text-primary">₹{(tour.discounted_price || tour.price_per_person).toLocaleString()}</span>
+                      <span className="font-medium text-[#008060]">₹{(tour.discounted_price || tour.price_per_person).toLocaleString()}</span>
                       {tour.discounted_price && tour.discounted_price < tour.price_per_person && (
-                        <span className="text-xs text-muted-foreground line-through ml-1">₹{tour.price_per_person.toLocaleString()}</span>
+                        <span className="text-xs text-gray-400 line-through ml-1">₹{tour.price_per_person.toLocaleString()}</span>
                       )}
                     </div>
                   </TableCell>
@@ -1042,8 +1044,8 @@ const TourPackagesAdmin = () => {
                       onClick={() => toggleActive(tour.id, tour.is_active)}
                       className={`px-2 py-1 rounded text-xs font-medium ${
                         tour.is_active
-                          ? "bg-green-500/20 text-green-500"
-                          : "bg-muted text-muted-foreground"
+                          ? "bg-emerald-100 text-emerald-700"
+                          : "bg-gray-100 text-gray-500"
                       }`}
                     >
                       {tour.is_active ? "Active" : "Inactive"}
@@ -1055,25 +1057,25 @@ const TourPackagesAdmin = () => {
                         variant="ghost"
                         size="icon"
                         onClick={() => window.open(`/domestic-tours/${tour.slug}`, "_blank")}
-                        className="h-8 w-8"
+                        className="h-8 w-8 hover:bg-gray-100"
                       >
-                        <Eye className="h-4 w-4" />
+                        <Eye className="h-4 w-4 text-gray-500" />
                       </Button>
                       <Button
                         variant="ghost"
                         size="icon"
                         onClick={() => handleEdit(tour)}
-                        className="h-8 w-8"
+                        className="h-8 w-8 hover:bg-gray-100"
                       >
-                        <Pencil className="h-4 w-4" />
+                        <Pencil className="h-4 w-4 text-gray-500" />
                       </Button>
                       <Button
                         variant="ghost"
                         size="icon"
                         onClick={() => handleDelete(tour.id)}
-                        className="h-8 w-8 text-destructive hover:text-destructive"
+                        className="h-8 w-8 hover:bg-red-50"
                       >
-                        <Trash2 className="h-4 w-4" />
+                        <Trash2 className="h-4 w-4 text-red-500" />
                       </Button>
                     </div>
                   </TableCell>
