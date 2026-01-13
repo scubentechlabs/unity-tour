@@ -29,12 +29,28 @@ const TaxiAdmin = () => {
   useEffect(() => { fetchData(); }, []);
 
   const fetchData = async () => {
-    const [vehiclesRes, enquiriesRes] = await Promise.all([
-      supabase.from("taxi_vehicles").select("*").order("name"),
-      supabase.from("taxi_enquiries").select("*, taxi_vehicles(name)").order("created_at", { ascending: false })
-    ]);
-    setVehicles(vehiclesRes.data || []);
-    setEnquiries(enquiriesRes.data || []);
+    try {
+      // Check current user session
+      const { data: { user } } = await supabase.auth.getUser();
+      console.log("Current user:", user?.id, user?.email);
+
+      const [vehiclesRes, enquiriesRes] = await Promise.all([
+        supabase.from("taxi_vehicles").select("*").order("name"),
+        supabase.from("taxi_enquiries").select("*, taxi_vehicles(name)").order("created_at", { ascending: false })
+      ]);
+      
+      console.log("Vehicles response:", vehiclesRes);
+      console.log("Enquiries response:", enquiriesRes);
+      
+      if (enquiriesRes.error) {
+        console.error("Enquiries fetch error:", enquiriesRes.error);
+      }
+      
+      setVehicles(vehiclesRes.data || []);
+      setEnquiries(enquiriesRes.data || []);
+    } catch (error) {
+      console.error("Fetch error:", error);
+    }
     setLoading(false);
   };
 
