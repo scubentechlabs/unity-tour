@@ -84,6 +84,9 @@ const EnquiriesAdmin = () => {
   const [saving, setSaving] = useState(false);
   const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [isQuoteDialogOpen, setIsQuoteDialogOpen] = useState(false);
+  const [quoteEnquiry, setQuoteEnquiry] = useState<Enquiry | null>(null);
+  const [quotePrice, setQuotePrice] = useState<string>("");
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
   
@@ -186,6 +189,14 @@ const EnquiriesAdmin = () => {
   const handleQuickStatusUpdate = async (id: string, newStatus: string) => {
     const enquiry = enquiries.find(e => e.id === id);
     
+    // If changing to 'quoted', open the quote dialog instead
+    if (newStatus === "quoted" && enquiry) {
+      setQuoteEnquiry(enquiry);
+      setQuotePrice(enquiry.quoted_price?.toString() || "");
+      setIsQuoteDialogOpen(true);
+      return;
+    }
+    
     try {
       const { error } = await supabase
         .from("tour_enquiries")
@@ -224,6 +235,63 @@ const EnquiriesAdmin = () => {
       fetchEnquiries();
     } catch (error: any) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
+    }
+  };
+
+  const handleSubmitQuote = async () => {
+    if (!quoteEnquiry) return;
+    
+    const price = quotePrice ? parseFloat(quotePrice) : null;
+    
+    if (!price || price <= 0) {
+      toast({ title: "Error", description: "Please enter a valid quoted price", variant: "destructive" });
+      return;
+    }
+    
+    setSaving(true);
+    
+    try {
+      const { error } = await supabase
+        .from("tour_enquiries")
+        .update({ 
+          status: "quoted" as Enquiry["status"],
+          quoted_price: price 
+        })
+        .eq("id", quoteEnquiry.id);
+
+      if (error) throw error;
+      
+      // Send quote notification email
+      try {
+        await supabase.functions.invoke("send-enquiry-notification", {
+          body: {
+            type: "tour-status-update",
+            name: quoteEnquiry.name,
+            email: quoteEnquiry.email,
+            phone: quoteEnquiry.phone,
+            tourName: quoteEnquiry.tour_packages?.title,
+            travelDate: quoteEnquiry.travel_date ? format(new Date(quoteEnquiry.travel_date), "dd MMM yyyy") : undefined,
+            adults: quoteEnquiry.adults,
+            children: quoteEnquiry.children,
+            oldStatus: quoteEnquiry.status,
+            newStatus: "quoted",
+            quotedPrice: price
+          }
+        });
+        toast({ title: "Quote sent!", description: `₹${price.toLocaleString()} quote sent to ${quoteEnquiry.email}` });
+      } catch (emailError) {
+        console.error("Failed to send quote notification:", emailError);
+        toast({ title: "Quote saved", description: "Note: Email notification failed" });
+      }
+      
+      setIsQuoteDialogOpen(false);
+      setQuoteEnquiry(null);
+      setQuotePrice("");
+      fetchEnquiries();
+    } catch (error: any) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -608,6 +676,90 @@ const EnquiriesAdmin = () => {
                     Save changes
                   </Button>
                 </div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Quote Price Dialog */}
+      <Dialog open={isQuoteDialogOpen} onOpenChange={setIsQuoteDialogOpen}>
+        <DialogContent className="max-w-md bg-white">
+          <DialogHeader>
+            <DialogTitle className="text-[#303030]">Send Quote to Customer</DialogTitle>
+          </DialogHeader>
+          
+          {quoteEnquiry && (
+            <div className="space-y-4 mt-4">
+              {/* Customer Info Summary */}
+              <div className="bg-[#f6f6f7] rounded-lg p-4 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-[#637381]">Customer</span>
+                  <span className="text-sm font-medium text-[#303030]">{quoteEnquiry.name}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-[#637381]">Tour</span>
+                  <span className="text-sm font-medium text-[#303030] text-right max-w-[200px] truncate">
+                    {quoteEnquiry.tour_packages?.title || "General Enquiry"}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-[#637381]">Travelers</span>
+                  <span className="text-sm font-medium text-[#303030]">
+                    {quoteEnquiry.adults || 1} Adults{quoteEnquiry.children ? `, ${quoteEnquiry.children} Kids` : ""}
+                  </span>
+                </div>
+                {quoteEnquiry.travel_date && (
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-[#637381]">Travel Date</span>
+                    <span className="text-sm font-medium text-[#303030]">
+                      {format(new Date(quoteEnquiry.travel_date), "dd MMM yyyy")}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Quote Price Input */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium text-[#303030]">Quoted Price (₹)</Label>
+                <div className="relative">
+                  <IndianRupee className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#637381]" />
+                  <Input
+                    type="number"
+                    value={quotePrice}
+                    onChange={(e) => setQuotePrice(e.target.value)}
+                    placeholder="Enter quoted price"
+                    className="pl-10 border-[#e1e3e5] focus:border-[#008060] text-lg font-semibold"
+                    min="0"
+                    step="100"
+                  />
+                </div>
+                <p className="text-xs text-[#637381]">
+                  This price will be sent to {quoteEnquiry.email}
+                </p>
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-3 pt-2">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setIsQuoteDialogOpen(false);
+                    setQuoteEnquiry(null);
+                    setQuotePrice("");
+                  }}
+                  className="flex-1 border-[#e1e3e5] text-[#303030] hover:bg-[#f6f6f7]"
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={handleSubmitQuote} 
+                  disabled={saving || !quotePrice}
+                  className="flex-1 bg-[#008060] hover:bg-[#006e52] text-white"
+                >
+                  {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                  Send Quote
+                </Button>
               </div>
             </div>
           )}
