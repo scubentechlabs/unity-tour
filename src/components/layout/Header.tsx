@@ -8,9 +8,9 @@ import logo from "@/assets/logo.png";
 
 const navLinks = [
   { name: "Home", path: "/" },
+  { name: "Taxi Booking", path: "/taxi" },
   { name: "Domestic Tours", path: "/domestic-tours" },
   { name: "International Tours", path: "/international-tours" },
-  { name: "Taxi Booking", path: "/taxi" },
   { name: "Flights", path: "/flights" },
   { name: "Services", path: "/services" },
   { name: "About", path: "/about" },
