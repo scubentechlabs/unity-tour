@@ -260,20 +260,25 @@ export const Footer = () => {
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="h-5 w-5 text-primary" />
-                <a href="tel:+919227026000" className="text-muted-foreground hover:text-primary transition-colors text-sm">
-                  +91 92270 26000
-                </a>
+                <div className="flex flex-col">
+                  <a href="tel:+917005050020" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                    +91 70050 50020
+                  </a>
+                  <a href="tel:+917005050030" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                    +91 70050 50030
+                  </a>
+                </div>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="h-5 w-5 text-primary" />
-                <a href="mailto:info@unityglobaltours.com" className="text-muted-foreground hover:text-primary transition-colors text-sm">
-                  info@unityglobaltours.com
+                <a href="mailto:booking@unityglobaltours.com" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                  booking@unityglobaltours.com
                 </a>
               </li>
               <li className="flex items-center gap-3">
                 <Clock className="h-5 w-5 text-primary" />
                 <span className="text-muted-foreground text-sm">
-                  Mon - Sat: 9:00 AM - 8:00 PM
+                  Daily: 9:00 AM - 9:00 PM
                 </span>
               </li>
             </ul>
