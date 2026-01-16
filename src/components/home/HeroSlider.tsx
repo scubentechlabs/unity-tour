@@ -280,8 +280,8 @@ export const HeroSlider = () => {
                         value={pickupLocation}
                         onChange={(e) => setPickupLocation(e.target.value)}
                         placeholder="Enter pickup city"
-                        className="!bg-white !text-gray-900 border-border h-11 placeholder:!text-gray-500"
-                        style={{ color: '#111827', backgroundColor: '#ffffff' }}
+                        className="border-border h-11"
+                        style={{ color: '#ffffff', backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.3)' }}
                       />
                     </div>
 
@@ -295,8 +295,8 @@ export const HeroSlider = () => {
                         value={dropLocation}
                         onChange={(e) => setDropLocation(e.target.value)}
                         placeholder="Enter drop city"
-                        className="!bg-white !text-gray-900 border-border h-11 placeholder:!text-gray-500 disabled:!bg-gray-100"
-                        style={{ color: '#111827', backgroundColor: tripType === "local" ? '#f3f4f6' : '#ffffff' }}
+                        className="border-border h-11"
+                        style={{ color: '#ffffff', backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.3)' }}
                         disabled={tripType === "local"}
                       />
                     </div>
@@ -311,8 +311,8 @@ export const HeroSlider = () => {
                         <PopoverTrigger asChild>
                           <Button
                             variant="outline"
-                            className="w-full justify-start text-left font-normal !bg-white border-border h-11"
-                            style={{ color: taxiDate ? '#111827' : '#6b7280', backgroundColor: '#ffffff' }}
+                            className="w-full justify-start text-left font-normal border-border h-11"
+                            style={{ color: '#ffffff', backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.3)' }}
                           >
                             {taxiDate ? format(taxiDate, "dd/MM/yyyy") : "Select date"}
                           </Button>
