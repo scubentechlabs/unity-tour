@@ -301,7 +301,7 @@ const TaxiBooking = () => {
                         value={pickupLocation}
                         onChange={(e) => setPickupLocation(e.target.value)}
                         placeholder="Enter pickup city or address"
-                        className="bg-background"
+                        className="bg-white text-gray-900 placeholder:text-gray-500"
                       />
                     </div>
 
@@ -316,7 +316,7 @@ const TaxiBooking = () => {
                         onChange={(e) => setDropLocation(e.target.value)}
                         placeholder="Enter drop city or address"
                         disabled={tripType === "local"}
-                        className="bg-background"
+                        className="bg-white text-gray-900 placeholder:text-gray-500"
                       />
                     </div>
 
@@ -331,8 +331,8 @@ const TaxiBooking = () => {
                           <Button
                             variant="outline"
                             className={cn(
-                              "w-full justify-start text-left font-normal bg-background",
-                              !pickupDate && "text-muted-foreground"
+                              "w-full justify-start text-left font-normal bg-white text-gray-900",
+                              !pickupDate && "text-gray-500"
                             )}
                           >
                             {pickupDate ? format(pickupDate, "dd MMM yyyy") : "Select date"}
@@ -358,7 +358,7 @@ const TaxiBooking = () => {
                         Pickup Time
                       </Label>
                       <Select value={pickupTime} onValueChange={setPickupTime}>
-                        <SelectTrigger className="bg-background">
+                        <SelectTrigger className="bg-white text-gray-900">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -382,11 +382,11 @@ const TaxiBooking = () => {
                         </Label>
                         <Popover>
                           <PopoverTrigger asChild>
-                            <Button
+                          <Button
                               variant="outline"
                               className={cn(
-                                "w-full justify-start text-left font-normal bg-background",
-                                !returnDate && "text-muted-foreground"
+                                "w-full justify-start text-left font-normal bg-white text-gray-900",
+                                !returnDate && "text-gray-500"
                               )}
                             >
                               {returnDate ? format(returnDate, "dd MMM yyyy") : "Select date"}
@@ -413,7 +413,7 @@ const TaxiBooking = () => {
                         Passengers
                       </Label>
                       <Select value={passengers} onValueChange={setPassengers}>
-                        <SelectTrigger className="bg-background">
+                        <SelectTrigger className="bg-white text-gray-900">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -667,7 +667,7 @@ const TaxiBooking = () => {
                               onChange={(e) => setName(e.target.value)}
                               placeholder="Enter your name"
                               required
-                              className="bg-background"
+                              className="bg-white text-gray-900 placeholder:text-gray-500"
                             />
                           </div>
                           <div className="space-y-2">
@@ -681,7 +681,7 @@ const TaxiBooking = () => {
                               onChange={(e) => setPhone(e.target.value)}
                               placeholder="Enter your phone"
                               required
-                              className="bg-background"
+                              className="bg-white text-gray-900 placeholder:text-gray-500"
                             />
                           </div>
                         </div>
@@ -698,7 +698,7 @@ const TaxiBooking = () => {
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="Enter your email"
                             required
-                            className="bg-background"
+                            className="bg-white text-gray-900 placeholder:text-gray-500"
                           />
                         </div>
                         
@@ -712,7 +712,7 @@ const TaxiBooking = () => {
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                             placeholder="Any special requirements or instructions..."
-                            className="bg-background"
+                            className="bg-white text-gray-900 placeholder:text-gray-500"
                             rows={3}
                           />
                         </div>
