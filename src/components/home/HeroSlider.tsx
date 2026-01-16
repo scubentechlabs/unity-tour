@@ -280,7 +280,7 @@ export const HeroSlider = () => {
                         value={pickupLocation}
                         onChange={(e) => setPickupLocation(e.target.value)}
                         placeholder="Enter pickup city"
-                        className="bg-background border-border h-11"
+                        className="bg-white text-gray-900 border-border h-11 placeholder:text-gray-500"
                       />
                     </div>
 
@@ -294,7 +294,7 @@ export const HeroSlider = () => {
                         value={dropLocation}
                         onChange={(e) => setDropLocation(e.target.value)}
                         placeholder="Enter drop city"
-                        className="bg-background border-border h-11"
+                        className="bg-white text-gray-900 border-border h-11 placeholder:text-gray-500"
                         disabled={tripType === "local"}
                       />
                     </div>
@@ -310,8 +310,8 @@ export const HeroSlider = () => {
                           <Button
                             variant="outline"
                             className={cn(
-                              "w-full justify-start text-left font-normal bg-background border-border h-11",
-                              !taxiDate && "text-muted-foreground"
+                              "w-full justify-start text-left font-normal bg-white text-gray-900 border-border h-11",
+                              !taxiDate && "text-gray-500"
                             )}
                           >
                             {taxiDate ? format(taxiDate, "dd/MM/yyyy") : "Select date"}
