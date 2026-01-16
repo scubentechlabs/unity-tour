@@ -280,7 +280,8 @@ export const HeroSlider = () => {
                         value={pickupLocation}
                         onChange={(e) => setPickupLocation(e.target.value)}
                         placeholder="Enter pickup city"
-                        className="bg-white text-gray-900 border-border h-11 placeholder:text-gray-500"
+                        className="!bg-white !text-gray-900 border-border h-11 placeholder:!text-gray-500"
+                        style={{ color: '#111827', backgroundColor: '#ffffff' }}
                       />
                     </div>
 
@@ -294,7 +295,8 @@ export const HeroSlider = () => {
                         value={dropLocation}
                         onChange={(e) => setDropLocation(e.target.value)}
                         placeholder="Enter drop city"
-                        className="bg-white text-gray-900 border-border h-11 placeholder:text-gray-500"
+                        className="!bg-white !text-gray-900 border-border h-11 placeholder:!text-gray-500 disabled:!bg-gray-100"
+                        style={{ color: '#111827', backgroundColor: tripType === "local" ? '#f3f4f6' : '#ffffff' }}
                         disabled={tripType === "local"}
                       />
                     </div>
@@ -309,10 +311,8 @@ export const HeroSlider = () => {
                         <PopoverTrigger asChild>
                           <Button
                             variant="outline"
-                            className={cn(
-                              "w-full justify-start text-left font-normal bg-white text-gray-900 border-border h-11",
-                              !taxiDate && "text-gray-500"
-                            )}
+                            className="w-full justify-start text-left font-normal !bg-white border-border h-11"
+                            style={{ color: taxiDate ? '#111827' : '#6b7280', backgroundColor: '#ffffff' }}
                           >
                             {taxiDate ? format(taxiDate, "dd/MM/yyyy") : "Select date"}
                           </Button>
