@@ -280,8 +280,7 @@ export const HeroSlider = () => {
                         value={pickupLocation}
                         onChange={(e) => setPickupLocation(e.target.value)}
                         placeholder="Enter pickup city"
-                        className="border-border h-11"
-                        style={{ color: '#ffffff', backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.3)' }}
+                        className="h-11"
                       />
                     </div>
 
@@ -295,8 +294,7 @@ export const HeroSlider = () => {
                         value={dropLocation}
                         onChange={(e) => setDropLocation(e.target.value)}
                         placeholder="Enter drop city"
-                        className="border-border h-11"
-                        style={{ color: '#ffffff', backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.3)' }}
+                        className="h-11"
                         disabled={tripType === "local"}
                       />
                     </div>
@@ -311,8 +309,7 @@ export const HeroSlider = () => {
                         <PopoverTrigger asChild>
                           <Button
                             variant="outline"
-                            className="w-full justify-start text-left font-normal border-border h-11"
-                            style={{ color: '#ffffff', backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.3)' }}
+                            className="w-full justify-start text-left font-normal h-11 text-foreground"
                           >
                             {taxiDate ? format(taxiDate, "dd/MM/yyyy") : "Select date"}
                           </Button>
