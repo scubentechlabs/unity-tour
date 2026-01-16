@@ -121,7 +121,7 @@ export const SearchTabs = () => {
                       Destination
                     </label>
                     <Select value={domesticDestination} onValueChange={setDomesticDestination}>
-                      <SelectTrigger className="bg-background border-border">
+                      <SelectTrigger className="bg-white text-gray-900 border-border">
                         <SelectValue placeholder="Select destination" />
                       </SelectTrigger>
                       <SelectContent>
@@ -143,8 +143,8 @@ export const SearchTabs = () => {
                         <Button
                           variant="outline"
                           className={cn(
-                            "w-full justify-start text-left font-normal bg-background border-border",
-                            !domesticDate && "text-muted-foreground"
+                            "w-full justify-start text-left font-normal bg-white text-gray-900 border-border",
+                            !domesticDate && "text-gray-500"
                           )}
                         >
                           {domesticDate ? format(domesticDate, "dd/MM/yyyy") : "Select date"}
@@ -170,7 +170,7 @@ export const SearchTabs = () => {
                       Travelers
                     </label>
                     <Select value={domesticTravelers} onValueChange={setDomesticTravelers}>
-                      <SelectTrigger className="bg-background border-border">
+                      <SelectTrigger className="bg-white text-gray-900 border-border">
                         <SelectValue placeholder="Select travelers" />
                       </SelectTrigger>
                       <SelectContent>
@@ -213,7 +213,7 @@ export const SearchTabs = () => {
                       Country
                     </label>
                     <Select value={internationalDestination} onValueChange={setInternationalDestination}>
-                      <SelectTrigger className="bg-background border-border">
+                      <SelectTrigger className="bg-white text-gray-900 border-border">
                         <SelectValue placeholder="Select country" />
                       </SelectTrigger>
                       <SelectContent>
@@ -235,8 +235,8 @@ export const SearchTabs = () => {
                         <Button
                           variant="outline"
                           className={cn(
-                            "w-full justify-start text-left font-normal bg-background border-border",
-                            !internationalDate && "text-muted-foreground"
+                            "w-full justify-start text-left font-normal bg-white text-gray-900 border-border",
+                            !internationalDate && "text-gray-500"
                           )}
                         >
                           {internationalDate ? format(internationalDate, "dd/MM/yyyy") : "Select date"}
@@ -262,7 +262,7 @@ export const SearchTabs = () => {
                       Travelers
                     </label>
                     <Select value={internationalTravelers} onValueChange={setInternationalTravelers}>
-                      <SelectTrigger className="bg-background border-border">
+                      <SelectTrigger className="bg-white text-gray-900 border-border">
                         <SelectValue placeholder="Select travelers" />
                       </SelectTrigger>
                       <SelectContent>
@@ -346,7 +346,7 @@ export const SearchTabs = () => {
                         value={pickupLocation}
                         onChange={(e) => setPickupLocation(e.target.value)}
                         placeholder="Enter pickup city"
-                        className="bg-background border-border"
+                        className="bg-white text-gray-900 border-border placeholder:text-gray-500"
                       />
                     </div>
 
@@ -360,7 +360,7 @@ export const SearchTabs = () => {
                         value={dropLocation}
                         onChange={(e) => setDropLocation(e.target.value)}
                         placeholder="Enter drop city"
-                        className="bg-background border-border"
+                        className="bg-white text-gray-900 border-border placeholder:text-gray-500"
                         disabled={tripType === "local"}
                       />
                     </div>
@@ -373,11 +373,11 @@ export const SearchTabs = () => {
                       </label>
                       <Popover>
                         <PopoverTrigger asChild>
-                          <Button
+                        <Button
                             variant="outline"
                             className={cn(
-                              "w-full justify-start text-left font-normal bg-background border-border",
-                              !taxiDate && "text-muted-foreground"
+                              "w-full justify-start text-left font-normal bg-white text-gray-900 border-border",
+                              !taxiDate && "text-gray-500"
                             )}
                           >
                             {taxiDate ? format(taxiDate, "dd/MM/yyyy") : "Select date"}
