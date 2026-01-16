@@ -48,18 +48,7 @@ export const Header = () => {
               <Mail className="h-4 w-4" />
               booking@unityglobaltours.com
             </a>
-          </div>
-          <div className="flex items-center gap-4">
-            <Link to="/faq" className="text-muted-foreground hover:text-primary transition-colors">
-              FAQ
-            </Link>
-            <Link to="/admin" className="text-muted-foreground hover:text-primary transition-colors">
-              Admin
-            </Link>
-            <Link to="/auth" className="text-muted-foreground hover:text-primary transition-colors">
-              Login / Register
-            </Link>
-          </div>
+        </div>
         </div>
       </div>
 
@@ -144,9 +133,6 @@ export const Header = () => {
                   </Link>
                 ))}
                 <div className="pt-4 border-t border-border mt-2">
-                  <Link to="/auth" className="block px-4 py-3 text-sm text-muted-foreground">
-                    Login / Register
-                  </Link>
                   <Button 
                     onClick={() => navigate("/booking")}
                     className="w-full mt-2 bg-gradient-gold hover:opacity-90 text-primary-foreground font-semibold"
