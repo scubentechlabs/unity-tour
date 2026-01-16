@@ -241,6 +241,7 @@ const Contact = () => {
                         }
                         placeholder="Enter your name"
                         required
+                        className="bg-white text-gray-900 placeholder:text-gray-500"
                       />
                     </div>
                     <div className="space-y-2">
@@ -254,6 +255,7 @@ const Contact = () => {
                         }
                         placeholder="Enter your email"
                         required
+                        className="bg-white text-gray-900 placeholder:text-gray-500"
                       />
                     </div>
                   </div>
@@ -268,6 +270,7 @@ const Contact = () => {
                           setFormData({ ...formData, phone: e.target.value })
                         }
                         placeholder="Enter your phone"
+                        className="bg-white text-gray-900 placeholder:text-gray-500"
                       />
                     </div>
                     <div className="space-y-2">
@@ -280,6 +283,7 @@ const Contact = () => {
                         }
                         placeholder="What's this about?"
                         required
+                        className="bg-white text-gray-900 placeholder:text-gray-500"
                       />
                     </div>
                   </div>
@@ -295,6 +299,7 @@ const Contact = () => {
                       placeholder="Tell us how we can help..."
                       rows={5}
                       required
+                      className="bg-white text-gray-900 placeholder:text-gray-500"
                     />
                   </div>
 

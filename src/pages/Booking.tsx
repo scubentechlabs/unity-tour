@@ -216,7 +216,7 @@ const Booking = () => {
                           placeholder="Enter your full name"
                           value={formData.name}
                           onChange={(e) => handleInputChange("name", e.target.value)}
-                          className={errors.name ? "border-red-500" : ""}
+                          className={`bg-white text-gray-900 placeholder:text-gray-500 ${errors.name ? "border-red-500" : ""}`}
                         />
                         {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
                       </div>
@@ -228,7 +228,7 @@ const Booking = () => {
                           placeholder="Enter your email"
                           value={formData.email}
                           onChange={(e) => handleInputChange("email", e.target.value)}
-                          className={errors.email ? "border-red-500" : ""}
+                          className={`bg-white text-gray-900 placeholder:text-gray-500 ${errors.email ? "border-red-500" : ""}`}
                         />
                         {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
                       </div>
@@ -243,7 +243,7 @@ const Booking = () => {
                           placeholder="Enter your phone number"
                           value={formData.phone}
                           onChange={(e) => handleInputChange("phone", e.target.value)}
-                          className={errors.phone ? "border-red-500" : ""}
+                          className={`bg-white text-gray-900 placeholder:text-gray-500 ${errors.phone ? "border-red-500" : ""}`}
                         />
                         {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
                       </div>
@@ -253,7 +253,7 @@ const Booking = () => {
                           value={formData.serviceType}
                           onValueChange={(value) => handleInputChange("serviceType", value)}
                         >
-                          <SelectTrigger className={errors.serviceType ? "border-red-500" : ""}>
+                          <SelectTrigger className={`bg-white text-gray-900 ${errors.serviceType ? "border-red-500" : ""}`}>
                             <SelectValue placeholder="Select service type" />
                           </SelectTrigger>
                           <SelectContent>
@@ -277,6 +277,7 @@ const Booking = () => {
                           placeholder="Where do you want to go?"
                           value={formData.destination}
                           onChange={(e) => handleInputChange("destination", e.target.value)}
+                          className="bg-white text-gray-900 placeholder:text-gray-500"
                         />
                       </div>
                       <div className="space-y-2">
@@ -286,6 +287,7 @@ const Booking = () => {
                           type="date"
                           value={formData.travelDate}
                           onChange={(e) => handleInputChange("travelDate", e.target.value)}
+                          className="bg-white text-gray-900"
                         />
                       </div>
                       <div className="space-y-2">
@@ -294,7 +296,7 @@ const Booking = () => {
                           value={formData.travelers}
                           onValueChange={(value) => handleInputChange("travelers", value)}
                         >
-                          <SelectTrigger>
+                          <SelectTrigger className="bg-white text-gray-900">
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
                           <SelectContent>
@@ -318,6 +320,7 @@ const Booking = () => {
                         rows={4}
                         value={formData.message}
                         onChange={(e) => handleInputChange("message", e.target.value)}
+                        className="bg-white text-gray-900 placeholder:text-gray-500"
                       />
                     </div>
 

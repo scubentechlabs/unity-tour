@@ -197,7 +197,7 @@ const Flights = () => {
                       value={from}
                       onChange={(e) => setFrom(e.target.value)}
                       placeholder="Departure city"
-                      className="pl-10"
+                      className="pl-10 bg-white text-gray-900 placeholder:text-gray-500"
                       required
                     />
                   </div>
@@ -227,7 +227,7 @@ const Flights = () => {
                       value={to}
                       onChange={(e) => setTo(e.target.value)}
                       placeholder="Arrival city"
-                      className="pl-10"
+                      className="pl-10 bg-white text-gray-900 placeholder:text-gray-500"
                       required
                     />
                   </div>
@@ -241,8 +241,8 @@ const Flights = () => {
                       <Button
                         variant="outline"
                         className={cn(
-                          "w-full justify-start text-left font-normal",
-                          !departDate && "text-muted-foreground"
+                          "w-full justify-start text-left font-normal bg-white text-gray-900",
+                          !departDate && "text-gray-500"
                         )}
                       >
                         <CalendarIcon className="mr-2 h-4 w-4" />
@@ -271,8 +271,8 @@ const Flights = () => {
                       <Button
                         variant="outline"
                         className={cn(
-                          "w-full justify-start text-left font-normal",
-                          !returnDate && "text-muted-foreground"
+                          "w-full justify-start text-left font-normal bg-white text-gray-900",
+                          !returnDate && "text-gray-500"
                         )}
                         disabled={tripType === "one-way"}
                       >
@@ -310,7 +310,7 @@ const Flights = () => {
                       max="9"
                       value={passengers}
                       onChange={(e) => setPassengers(e.target.value)}
-                      className="pl-10"
+                      className="pl-10 bg-white text-gray-900"
                     />
                   </div>
                 </div>
@@ -458,15 +458,15 @@ const Flights = () => {
             </div>
             <div>
               <Label>Full Name *</Label>
-              <Input value={contactForm.name} onChange={(e) => setContactForm({...contactForm, name: e.target.value})} required placeholder="Your name" />
+              <Input value={contactForm.name} onChange={(e) => setContactForm({...contactForm, name: e.target.value})} required placeholder="Your name" className="bg-white text-gray-900 placeholder:text-gray-500" />
             </div>
             <div>
               <Label>Email *</Label>
-              <Input type="email" value={contactForm.email} onChange={(e) => setContactForm({...contactForm, email: e.target.value})} required placeholder="your@email.com" />
+              <Input type="email" value={contactForm.email} onChange={(e) => setContactForm({...contactForm, email: e.target.value})} required placeholder="your@email.com" className="bg-white text-gray-900 placeholder:text-gray-500" />
             </div>
             <div>
               <Label>Phone *</Label>
-              <Input value={contactForm.phone} onChange={(e) => setContactForm({...contactForm, phone: e.target.value})} required placeholder="+91 98765 43210" />
+              <Input value={contactForm.phone} onChange={(e) => setContactForm({...contactForm, phone: e.target.value})} required placeholder="+91 98765 43210" className="bg-white text-gray-900 placeholder:text-gray-500" />
             </div>
             <Button type="submit" className="w-full bg-primary" disabled={submitting}>
               {submitting ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" />Submitting...</> : "Submit Enquiry"}
