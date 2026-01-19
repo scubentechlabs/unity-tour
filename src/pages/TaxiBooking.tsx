@@ -17,6 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { CityCombobox } from "@/components/ui/city-combobox";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
@@ -302,11 +303,10 @@ const TaxiBooking = () => {
                         <MapPin className="h-4 w-4 text-primary" />
                         Pickup Location
                       </Label>
-                      <Input
+                      <CityCombobox
                         value={pickupLocation}
-                        onChange={(e) => setPickupLocation(e.target.value)}
-                        placeholder="Enter pickup city or address"
-                        className="bg-white text-gray-900 placeholder:text-gray-500"
+                        onChange={setPickupLocation}
+                        placeholder="Select pickup city"
                       />
                     </div>
 
@@ -316,12 +316,11 @@ const TaxiBooking = () => {
                         <MapPin className="h-4 w-4 text-primary" />
                         Drop Location
                       </Label>
-                      <Input
+                      <CityCombobox
                         value={dropLocation}
-                        onChange={(e) => setDropLocation(e.target.value)}
-                        placeholder="Enter drop city or address"
+                        onChange={setDropLocation}
+                        placeholder="Select drop city"
                         disabled={tripType === "local"}
-                        className="bg-white text-gray-900 placeholder:text-gray-500"
                       />
                     </div>
 
