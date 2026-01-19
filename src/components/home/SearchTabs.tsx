@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Calendar, Users, Car, Plane, Mountain, Globe, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { CityCombobox } from "@/components/ui/city-combobox";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 
@@ -353,11 +353,10 @@ export const SearchTabs = () => {
                         <MapPin className="h-4 w-4 text-primary" />
                         Pickup Location
                       </label>
-                      <Input
+                      <CityCombobox
                         value={pickupLocation}
-                        onChange={(e) => setPickupLocation(e.target.value)}
-                        placeholder="Enter pickup city"
-                        className="bg-white text-gray-900 border-border placeholder:text-gray-500"
+                        onChange={setPickupLocation}
+                        placeholder="Select pickup city"
                       />
                     </div>
 
@@ -367,11 +366,10 @@ export const SearchTabs = () => {
                         <MapPin className="h-4 w-4 text-primary" />
                         Drop Location
                       </label>
-                      <Input
+                      <CityCombobox
                         value={dropLocation}
-                        onChange={(e) => setDropLocation(e.target.value)}
-                        placeholder="Enter drop city"
-                        className="bg-white text-gray-900 border-border placeholder:text-gray-500"
+                        onChange={setDropLocation}
+                        placeholder="Select drop city"
                         disabled={tripType === "local"}
                       />
                     </div>
