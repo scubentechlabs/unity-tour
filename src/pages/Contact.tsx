@@ -342,10 +342,10 @@ const Contact = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-card border border-border rounded-2xl overflow-hidden h-96"
+            className="bg-card border border-border rounded-2xl overflow-hidden h-96 relative"
           >
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3726.5!2d70.3677!3d20.9067!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjDCsDU0JzI0LjEiTiA3MMKwMjInMDMuNyJF!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3726.9088888888887!2d70.36488!3d20.90222!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bfd2f10c5c5c5c5%3A0x1234567890abcdef!2s4%2C%20Unique%20Plaza%2C%20Somnath%20Bypass%20Road%2C%20Bhalpara%2C%20Veraval%2C%20Gujarat%20362268!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
               width="100%"
               height="100%"
               style={{ border: 0 }}
@@ -355,6 +355,17 @@ const Contact = () => {
               title="Unity Global Tours - Veraval Office Location"
               className="w-full h-full"
             />
+            <div className="absolute bottom-4 right-4">
+              <a
+                href="https://maps.app.goo.gl/1zULepz8UYyf2mQo9"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors shadow-lg"
+              >
+                <MapPin className="h-4 w-4" />
+                Open in Google Maps
+              </a>
+            </div>
           </motion.div>
         </div>
       </section>
