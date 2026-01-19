@@ -24,12 +24,14 @@ interface HeroSlide {
 }
 
 // Static taxi booking slide
+import taxiBanner from "@/assets/taxi-banner.jpg";
+
 const taxiSlide: HeroSlide = {
   id: "taxi-booking-slide",
-  title: "Book Your Taxi Ride",
+  title: "Book Your Ride For Somnath Tour",
   subtitle: "🚖 Reliable Cab Service",
   description: "Comfortable and affordable taxi services across Gujarat. Book your ride now for a hassle-free journey!",
-  image_url: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=1920&q=80",
+  image_url: taxiBanner,
   button_text: null,
   button_link: null,
   display_order: 0,
