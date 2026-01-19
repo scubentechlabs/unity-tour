@@ -63,6 +63,10 @@ const TaxiBooking = () => {
   const [pickupTime, setPickupTime] = useState("09:00");
   const [returnDate, setReturnDate] = useState<Date>();
   const [passengers, setPassengers] = useState("2");
+
+  // Popover open states for auto-close
+  const [pickupDateOpen, setPickupDateOpen] = useState(false);
+  const [returnDateOpen, setReturnDateOpen] = useState(false);
   
   // Booking Form State
   const [name, setName] = useState("");
@@ -327,7 +331,7 @@ const TaxiBooking = () => {
                         <Calendar className="h-4 w-4 text-primary" />
                         Pickup Date
                       </Label>
-                      <Popover>
+                      <Popover open={pickupDateOpen} onOpenChange={setPickupDateOpen}>
                         <PopoverTrigger asChild>
                           <Button
                             variant="outline"
@@ -343,7 +347,10 @@ const TaxiBooking = () => {
                           <CalendarComponent
                             mode="single"
                             selected={pickupDate}
-                            onSelect={setPickupDate}
+                            onSelect={(date) => {
+                              setPickupDate(date);
+                              setPickupDateOpen(false);
+                            }}
                             disabled={(date) => date < new Date()}
                             initialFocus
                             className="p-3 pointer-events-auto"
@@ -381,7 +388,7 @@ const TaxiBooking = () => {
                           <Calendar className="h-4 w-4 text-primary" />
                           Return Date
                         </Label>
-                        <Popover>
+                        <Popover open={returnDateOpen} onOpenChange={setReturnDateOpen}>
                           <PopoverTrigger asChild>
                           <Button
                               variant="outline"
@@ -397,7 +404,10 @@ const TaxiBooking = () => {
                             <CalendarComponent
                               mode="single"
                               selected={returnDate}
-                              onSelect={setReturnDate}
+                              onSelect={(date) => {
+                                setReturnDate(date);
+                                setReturnDateOpen(false);
+                              }}
                               disabled={(date) => date < (pickupDate || new Date())}
                               initialFocus
                               className="p-3 pointer-events-auto"
