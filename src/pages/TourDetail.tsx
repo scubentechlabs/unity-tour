@@ -374,7 +374,7 @@ const TourDetail = () => {
                     <Calendar className="h-5 w-5 mr-2" />
                     Send Enquiry
                   </Button>
-                  <a href="tel:+919227026000" className="block">
+                  <a href="tel:+917005050020" className="block">
                     <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground h-12">
                       <Phone className="h-5 w-5 mr-2" />
                       Call Now

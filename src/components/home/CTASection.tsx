@@ -44,7 +44,7 @@ export const CTASection = () => {
                 <ArrowRight className="h-5 w-5 ml-2" />
               </Button>
             </Link>
-            <a href="tel:+919227026000">
+            <a href="tel:+917005050020">
               <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
                 <Phone className="h-5 w-5 mr-2" />
                 Call Now

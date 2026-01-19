@@ -58,7 +58,7 @@ const TaxiHireSection = () => {
 
   const handleWhatsApp = (vehicleName: string) => {
     const message = encodeURIComponent(`Hi, I'm interested in hiring ${vehicleName}. Please share more details.`);
-    window.open(`https://wa.me/919898989898?text=${message}`, "_blank");
+    window.open(`https://wa.me/917005050020?text=${message}`, "_blank");
   };
 
   if (loading || vehicles.length === 0) return null;
