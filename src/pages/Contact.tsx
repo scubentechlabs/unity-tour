@@ -345,7 +345,7 @@ const Contact = () => {
             className="bg-card border border-border rounded-2xl overflow-hidden h-96 relative"
           >
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3726.9088888888887!2d70.36488!3d20.90222!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bfd2f10c5c5c5c5%3A0x1234567890abcdef!2s4%2C%20Unique%20Plaza%2C%20Somnath%20Bypass%20Road%2C%20Bhalpara%2C%20Veraval%2C%20Gujarat%20362268!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3726.642455710976!2d70.39297549999999!3d20.926699799999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bfd33ca6c3ce013%3A0x1988cccbc00d0f03!2sUnity%20Global%20Tours!5e0!3m2!1sen!2sin!4v1768826633003!5m2!1sen!2sin"
               width="100%"
               height="100%"
               style={{ border: 0 }}
