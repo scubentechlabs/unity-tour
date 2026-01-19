@@ -7,6 +7,7 @@ import {
   Fuel, Wind, ChevronRight
 } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
+import TaxiHireSection from "@/components/taxi/TaxiHireSection";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -893,6 +894,9 @@ const TaxiBooking = () => {
           )}
         </div>
       </section>
+
+      {/* Our Taxi For Hire Section */}
+      <TaxiHireSection />
 
       {/* Features Section */}
       <section className="py-16 bg-secondary">
