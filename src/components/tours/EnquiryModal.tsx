@@ -257,7 +257,7 @@ export const EnquiryModal = ({ isOpen, onClose, tour }: EnquiryModalProps) => {
                 <Input
                   id="phone"
                   type="tel"
-                  placeholder="+91 92270 26000"
+                  placeholder="+91 70050 50020"
                   className="bg-background border-border mt-1"
                   {...register("phone")}
                 />

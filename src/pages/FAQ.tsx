@@ -232,13 +232,13 @@ const FAQ = () => {
                   Contact Us
                 </Button>
               </Link>
-              <a href="tel:+919227026000">
+              <a href="tel:+917005050020">
                 <Button
                   variant="outline"
                   className="w-full sm:w-auto border-primary text-primary hover:bg-primary hover:text-primary-foreground"
                 >
                   <Phone className="h-4 w-4 mr-2" />
-                  Call +91 92270 26000
+                  Call +91 70050 50020
                 </Button>
               </a>
             </div>

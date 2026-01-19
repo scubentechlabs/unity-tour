@@ -430,10 +430,10 @@ const Flights = () => {
               deals and assist with your booking.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="tel:+919227026000">
+              <a href="tel:+917005050020">
                 <Button className="w-full sm:w-auto bg-primary hover:bg-primary/90">
                   <Phone className="h-4 w-4 mr-2" />
-                  Call +91 92270 26000
+                  Call +91 70050 50020
                 </Button>
               </a>
               <Button variant="outline" className="w-full sm:w-auto">

@@ -216,10 +216,10 @@ export const HeroSlider = () => {
                     transition={{ delay: 0.6 }}
                     className="mt-6"
                   >
-                    <a href="tel:+919227026000">
+                    <a href="tel:+917005050020">
                       <Button className="h-12 px-6 bg-gradient-gold hover:opacity-90 text-primary-foreground font-semibold shadow-gold">
                         <Phone className="h-5 w-5 mr-2" />
-                        Call Now: +91 92270 26000
+                        Call Now: +91 70050 50020
                       </Button>
                     </a>
                   </motion.div>
