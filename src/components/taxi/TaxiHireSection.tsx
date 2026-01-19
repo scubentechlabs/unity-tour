@@ -127,7 +127,7 @@ const TaxiHireSection = () => {
                           <img
                             src={vehicle.image_url}
                             alt={vehicle.name}
-                            className="w-full h-full object-contain object-center p-4"
+                            className="w-full h-full object-cover object-center"
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center">
