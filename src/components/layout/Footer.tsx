@@ -247,7 +247,7 @@ export const Footer = () => {
               <li className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 text-primary mt-0.5" />
                 <a 
-                  href="https://www.google.com/maps/search/?api=1&query=4+Unique+Plaza+Somnath+Bypass+Road+Bhalpara+Veraval+362268+Gir+Somnath"
+                  href="https://maps.app.goo.gl/1zULepz8UYyf2mQo9"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-primary transition-colors text-sm"
