@@ -48,6 +48,11 @@ export const SearchTabs = () => {
   const [taxiDate, setTaxiDate] = useState<Date>();
   const [tripType, setTripType] = useState("one-way");
 
+  // Popover open states for auto-close
+  const [domesticDateOpen, setDomesticDateOpen] = useState(false);
+  const [internationalDateOpen, setInternationalDateOpen] = useState(false);
+  const [taxiDateOpen, setTaxiDateOpen] = useState(false);
+
   const handleDomesticSearch = () => {
     const params = new URLSearchParams();
     if (domesticDestination) params.set("destination", domesticDestination);
@@ -138,7 +143,7 @@ export const SearchTabs = () => {
                       <Calendar className="h-4 w-4 text-primary" />
                       Travel Date
                     </label>
-                    <Popover>
+                    <Popover open={domesticDateOpen} onOpenChange={setDomesticDateOpen}>
                       <PopoverTrigger asChild>
                         <Button
                           variant="outline"
@@ -154,7 +159,10 @@ export const SearchTabs = () => {
                         <CalendarComponent
                           mode="single"
                           selected={domesticDate}
-                          onSelect={setDomesticDate}
+                          onSelect={(date) => {
+                            setDomesticDate(date);
+                            setDomesticDateOpen(false);
+                          }}
                           disabled={(date) => date < new Date()}
                           initialFocus
                           className="p-3 pointer-events-auto"
@@ -230,7 +238,7 @@ export const SearchTabs = () => {
                       <Calendar className="h-4 w-4 text-primary" />
                       Travel Date
                     </label>
-                    <Popover>
+                    <Popover open={internationalDateOpen} onOpenChange={setInternationalDateOpen}>
                       <PopoverTrigger asChild>
                         <Button
                           variant="outline"
@@ -246,7 +254,10 @@ export const SearchTabs = () => {
                         <CalendarComponent
                           mode="single"
                           selected={internationalDate}
-                          onSelect={setInternationalDate}
+                          onSelect={(date) => {
+                            setInternationalDate(date);
+                            setInternationalDateOpen(false);
+                          }}
                           disabled={(date) => date < new Date()}
                           initialFocus
                           className="p-3 pointer-events-auto"
@@ -371,7 +382,7 @@ export const SearchTabs = () => {
                         <Calendar className="h-4 w-4 text-primary" />
                         Travel Date
                       </label>
-                      <Popover>
+                      <Popover open={taxiDateOpen} onOpenChange={setTaxiDateOpen}>
                         <PopoverTrigger asChild>
                         <Button
                             variant="outline"
@@ -387,7 +398,10 @@ export const SearchTabs = () => {
                           <CalendarComponent
                             mode="single"
                             selected={taxiDate}
-                            onSelect={setTaxiDate}
+                            onSelect={(date) => {
+                              setTaxiDate(date);
+                              setTaxiDateOpen(false);
+                            }}
                             disabled={(date) => date < new Date()}
                             initialFocus
                             className="p-3 pointer-events-auto"

@@ -75,6 +75,10 @@ const Flights = () => {
   const [returnDate, setReturnDate] = useState<Date>();
   const [passengers, setPassengers] = useState("1");
   const [travelClass, setTravelClass] = useState("economy");
+
+  // Popover open states for auto-close
+  const [departDateOpen, setDepartDateOpen] = useState(false);
+  const [returnDateOpen, setReturnDateOpen] = useState(false);
   const [showContactModal, setShowContactModal] = useState(false);
   const [contactForm, setContactForm] = useState({ name: "", email: "", phone: "" });
   const [submitting, setSubmitting] = useState(false);
@@ -233,10 +237,9 @@ const Flights = () => {
                   </div>
                 </div>
 
-                {/* Departure Date */}
                 <div className="space-y-2">
                   <Label>Departure</Label>
-                  <Popover>
+                  <Popover open={departDateOpen} onOpenChange={setDepartDateOpen}>
                     <PopoverTrigger asChild>
                       <Button
                         variant="outline"
@@ -255,18 +258,21 @@ const Flights = () => {
                       <Calendar
                         mode="single"
                         selected={departDate}
-                        onSelect={setDepartDate}
+                        onSelect={(date) => {
+                          setDepartDate(date);
+                          setDepartDateOpen(false);
+                        }}
                         disabled={(date) => date < new Date()}
                         initialFocus
+                        className="p-3 pointer-events-auto"
                       />
                     </PopoverContent>
                   </Popover>
                 </div>
 
-                {/* Return Date */}
                 <div className="space-y-2">
                   <Label>Return</Label>
-                  <Popover>
+                  <Popover open={returnDateOpen} onOpenChange={setReturnDateOpen}>
                     <PopoverTrigger asChild>
                       <Button
                         variant="outline"
@@ -286,12 +292,16 @@ const Flights = () => {
                       <Calendar
                         mode="single"
                         selected={returnDate}
-                        onSelect={setReturnDate}
+                        onSelect={(date) => {
+                          setReturnDate(date);
+                          setReturnDateOpen(false);
+                        }}
                         disabled={(date) =>
                           date < new Date() ||
                           (departDate ? date < departDate : false)
                         }
                         initialFocus
+                        className="p-3 pointer-events-auto"
                       />
                     </PopoverContent>
                   </Popover>
