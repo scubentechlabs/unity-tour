@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Plus, Edit, Trash2, Car, MessageSquare, Users, Fuel, IndianRupee } from "lucide-react";
+import { Loader2, Plus, Edit, Trash2, Car, MessageSquare, Users, Fuel, IndianRupee, Upload, X, Image } from "lucide-react";
 import { format } from "date-fns";
 import { Switch } from "@/components/ui/switch";
 
@@ -19,6 +19,9 @@ const TaxiAdmin = () => {
   const [loading, setLoading] = useState(true);
   const [isVehicleDialogOpen, setIsVehicleDialogOpen] = useState(false);
   const [editingVehicle, setEditingVehicle] = useState<any>(null);
+  const [uploading, setUploading] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
   const [vehicleForm, setVehicleForm] = useState({
@@ -54,6 +57,57 @@ const TaxiAdmin = () => {
     setLoading(false);
   };
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith("image/")) {
+      toast({ title: "Invalid file", description: "Please upload an image file", variant: "destructive" });
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({ title: "File too large", description: "Image must be less than 5MB", variant: "destructive" });
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+      const filePath = `vehicles/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("taxi-vehicles")
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from("taxi-vehicles")
+        .getPublicUrl(filePath);
+
+      setVehicleForm({ ...vehicleForm, image_url: publicUrl });
+      setImagePreview(publicUrl);
+      toast({ title: "Image uploaded successfully" });
+    } catch (error: any) {
+      console.error("Upload error:", error);
+      toast({ title: "Upload failed", description: error.message, variant: "destructive" });
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setVehicleForm({ ...vehicleForm, image_url: "" });
+    setImagePreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   const handleSaveVehicle = async () => {
     const { error } = editingVehicle
       ? await supabase.from("taxi_vehicles").update(vehicleForm).eq("id", editingVehicle.id)
@@ -64,6 +118,7 @@ const TaxiAdmin = () => {
     fetchData();
     setVehicleForm({ name: "", category: "sedan", seating_capacity: 4, luggage_capacity: 2, ac: true, fuel_type: "Petrol", base_price_per_km: 12, base_price_per_day: 2500, image_url: "", is_active: true });
     setEditingVehicle(null);
+    setImagePreview(null);
   };
 
   const handleDeleteVehicle = async (id: string) => {
@@ -117,6 +172,7 @@ const TaxiAdmin = () => {
   const openEditVehicle = (v: any) => {
     setEditingVehicle(v);
     setVehicleForm(v);
+    setImagePreview(v.image_url || null);
     setIsVehicleDialogOpen(true);
   };
 
@@ -173,6 +229,7 @@ const TaxiAdmin = () => {
               onClick={() => { 
                 setEditingVehicle(null); 
                 setVehicleForm({ name: "", category: "sedan", seating_capacity: 4, luggage_capacity: 2, ac: true, fuel_type: "Petrol", base_price_per_km: 12, base_price_per_day: 2500, image_url: "", is_active: true }); 
+                setImagePreview(null);
                 setIsVehicleDialogOpen(true); 
               }}
               className="bg-[#008060] hover:bg-[#006e52] text-white"
@@ -436,13 +493,72 @@ const TaxiAdmin = () => {
             </div>
 
             <div className="space-y-2">
-              <Label className="text-sm font-medium text-gray-700">Image URL</Label>
-              <Input 
-                value={vehicleForm.image_url || ""} 
-                onChange={(e) => setVehicleForm({...vehicleForm, image_url: e.target.value})}
-                placeholder="https://example.com/image.jpg"
-                className="border-gray-300"
-              />
+              <Label className="text-sm font-medium text-gray-700">Vehicle Image</Label>
+              <div className="space-y-3">
+                {/* Image Preview */}
+                {(imagePreview || vehicleForm.image_url) && (
+                  <div className="relative w-full h-40 rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
+                    <img 
+                      src={imagePreview || vehicleForm.image_url} 
+                      alt="Vehicle preview" 
+                      className="w-full h-full object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleRemoveImage}
+                      className="absolute top-2 right-2 p-1.5 rounded-full bg-red-500 text-white hover:bg-red-600 transition-colors"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                )}
+                
+                {/* Upload Button */}
+                {!imagePreview && !vehicleForm.image_url && (
+                  <div
+                    onClick={() => fileInputRef.current?.click()}
+                    className="w-full h-40 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-[#008060] hover:bg-gray-50 transition-colors"
+                  >
+                    {uploading ? (
+                      <Loader2 className="h-8 w-8 text-gray-400 animate-spin" />
+                    ) : (
+                      <>
+                        <Upload className="h-8 w-8 text-gray-400 mb-2" />
+                        <p className="text-sm text-gray-600 font-medium">Click to upload image</p>
+                        <p className="text-xs text-gray-400 mt-1">PNG, JPG up to 5MB</p>
+                      </>
+                    )}
+                  </div>
+                )}
+                
+                {/* Hidden File Input */}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+                
+                {/* Change Image Button */}
+                {(imagePreview || vehicleForm.image_url) && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploading}
+                    className="w-full"
+                  >
+                    {uploading ? (
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    ) : (
+                      <Image className="h-4 w-4 mr-2" />
+                    )}
+                    Change image
+                  </Button>
+                )}
+              </div>
             </div>
 
             <div className="flex items-center justify-between py-2 px-3 bg-gray-50 rounded-lg">
