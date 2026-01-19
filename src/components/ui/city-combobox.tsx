@@ -42,6 +42,20 @@ export function CityCombobox({
     );
   }, [searchValue]);
 
+  const handleSelect = (selectedValue: string) => {
+    onChange(selectedValue);
+    setOpen(false);
+    setSearchValue("");
+  };
+
+  const handleUseCustomCity = () => {
+    if (searchValue.trim()) {
+      onChange(searchValue.trim());
+      setOpen(false);
+      setSearchValue("");
+    }
+  };
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -66,22 +80,32 @@ export function CityCombobox({
       <PopoverContent className="w-[300px] p-0 z-50" align="start">
         <Command shouldFilter={false}>
           <CommandInput 
-            placeholder="Search city..." 
+            placeholder="Search or type city..." 
             value={searchValue}
             onValueChange={setSearchValue}
           />
           <CommandList>
-            <CommandEmpty>No city found.</CommandEmpty>
+            {filteredCities.length === 0 && searchValue.trim() && (
+              <div className="p-2">
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start text-left"
+                  onClick={handleUseCustomCity}
+                >
+                  <MapPin className="mr-2 h-4 w-4 text-primary" />
+                  Use "{searchValue.trim()}"
+                </Button>
+              </div>
+            )}
+            {filteredCities.length === 0 && !searchValue.trim() && (
+              <CommandEmpty>No city found.</CommandEmpty>
+            )}
             <CommandGroup className="max-h-[300px] overflow-auto">
               {filteredCities.map((city) => (
                 <CommandItem
                   key={city}
                   value={city}
-                  onSelect={(currentValue) => {
-                    onChange(currentValue === value ? "" : currentValue);
-                    setOpen(false);
-                    setSearchValue("");
-                  }}
+                  onSelect={() => handleSelect(city)}
                 >
                   <Check
                     className={cn(
@@ -92,6 +116,16 @@ export function CityCombobox({
                   {city}
                 </CommandItem>
               ))}
+              {searchValue.trim() && filteredCities.length > 0 && !filteredCities.some(c => c.toLowerCase() === searchValue.toLowerCase()) && (
+                <CommandItem
+                  value={`custom-${searchValue}`}
+                  onSelect={handleUseCustomCity}
+                  className="border-t mt-1 pt-2"
+                >
+                  <MapPin className="mr-2 h-4 w-4 text-primary" />
+                  Use "{searchValue.trim()}"
+                </CommandItem>
+              )}
             </CommandGroup>
           </CommandList>
         </Command>
