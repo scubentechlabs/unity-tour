@@ -186,7 +186,7 @@ export const Footer = () => {
               with luxury accommodations, expert guides, and personalized service.
             </p>
             <div className="flex gap-3">
-              <a href="#" className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all">
+              <a href="https://www.facebook.com/profile.php?id=61584831402757#" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all">
                 <Facebook className="h-5 w-5" />
               </a>
               <a href="#" className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all">
@@ -292,7 +292,7 @@ export const Footer = () => {
               <h4 className="font-display text-sm font-semibold text-foreground mb-3">Follow Us</h4>
               <div className="flex gap-3">
                 <a 
-                  href="https://www.facebook.com/unityglobaltours" 
+                  href="https://www.facebook.com/profile.php?id=61584831402757#"
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="w-9 h-9 bg-muted hover:bg-primary/10 rounded-lg flex items-center justify-center text-muted-foreground hover:text-primary transition-colors"
