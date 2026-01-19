@@ -246,10 +246,15 @@ export const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 text-primary mt-0.5" />
-                <span className="text-muted-foreground text-sm">
+                <a 
+                  href="https://www.google.com/maps/search/?api=1&query=4+Unique+Plaza+Somnath+Bypass+Road+Bhalpara+Veraval+362268+Gir+Somnath"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-primary transition-colors text-sm"
+                >
                   4, Unique Plaza, Somnath Bypass Road,<br />
                   Bhalpara, Veraval - 362268 (Gir-Somnath)
-                </span>
+                </a>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="h-5 w-5 text-primary" />
