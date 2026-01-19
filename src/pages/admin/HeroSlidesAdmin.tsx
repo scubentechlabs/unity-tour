@@ -36,6 +36,7 @@ interface HeroSlide {
   button_link: string | null;
   display_order: number;
   is_active: boolean;
+  is_taxi_slide: boolean;
   created_at: string;
 }
 
@@ -48,6 +49,7 @@ const defaultSlide: Partial<HeroSlide> = {
   button_link: "/",
   display_order: 1,
   is_active: true,
+  is_taxi_slide: false,
 };
 
 const HeroSlidesAdmin = () => {
@@ -145,6 +147,7 @@ const HeroSlidesAdmin = () => {
         button_link: editingSlide.button_link,
         display_order: editingSlide.display_order || slides.length + 1,
         is_active: editingSlide.is_active ?? true,
+        is_taxi_slide: editingSlide.is_taxi_slide ?? false,
       };
 
       if (isEditing && editingSlide.id) {
@@ -374,8 +377,8 @@ const HeroSlidesAdmin = () => {
                     <Input
                       id="display_order"
                       type="number"
-                      min="1"
-                      value={editingSlide.display_order || 1}
+                      min="0"
+                      value={editingSlide.display_order || 0}
                       onChange={(e) => setEditingSlide({ ...editingSlide, display_order: parseInt(e.target.value) })}
                       className="border-[#e1e3e5] focus:border-[#008060] focus:ring-[#008060]"
                     />
@@ -393,6 +396,26 @@ const HeroSlidesAdmin = () => {
                       </span>
                     </div>
                   </div>
+                </div>
+
+                {/* Taxi Slide Toggle */}
+                <div className="space-y-2 pt-2 border-t border-[#e1e3e5]">
+                  <Label className="text-[#303030]">Slide Type</Label>
+                  <div className="flex items-center gap-3">
+                    <Switch
+                      checked={editingSlide.is_taxi_slide ?? false}
+                      onCheckedChange={(checked) => setEditingSlide({ ...editingSlide, is_taxi_slide: checked })}
+                      className="data-[state=checked]:bg-[#008060]"
+                    />
+                    <span className="text-sm text-[#637381]">
+                      {editingSlide.is_taxi_slide ? "Taxi Booking Slide (special layout with Call Now button)" : "Regular Slide"}
+                    </span>
+                  </div>
+                  {editingSlide.is_taxi_slide && (
+                    <p className="text-xs text-[#8c9196]">
+                      Taxi slides display with a special centered layout featuring service highlights and a Call Now button.
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -456,6 +479,11 @@ const HeroSlidesAdmin = () => {
                         <p className="font-medium text-[#303030]">{slide.title}</p>
                         {slide.subtitle && (
                           <p className="text-sm text-[#637381] truncate max-w-[200px]">{slide.subtitle}</p>
+                        )}
+                        {slide.is_taxi_slide && (
+                          <Badge className="mt-1 bg-amber-100 text-amber-800 border-0 text-xs">
+                            Taxi Slide
+                          </Badge>
                         )}
                       </div>
                     </TableCell>

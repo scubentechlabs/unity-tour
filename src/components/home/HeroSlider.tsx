@@ -17,21 +17,6 @@ interface HeroSlide {
   is_taxi_slide?: boolean;
 }
 
-// Static taxi booking slide
-import somnathTemple from "@/assets/somnath-temple.png";
-
-const taxiSlide: HeroSlide = {
-  id: "taxi-booking-slide",
-  title: "Book Your Ride For Somnath Tour",
-  subtitle: "🚖 Reliable Cab Service",
-  description: "Comfortable and affordable taxi services across Gujarat. Book your ride now for a hassle-free journey!",
-  image_url: somnathTemple,
-  button_text: null,
-  button_link: null,
-  display_order: 0,
-  is_taxi_slide: true,
-};
-
 export const HeroSlider = () => {
   const [slides, setSlides] = useState<HeroSlide[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -50,11 +35,10 @@ export const HeroSlider = () => {
         .order("display_order", { ascending: true });
 
       if (error) throw error;
-      // Add taxi slide at the beginning
-      setSlides([taxiSlide, ...(data || [])]);
+      setSlides(data || []);
     } catch (error) {
       console.error("Error fetching slides:", error);
-      setSlides([taxiSlide]);
+      setSlides([]);
     } finally {
       setLoading(false);
     }
