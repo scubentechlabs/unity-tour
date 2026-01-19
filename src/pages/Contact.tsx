@@ -347,14 +347,15 @@ const Contact = () => {
             className="bg-card border border-border rounded-2xl overflow-hidden h-96"
           >
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3726.8!2d70.3677!3d20.9067!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be2e3c5c5c5c5c5%3A0x1234567890abcdef!2sUnique%20Plaza%2C%20Somnath%20Bypass%20Road%2C%20Bhalpara%2C%20Veraval%2C%20Gujarat%20362268!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3726.5!2d70.3677!3d20.9067!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjDCsDU0JzI0LjEiTiA3MMKwMjInMDMuNyJF!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
               width="100%"
               height="100%"
               style={{ border: 0 }}
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Unity Global Tours - Veraval Office"
+              title="Unity Global Tours - Veraval Office Location"
+              className="w-full h-full"
             />
           </motion.div>
         </div>
