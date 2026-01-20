@@ -41,23 +41,23 @@ const CancellationPolicy = () => {
               
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-4 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-800">
-                  <span className="font-medium text-foreground">30+ days before departure</span>
+                  <span className="font-medium text-green-900 dark:text-green-100">30+ days before departure</span>
                   <span className="text-green-600 dark:text-green-400 font-semibold">10% of total cost</span>
                 </div>
                 <div className="flex items-center justify-between p-4 bg-yellow-50 dark:bg-yellow-950/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
-                  <span className="font-medium text-foreground">15-29 days before departure</span>
+                  <span className="font-medium text-yellow-900 dark:text-yellow-100">15-29 days before departure</span>
                   <span className="text-yellow-600 dark:text-yellow-400 font-semibold">25% of total cost</span>
                 </div>
                 <div className="flex items-center justify-between p-4 bg-orange-50 dark:bg-orange-950/20 rounded-lg border border-orange-200 dark:border-orange-800">
-                  <span className="font-medium text-foreground">7-14 days before departure</span>
+                  <span className="font-medium text-orange-900 dark:text-orange-100">7-14 days before departure</span>
                   <span className="text-orange-600 dark:text-orange-400 font-semibold">50% of total cost</span>
                 </div>
                 <div className="flex items-center justify-between p-4 bg-red-50 dark:bg-red-950/20 rounded-lg border border-red-200 dark:border-red-800">
-                  <span className="font-medium text-foreground">Less than 7 days before departure</span>
+                  <span className="font-medium text-red-900 dark:text-red-100">Less than 7 days before departure</span>
                   <span className="text-red-600 dark:text-red-400 font-semibold">75% of total cost</span>
                 </div>
                 <div className="flex items-center justify-between p-4 bg-red-100 dark:bg-red-950/40 rounded-lg border border-red-300 dark:border-red-700">
-                  <span className="font-medium text-foreground">No-show / Day of departure</span>
+                  <span className="font-medium text-red-900 dark:text-red-100">No-show / Day of departure</span>
                   <span className="text-red-700 dark:text-red-300 font-semibold">100% charges apply</span>
                 </div>
               </div>
@@ -72,19 +72,19 @@ const CancellationPolicy = () => {
               
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-4 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-800">
-                  <span className="font-medium text-foreground">24+ hours before pickup</span>
+                  <span className="font-medium text-green-900 dark:text-green-100">24+ hours before pickup</span>
                   <span className="text-green-600 dark:text-green-400 font-semibold">Free cancellation</span>
                 </div>
                 <div className="flex items-center justify-between p-4 bg-yellow-50 dark:bg-yellow-950/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
-                  <span className="font-medium text-foreground">12-24 hours before pickup</span>
+                  <span className="font-medium text-yellow-900 dark:text-yellow-100">12-24 hours before pickup</span>
                   <span className="text-yellow-600 dark:text-yellow-400 font-semibold">25% of booking amount</span>
                 </div>
                 <div className="flex items-center justify-between p-4 bg-orange-50 dark:bg-orange-950/20 rounded-lg border border-orange-200 dark:border-orange-800">
-                  <span className="font-medium text-foreground">6-12 hours before pickup</span>
+                  <span className="font-medium text-orange-900 dark:text-orange-100">6-12 hours before pickup</span>
                   <span className="text-orange-600 dark:text-orange-400 font-semibold">50% of booking amount</span>
                 </div>
                 <div className="flex items-center justify-between p-4 bg-red-50 dark:bg-red-950/20 rounded-lg border border-red-200 dark:border-red-800">
-                  <span className="font-medium text-foreground">Less than 6 hours / No-show</span>
+                  <span className="font-medium text-red-900 dark:text-red-100">Less than 6 hours / No-show</span>
                   <span className="text-red-600 dark:text-red-400 font-semibold">100% charges apply</span>
                 </div>
               </div>
