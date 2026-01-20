@@ -34,7 +34,7 @@ const supportLinks = [
   { name: "Driver", path: "/driver" },
   { name: "Terms & Conditions", path: "/terms" },
   { name: "Privacy Policy", path: "/privacy" },
-  { name: "Cancellation Policy", path: "/terms" },
+  { name: "Cancellation Policy", path: "/cancellation" },
   { name: "My Bookings", path: "/dashboard" },
 ];
 

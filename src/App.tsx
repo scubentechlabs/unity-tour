@@ -17,6 +17,9 @@ import FAQ from "./pages/FAQ";
 import Auth from "./pages/Auth";
 import Booking from "./pages/Booking";
 import Driver from "./pages/Driver";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
+import CancellationPolicy from "./pages/CancellationPolicy";
 import AdminLayout from "./pages/admin/AdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
 import HeroSlidesAdmin from "./pages/admin/HeroSlidesAdmin";
@@ -56,6 +59,9 @@ const App = () => {
             <Route path="/auth" element={<Auth />} />
             <Route path="/booking" element={<Booking />} />
             <Route path="/driver" element={<Driver />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/cancellation" element={<CancellationPolicy />} />
             <Route path="/unsubscribe" element={<Unsubscribe />} />
             
             {/* Admin Routes */}
