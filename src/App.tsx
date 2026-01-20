@@ -16,6 +16,7 @@ import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
 import Auth from "./pages/Auth";
 import Booking from "./pages/Booking";
+import Driver from "./pages/Driver";
 import AdminLayout from "./pages/admin/AdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
 import HeroSlidesAdmin from "./pages/admin/HeroSlidesAdmin";
@@ -53,6 +54,7 @@ const App = () => {
             <Route path="/faq" element={<FAQ />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/booking" element={<Booking />} />
+            <Route path="/driver" element={<Driver />} />
             <Route path="/unsubscribe" element={<Unsubscribe />} />
             
             {/* Admin Routes */}
