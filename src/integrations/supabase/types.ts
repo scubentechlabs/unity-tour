@@ -41,6 +41,45 @@ export type Database = {
         }
         Relationships: []
       }
+      driver_registrations: {
+        Row: {
+          admin_notes: string | null
+          city: string
+          created_at: string
+          id: string
+          message: string | null
+          name: string
+          phone: string
+          status: string
+          updated_at: string
+          vehicle_type: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          city: string
+          created_at?: string
+          id?: string
+          message?: string | null
+          name: string
+          phone: string
+          status?: string
+          updated_at?: string
+          vehicle_type: string
+        }
+        Update: {
+          admin_notes?: string | null
+          city?: string
+          created_at?: string
+          id?: string
+          message?: string | null
+          name?: string
+          phone?: string
+          status?: string
+          updated_at?: string
+          vehicle_type?: string
+        }
+        Relationships: []
+      }
       flight_enquiries: {
         Row: {
           admin_notes: string | null

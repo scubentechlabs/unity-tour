@@ -31,6 +31,7 @@ const quickLinks = [
 
 const supportLinks = [
   { name: "FAQ", path: "/faq" },
+  { name: "Driver", path: "/driver" },
   { name: "Terms & Conditions", path: "/terms" },
   { name: "Privacy Policy", path: "/privacy" },
   { name: "Cancellation Policy", path: "/terms" },
