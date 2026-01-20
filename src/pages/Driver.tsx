@@ -12,6 +12,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -24,7 +31,9 @@ import {
   Phone,
   Loader2,
   Briefcase,
+  IndianRupee,
 } from "lucide-react";
+import upiQrCode from "@/assets/upi-qr-code.jpeg";
 
 const cities = [
   "Ahmedabad",
@@ -172,6 +181,54 @@ const Driver = () => {
         canonicalPath="/driver"
         keywords="driver partner Gujarat, attach vehicle Unity Tours, taxi driver job Veraval, tempo traveller partner, earn with taxi, driver registration"
       />
+      {/* UPI Payment Topbar */}
+      <div className="bg-primary/10 border-b border-primary/20">
+        <div className="container mx-auto px-4 py-2 flex items-center justify-between">
+          <p className="text-sm text-muted-foreground hidden sm:block">
+            Quick & secure payment via UPI
+          </p>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm" className="ml-auto border-primary/30 hover:bg-primary/10">
+                <IndianRupee className="h-4 w-4 mr-2 text-primary" />
+                <span className="text-primary font-medium">Pay via UPI</span>
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle className="text-center text-xl font-display">Pay via UPI</DialogTitle>
+              </DialogHeader>
+              <div className="flex flex-col items-center space-y-4 py-4">
+                <p className="text-2xl font-bold text-foreground">UNITY GLOBAL TOURS</p>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <span className="font-semibold text-primary">UPI ID:</span>
+                  <a 
+                    href="upi://pay?pa=unityglobaltours@idfcbank" 
+                    className="text-primary hover:underline"
+                  >
+                    unityglobaltours@idfcbank
+                  </a>
+                </div>
+                <p className="text-sm text-muted-foreground text-center">
+                  Scan this QR code with any UPI app to transfer
+                </p>
+                <div className="bg-white p-4 rounded-xl shadow-md">
+                  <img 
+                    src={upiQrCode} 
+                    alt="Unity Global Tours UPI QR Code" 
+                    className="w-64 h-64 object-contain"
+                  />
+                </div>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <span>Powered by</span>
+                  <span className="font-semibold text-red-600">IDFC FIRST Bank</span>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
+      </div>
+
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-primary/10 via-background to-primary/5 py-16 md:py-24">
         <div className="container mx-auto px-4">
