@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Layout } from "@/components/layout/Layout";
+import { SEOHead } from "@/components/SEOHead";
 import { 
   Users, 
   Award, 
@@ -12,9 +13,9 @@ import {
 } from "lucide-react";
 
 const stats = [
-  { value: "10+", label: "Years Experience" },
-  { value: "25K+", label: "Happy Travelers" },
-  { value: "100+", label: "Destinations" },
+  { value: "10+", label: "Years Since 2014" },
+  { value: "25,000+", label: "Happy Travelers" },
+  { value: "150+", label: "Destinations Covered" },
   { value: "24/7", label: "Customer Support" },
 ];
 
@@ -53,6 +54,12 @@ const services = [
 const About = () => {
   return (
     <Layout>
+      <SEOHead
+        title="About Unity Global Tours - Gujarat's Trusted Travel Company Since 2014"
+        description="Learn about Unity Global Tours, Veraval's leading travel agency. Established in 2014, we offer taxi services, tour packages, and travel solutions across Gujarat and beyond."
+        canonicalPath="/about"
+        keywords="Unity Global Tours about, Veraval travel agency, Gujarat tour company, travel company history, trusted travel partner"
+      />
       {/* Hero Section */}
       <section className="relative py-20 md:py-28 overflow-hidden">
         <div 

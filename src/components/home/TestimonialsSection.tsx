@@ -6,39 +6,48 @@ import { Button } from "@/components/ui/button";
 const testimonials = [
   {
     id: 1,
-    name: "Priya Sharma",
-    location: "Mumbai",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
+    name: "Jignesh Baraiya",
+    location: "Veraval",
+    avatar: "",
     rating: 5,
-    tour: "Kerala Backwaters",
-    review: "An absolutely magical experience! The houseboat stay was incredible, and the attention to detail from Unity Global Tours made our honeymoon unforgettable. Highly recommend!",
+    tour: "Dwarka Darshan",
+    review: "We booked a taxi from Veraval to Dwarka for our family's pilgrimage. The driver was punctual and very knowledgeable about the temples. Unity Global Tours made our spiritual journey comfortable and hassle-free.",
   },
   {
     id: 2,
-    name: "Rajesh Kumar",
-    location: "Delhi",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
+    name: "Meera Trivedi",
+    location: "Rajkot",
+    avatar: "",
     rating: 5,
-    tour: "Rajasthan Heritage Tour",
-    review: "The royal treatment we received was beyond expectations. From palace hotels to private tours of historical sites, every moment was curated to perfection.",
+    tour: "Gir Safari Trip",
+    review: "Planned our Gir National Park visit through Unity Global Tours. They arranged safari permits, comfortable stay at Sasan Gir, and even helped us spot Asiatic lions! Excellent service from start to finish.",
   },
   {
     id: 3,
-    name: "Sneha Patel",
-    location: "Bangalore",
-    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
+    name: "Hitesh Solanki",
+    location: "Ahmedabad",
+    avatar: "",
     rating: 5,
-    tour: "Andaman Islands",
-    review: "Crystal clear waters, pristine beaches, and seamless arrangements. Unity Global Tours took care of everything, allowing us to just relax and enjoy. Will book again!",
+    tour: "Somnath-Diu Package",
+    review: "My family visited Somnath temple and Diu beaches on a 3-day package. Everything was well organized - hotel bookings, vehicle, and timing. Will definitely book again for our next Gujarat trip.",
   },
   {
     id: 4,
-    name: "Amit Verma",
-    location: "Pune",
-    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
+    name: "Kavita Mehta",
+    location: "Junagadh",
+    avatar: "",
     rating: 5,
-    tour: "Kashmir Valley",
-    review: "Paradise on Earth, and Unity Global Tours made sure we experienced every bit of it. The local guides were knowledgeable and the accommodations were top-notch.",
+    tour: "Airport Transfer",
+    review: "Needed an airport pickup from Rajkot for my parents. The car arrived on time and the driver helped with all the luggage. Very reliable service. I always recommend Unity Global Tours to my friends.",
+  },
+  {
+    id: 5,
+    name: "Ramesh Chudasama",
+    location: "Porbandar",
+    avatar: "",
+    rating: 5,
+    tour: "Kashmir Honeymoon",
+    review: "Booked our honeymoon package to Kashmir. Unity Global Tours handled everything from flights to hotels to local sightseeing. The houseboat stay in Srinagar was the highlight. Thank you for making our trip special!",
   },
 ];
 
@@ -103,11 +112,11 @@ export const TestimonialsSection = () => {
 
               {/* Author */}
               <div className="flex items-center gap-4">
-                <img
-                  src={testimonials[currentIndex].avatar}
-                  alt={testimonials[currentIndex].name}
-                  className="w-14 h-14 rounded-full object-cover border-2 border-primary"
-                />
+                <div className="w-14 h-14 rounded-full bg-primary/20 border-2 border-primary flex items-center justify-center">
+                  <span className="text-primary font-bold text-lg">
+                    {testimonials[currentIndex].name.split(' ').map(n => n[0]).join('')}
+                  </span>
+                </div>
                 <div>
                   <p className="font-display font-semibold text-foreground">
                     {testimonials[currentIndex].name}

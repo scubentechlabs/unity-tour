@@ -64,17 +64,17 @@ export const WhyChooseUsSection = () => {
               Your Journey, Our <span className="text-primary">Passion</span>
             </h2>
             <p className="text-muted-foreground mb-8">
-              With over 15 years of experience in the travel industry, we've helped thousands of 
-              travelers create unforgettable memories. Our commitment to excellence, attention to 
-              detail, and personalized service sets us apart.
+              Since 2014, Unity Global Tours has been helping travelers from Veraval and across 
+              Gujarat create unforgettable memories. Our commitment to excellence, attention to 
+              detail, and personalized service sets us apart as Saurashtra's trusted travel partner.
             </p>
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-6">
               {[
-                { value: "15+", label: "Years Experience" },
-                { value: "50K+", label: "Happy Customers" },
-                { value: "500+", label: "Destinations" },
+                { value: "10+", label: "Years Since 2014" },
+                { value: "25K+", label: "Happy Travelers" },
+                { value: "150+", label: "Destinations" },
               ].map((stat, index) => (
                 <div key={index} className="text-center p-4 bg-card rounded-xl border border-border">
                   <p className="font-display text-2xl md:text-3xl font-bold text-primary">

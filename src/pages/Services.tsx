@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout/Layout";
+import { SEOHead } from "@/components/SEOHead";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { 
@@ -101,6 +102,12 @@ const itemVariants = {
 const Services = () => {
   return (
     <Layout>
+      <SEOHead
+        title="Travel Services - Taxi Rental, Tours, Flights & Hotels in Gujarat"
+        description="Unity Global Tours offers comprehensive travel services: taxi rental, domestic & international tour packages, flight bookings, hotel reservations, and visa assistance in Gujarat."
+        canonicalPath="/services"
+        keywords="Gujarat travel services, taxi rental Veraval, tour packages Gujarat, flight booking, hotel booking, visa services India"
+      />
       {/* Hero Section */}
       <section className="relative py-20 md:py-28 bg-gradient-to-br from-primary/10 via-background to-secondary overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center opacity-10" />

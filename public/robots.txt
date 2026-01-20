@@ -1,8 +1,14 @@
+# Unity Global Tours - Robots.txt
+# Website: https://unityglobaltours.com
+# Last updated: January 2026
+
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 2
 
 User-agent: Twitterbot
 Allow: /
@@ -10,5 +16,21 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
+User-agent: LinkedInBot
+Allow: /
+
 User-agent: *
 Allow: /
+Crawl-delay: 5
+
+# Sitemap location
+Sitemap: https://unityglobaltours.com/sitemap.xml
+
+# Disallow admin and internal paths
+Disallow: /admin/
+Disallow: /api/
+Disallow: /*.json$
+
+# Allow all assets
+Allow: /images/
+Allow: /assets/

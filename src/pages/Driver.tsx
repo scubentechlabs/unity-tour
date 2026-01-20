@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
+import { SEOHead } from "@/components/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -165,6 +166,12 @@ const Driver = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Join as Driver Partner - Attach Your Vehicle with Unity Global Tours"
+        description="Become a driver partner with Unity Global Tours. Attach your taxi, SUV, or tempo traveller and earn daily. Flexible hours, quick payments, 24/7 support across Gujarat."
+        canonicalPath="/driver"
+        keywords="driver partner Gujarat, attach vehicle Unity Tours, taxi driver job Veraval, tempo traveller partner, earn with taxi, driver registration"
+      />
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-primary/10 via-background to-primary/5 py-16 md:py-24">
         <div className="container mx-auto px-4">
