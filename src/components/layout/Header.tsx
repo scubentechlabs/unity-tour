@@ -180,10 +180,50 @@ export const Header = () => {
                     {link.name}
                   </Link>
                 ))}
-                <div className="pt-4 border-t border-border mt-2">
+                <div className="pt-4 border-t border-border mt-2 space-y-2">
+                  {/* Mobile UPI Payment Button */}
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" className="w-full border-primary/30 hover:bg-primary/10">
+                        <IndianRupee className="h-4 w-4 mr-2 text-primary" />
+                        <span className="text-primary font-medium">Pay via UPI</span>
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-md">
+                      <DialogHeader>
+                        <DialogTitle className="text-center text-xl font-display">Pay via UPI</DialogTitle>
+                      </DialogHeader>
+                      <div className="flex flex-col items-center space-y-4 py-4">
+                        <p className="text-2xl font-bold text-foreground">UNITY GLOBAL TOURS</p>
+                        <div className="flex items-center gap-2 text-muted-foreground">
+                          <span className="font-semibold text-primary">UPI ID:</span>
+                          <a 
+                            href="upi://pay?pa=unityglobaltours@idfcbank" 
+                            className="text-primary hover:underline"
+                          >
+                            unityglobaltours@idfcbank
+                          </a>
+                        </div>
+                        <p className="text-sm text-muted-foreground text-center">
+                          Scan this QR code with any UPI app to transfer
+                        </p>
+                        <div className="bg-white p-4 rounded-xl shadow-md">
+                          <img 
+                            src={upiQrCode} 
+                            alt="Unity Global Tours UPI QR Code" 
+                            className="w-64 h-64 object-contain"
+                          />
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                          <span>Powered by</span>
+                          <span className="font-semibold text-red-600">IDFC FIRST Bank</span>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                   <Button 
                     onClick={() => navigate("/booking")}
-                    className="w-full mt-2 bg-gradient-gold hover:opacity-90 text-primary-foreground font-semibold"
+                    className="w-full bg-gradient-gold hover:opacity-90 text-primary-foreground font-semibold"
                   >
                     Book Now
                   </Button>
