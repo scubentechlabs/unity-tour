@@ -22,6 +22,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import UpiPaymentDialog from "@/components/UpiPaymentDialog";
 
 interface Vehicle {
   id: string;
@@ -825,6 +826,9 @@ const TaxiBooking = () => {
                           24/7 customer support
                         </p>
                       </div>
+
+                      {/* UPI Payment Option */}
+                      <UpiPaymentDialog variant="card" />
                     </CardContent>
                   </Card>
                 </div>
