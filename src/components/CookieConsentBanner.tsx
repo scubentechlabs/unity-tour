@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cookie, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -66,7 +67,12 @@ export const CookieConsentBanner = () => {
                   </h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">
                     We use cookies to enhance your browsing experience, serve personalized content, 
-                    and analyze our traffic. By clicking "Accept All", you consent to our use of cookies.
+                    and analyze our traffic. By clicking "Accept All", you consent to our use of cookies. 
+                    Read our{" "}
+                    <Link to="/privacy" className="text-primary hover:underline font-medium">
+                      Privacy Policy
+                    </Link>{" "}
+                    to learn more.
                   </p>
                 </div>
 
