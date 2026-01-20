@@ -177,10 +177,10 @@ const Driver = () => {
               Be part of Gujarat's growing travel network and maximize your income.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="tel:+919727248890">
+              <a href="tel:+917005050020">
                 <Button size="lg" className="bg-gradient-gold hover:opacity-90 text-primary-foreground font-semibold shadow-gold">
                   <Phone className="h-5 w-5 mr-2" />
-                  Call +91 97272 48890
+                  Call +91 70050 50020
                 </Button>
               </a>
             </div>
@@ -385,9 +385,9 @@ const Driver = () => {
               <p className="text-muted-foreground mb-3">
                 Prefer to talk directly? Give us a call!
               </p>
-              <a href="tel:+919727248890" className="inline-flex items-center gap-2 text-primary hover:underline font-semibold">
+              <a href="tel:+917005050020" className="inline-flex items-center gap-2 text-primary hover:underline font-semibold">
                 <Phone className="h-5 w-5" />
-                +91 97272 48890
+                +91 70050 50020
               </a>
             </div>
           </div>
