@@ -299,7 +299,7 @@ const AdminLayout = () => {
         </header>
 
         {/* Page Content */}
-        <main className="p-4 lg:p-6 pt-16 lg:pt-6">
+        <main className="p-3 sm:p-4 lg:p-6 pt-16 lg:pt-6 min-h-[calc(100vh-3.5rem)] lg:min-h-screen">
           <Outlet />
         </main>
       </div>
