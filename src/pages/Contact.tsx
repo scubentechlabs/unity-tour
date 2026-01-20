@@ -16,6 +16,8 @@ import {
   MessageSquare,
   Facebook,
   Instagram,
+  Twitter,
+  Youtube,
 } from "lucide-react";
 
 const contactInfo = [
@@ -47,6 +49,8 @@ const contactInfo = [
 const socialLinks = [
   { icon: Facebook, href: "https://www.facebook.com/unityglobaltours/", label: "Facebook" },
   { icon: Instagram, href: "https://www.instagram.com/unityglobaltours/", label: "Instagram" },
+  { icon: Twitter, href: "https://x.com/unityglobaltour", label: "Twitter" },
+  { icon: Youtube, href: "https://www.youtube.com/channel/UChDOlfxoo0jB5OKWNJfnyNQ", label: "YouTube" },
 ];
 
 const Contact = () => {
