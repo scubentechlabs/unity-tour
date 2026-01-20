@@ -26,7 +26,7 @@ const quickLinks = [
   { name: "Domestic Tours", path: "/domestic-tours" },
   { name: "International Tours", path: "/international-tours" },
   { name: "Taxi Booking", path: "/taxi" },
-  { name: "Flight Tickets", path: "/flights" },
+  { name: "Train & Flight Tickets", path: "/flights" },
   { name: "About Us", path: "/about" },
   { name: "Contact Us", path: "/contact" },
 ];

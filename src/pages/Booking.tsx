@@ -28,7 +28,7 @@ const serviceTypes = [
   { value: "domestic-tour", label: "Domestic Tour Package", icon: MapPin },
   { value: "international-tour", label: "International Tour Package", icon: Globe },
   { value: "taxi-booking", label: "Taxi/Car Rental", icon: Car },
-  { value: "flight-booking", label: "Flight Booking", icon: Plane },
+  { value: "flight-booking", label: "Train & Flight Ticket Booking", icon: Plane },
   { value: "hotel-booking", label: "Hotel Booking", icon: Hotel },
   { value: "visa-services", label: "Visa Services", icon: Globe },
   { value: "group-booking", label: "Group Booking", icon: Users },

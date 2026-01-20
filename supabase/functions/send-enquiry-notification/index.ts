@@ -462,7 +462,7 @@ const handler = async (req: Request): Promise<Response> => {
           "domestic-tour": "Domestic Tour Package",
           "international-tour": "International Tour Package",
           "taxi-booking": "Taxi/Car Rental",
-          "flight-booking": "Flight Booking",
+          "flight-booking": "Train & Flight Ticket Booking",
           "hotel-booking": "Hotel Booking",
           "visa-services": "Visa Services",
           "group-booking": "Group Booking",
