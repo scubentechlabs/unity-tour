@@ -424,6 +424,157 @@ const Flights = () => {
         </div>
       </section>
 
+      {/* IRCTC Train Booking Section */}
+      <section className="py-16 bg-background">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <span className="inline-block px-4 py-2 bg-orange-500/10 border border-orange-500/30 rounded-full text-orange-600 dark:text-orange-400 text-sm font-medium mb-4">
+              🚂 Indian Railways
+            </span>
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">
+              IRCTC Train Booking
+            </h2>
+            <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
+              We help you book confirmed train tickets across India. Get assistance with Tatkal bookings, 
+              premium trains, and group reservations.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Train Booking Tips */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="bg-card border border-border rounded-2xl p-6 md:p-8"
+            >
+              <h3 className="font-display text-xl font-semibold text-foreground mb-6 flex items-center gap-2">
+                <span className="w-10 h-10 bg-orange-500/10 rounded-lg flex items-center justify-center">
+                  💡
+                </span>
+                Train Booking Tips
+              </h3>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="font-medium text-foreground">Book in Advance</p>
+                    <p className="text-sm text-muted-foreground">Train bookings open 120 days before the journey date. Book early for confirmed tickets.</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="font-medium text-foreground">Tatkal Booking Timing</p>
+                    <p className="text-sm text-muted-foreground">Tatkal bookings open at 10:00 AM for AC classes and 11:00 AM for non-AC classes, one day before journey.</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="font-medium text-foreground">Keep Documents Ready</p>
+                    <p className="text-sm text-muted-foreground">Carry valid ID proof (Aadhaar, PAN, Passport, Voter ID) during travel for ticket verification.</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="font-medium text-foreground">Check PNR Status</p>
+                    <p className="text-sm text-muted-foreground">Monitor your PNR status regularly. Waitlisted tickets may get confirmed closer to departure.</p>
+                  </div>
+                </li>
+              </ul>
+            </motion.div>
+
+            {/* Train Classes & Services */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="bg-card border border-border rounded-2xl p-6 md:p-8"
+            >
+              <h3 className="font-display text-xl font-semibold text-foreground mb-6 flex items-center gap-2">
+                <span className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
+                  🎫
+                </span>
+                Train Classes We Book
+              </h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-secondary/50 rounded-xl p-4">
+                  <p className="font-semibold text-foreground">1A - First AC</p>
+                  <p className="text-xs text-muted-foreground">Premium private cabins</p>
+                </div>
+                <div className="bg-secondary/50 rounded-xl p-4">
+                  <p className="font-semibold text-foreground">2A - Two Tier AC</p>
+                  <p className="text-xs text-muted-foreground">Comfortable AC sleeper</p>
+                </div>
+                <div className="bg-secondary/50 rounded-xl p-4">
+                  <p className="font-semibold text-foreground">3A - Three Tier AC</p>
+                  <p className="text-xs text-muted-foreground">Economical AC travel</p>
+                </div>
+                <div className="bg-secondary/50 rounded-xl p-4">
+                  <p className="font-semibold text-foreground">SL - Sleeper Class</p>
+                  <p className="text-xs text-muted-foreground">Budget-friendly option</p>
+                </div>
+                <div className="bg-secondary/50 rounded-xl p-4">
+                  <p className="font-semibold text-foreground">CC - AC Chair Car</p>
+                  <p className="text-xs text-muted-foreground">Day journey comfort</p>
+                </div>
+                <div className="bg-secondary/50 rounded-xl p-4">
+                  <p className="font-semibold text-foreground">EC - Executive Chair</p>
+                  <p className="text-xs text-muted-foreground">Premium seating</p>
+                </div>
+              </div>
+
+              <div className="mt-6 p-4 bg-orange-500/10 border border-orange-500/20 rounded-xl">
+                <p className="text-sm font-medium text-orange-700 dark:text-orange-300 flex items-center gap-2">
+                  <span>⚡</span> Tatkal & Premium Tatkal Available
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  We provide assistance with Tatkal and Premium Tatkal bookings for urgent travel needs.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Popular Train Routes */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-8"
+          >
+            <h3 className="font-display text-lg font-semibold text-foreground mb-4 text-center">
+              Popular Train Routes from Gujarat
+            </h3>
+            <div className="flex flex-wrap justify-center gap-3">
+              {[
+                "Ahmedabad → Mumbai",
+                "Rajkot → Delhi",
+                "Surat → Pune",
+                "Vadodara → Jaipur",
+                "Junagadh → Ahmedabad",
+                "Veraval → Mumbai",
+                "Bhavnagar → Delhi",
+                "Gandhinagar → Chennai"
+              ].map((route, index) => (
+                <span
+                  key={index}
+                  className="px-4 py-2 bg-secondary border border-border rounded-full text-sm text-foreground hover:border-primary/50 transition-colors cursor-pointer"
+                >
+                  {route}
+                </span>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
