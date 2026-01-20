@@ -114,8 +114,8 @@ const Flights = () => {
       });
 
       toast({
-        title: "Flight Enquiry Submitted!",
-        description: "Our team will contact you shortly with the best flight options.",
+        title: "Ticket Enquiry Submitted!",
+        description: "Our team will contact you shortly with the best train & flight options.",
       });
       setShowContactModal(false);
       setContactForm({ name: "", email: "", phone: "" });
@@ -147,14 +147,14 @@ const Flights = () => {
             className="text-center max-w-3xl mx-auto"
           >
             <span className="inline-block px-4 py-2 bg-primary/20 border border-primary/30 rounded-full text-primary text-sm font-medium mb-6">
-              ✈️ Flight Bookings
+              🚂 ✈️ Train & Flight Bookings
             </span>
             <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
-              Book <span className="text-primary">Flights</span> at Best Prices
+              Book <span className="text-primary">Train & Flight</span> Tickets
             </h1>
             <p className="text-muted-foreground text-lg">
-              Compare prices across all major airlines and book your perfect
-              flight. Domestic and international flights at unbeatable rates.
+              Compare prices across all major airlines and railways. Book your perfect
+              journey with domestic and international options at unbeatable rates.
             </p>
           </motion.div>
         </div>
@@ -348,7 +348,7 @@ const Flights = () => {
                     className="w-full bg-primary hover:bg-primary/90"
                   >
                     <Plane className="h-4 w-4 mr-2" />
-                    Search Flights
+                    Search Tickets
                   </Button>
                 </div>
               </div>
@@ -434,11 +434,11 @@ const Flights = () => {
             className="bg-gradient-to-r from-primary/20 via-primary/10 to-primary/20 border border-primary/30 rounded-2xl p-8 md:p-12 text-center"
           >
             <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
-              Need Help Booking Your Flight?
+              Need Help Booking Your Train or Flight?
             </h2>
             <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
               Our travel experts are available 24/7 to help you find the best
-              deals and assist with your booking.
+              train and flight deals and assist with your booking.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <a href="tel:+917005050020">

@@ -90,11 +90,11 @@ const CancellationPolicy = () => {
               </div>
             </div>
 
-            {/* Flight Booking Cancellation */}
+            {/* Train & Flight Booking Cancellation */}
             <div className="bg-card rounded-xl p-6 md:p-8 shadow-sm border border-border mb-8">
               <h2 className="font-display text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
                 <AlertTriangle className="h-5 w-5 text-primary" />
-                Flight Booking Cancellation
+                Train & Flight Booking Cancellation
               </h2>
               <ul className="space-y-3 text-muted-foreground">
                 <li className="flex items-start gap-2">

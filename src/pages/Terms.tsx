@@ -42,7 +42,7 @@ const Terms = () => {
               </p>
               <p className="text-muted-foreground leading-relaxed mt-4">
                 Unity Global Tours is a registered travel agency operating from Veraval, Gujarat, India. 
-                We specialize in domestic and international tour packages, taxi services, and flight bookings.
+                We specialize in domestic and international tour packages, taxi services, and train & flight ticket bookings.
               </p>
             </div>
 

@@ -26,8 +26,8 @@ const services = [
   },
   {
     icon: Plane,
-    title: "Flight Tickets",
-    description: "Get the best deals on domestic and international flights with our hassle-free booking service.",
+    title: "Train & Flight Tickets",
+    description: "Get the best deals on train and flight tickets with our hassle-free booking service.",
     link: "/flights",
     gradient: "from-orange-500 to-red-600",
   },

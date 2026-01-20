@@ -68,8 +68,8 @@ const travelServices = [
   },
   {
     icon: Plane,
-    title: "Air Ticket Booking",
-    description: "Get the best deals on domestic and international flights with our hassle-free booking service.",
+    title: "Train & Flight Ticket Booking",
+    description: "Get the best deals on train and flight tickets with our hassle-free booking service.",
     link: "/flights",
   },
   {

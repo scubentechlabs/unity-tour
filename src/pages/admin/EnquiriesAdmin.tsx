@@ -496,7 +496,7 @@ const EnquiriesAdmin = () => {
           </TabsTrigger>
           <TabsTrigger value="flight" className="flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm text-gray-700 data-[state=active]:bg-sky-500 data-[state=active]:text-white">
             <Plane className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-            <span className="hidden xs:inline">Flight</span>
+            <span className="hidden xs:inline">Train/Flight</span>
             <Badge variant="secondary" className="ml-0.5 sm:ml-1 bg-gray-200 text-gray-700 text-[10px] sm:text-xs px-1 sm:px-1.5">{stats.flight}</Badge>
           </TabsTrigger>
         </TabsList>

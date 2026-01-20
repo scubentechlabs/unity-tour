@@ -18,7 +18,7 @@ const navLinks = [
   { name: "Taxi Booking", path: "/taxi" },
   { name: "Domestic Tours", path: "/domestic-tours" },
   { name: "International Tours", path: "/international-tours" },
-  { name: "Flights", path: "/flights" },
+  { name: "Train & Flights", path: "/flights" },
   { name: "Services", path: "/services" },
   { name: "About", path: "/about" },
   { name: "Contact", path: "/contact" },
