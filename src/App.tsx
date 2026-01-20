@@ -24,6 +24,7 @@ import TourPackagesAdmin from "./pages/admin/TourPackagesAdmin";
 import EnquiriesAdmin from "./pages/admin/EnquiriesAdmin";
 import NewsletterAdmin from "./pages/admin/NewsletterAdmin";
 import TaxiAdmin from "./pages/admin/TaxiAdmin";
+import DriversAdmin from "./pages/admin/DriversAdmin";
 import AdminUsersAdmin from "./pages/admin/AdminUsersAdmin";
 import SettingsAdmin from "./pages/admin/SettingsAdmin";
 import Unsubscribe from "./pages/Unsubscribe";
@@ -65,6 +66,7 @@ const App = () => {
               <Route path="enquiries" element={<EnquiriesAdmin />} />
               <Route path="newsletter" element={<NewsletterAdmin />} />
               <Route path="taxi" element={<TaxiAdmin />} />
+              <Route path="drivers" element={<DriversAdmin />} />
               <Route path="users" element={<AdminUsersAdmin />} />
               <Route path="settings" element={<SettingsAdmin />} />
             </Route>
