@@ -216,96 +216,96 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="space-y-6 max-w-7xl">
+    <div className="space-y-4 sm:space-y-6 max-w-7xl">
       {/* Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+      <div className="flex flex-col gap-3 sm:gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Dashboard</h1>
-          <p className="text-slate-500 text-sm mt-1">
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-800">Dashboard</h1>
+          <p className="text-slate-500 text-xs sm:text-sm mt-1">
             Welcome back! Here's what's happening with your business.
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <Badge variant="outline" className="px-3 py-1.5 bg-white border-slate-200 text-slate-600">
-            <Calendar className="h-3.5 w-3.5 mr-1.5 text-slate-500" />
-            {format(new Date(), "MMMM yyyy")}
+        <div className="flex items-center">
+          <Badge variant="outline" className="px-2 sm:px-3 py-1 sm:py-1.5 bg-white border-slate-200 text-slate-600 text-xs">
+            <Calendar className="h-3 w-3 sm:h-3.5 sm:w-3.5 mr-1 sm:mr-1.5 text-slate-500" />
+            {format(new Date(), "MMM yyyy")}
           </Badge>
         </div>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         <Card className="bg-white border-slate-200 shadow-sm overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-20 h-20 bg-emerald-50 rounded-full -mr-10 -mt-10" />
-          <CardContent className="p-5">
+          <div className="absolute top-0 right-0 w-16 sm:w-20 h-16 sm:h-20 bg-emerald-50 rounded-full -mr-8 sm:-mr-10 -mt-8 sm:-mt-10" />
+          <CardContent className="p-3 sm:p-5">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-slate-500 text-sm font-medium">Total Enquiries</p>
-                <p className="text-3xl font-bold mt-1 text-slate-800">{totalEnquiries}</p>
-                <p className="text-emerald-600 text-xs mt-2 flex items-center font-medium">
-                  <TrendingUp className="h-3 w-3 mr-1" />
+                <p className="text-slate-500 text-xs sm:text-sm font-medium">Total Enquiries</p>
+                <p className="text-2xl sm:text-3xl font-bold mt-1 text-slate-800">{totalEnquiries}</p>
+                <p className="text-emerald-600 text-[10px] sm:text-xs mt-1.5 sm:mt-2 flex items-center font-medium">
+                  <TrendingUp className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-0.5 sm:mr-1" />
                   {totalPending} pending
                 </p>
               </div>
-              <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center">
-                <MessageSquare className="h-6 w-6 text-emerald-600" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-100 rounded-lg sm:rounded-xl flex items-center justify-center">
+                <MessageSquare className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-600" />
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="bg-white border-slate-200 shadow-sm overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-20 h-20 bg-blue-50 rounded-full -mr-10 -mt-10" />
-          <CardContent className="p-5">
+          <div className="absolute top-0 right-0 w-16 sm:w-20 h-16 sm:h-20 bg-blue-50 rounded-full -mr-8 sm:-mr-10 -mt-8 sm:-mt-10" />
+          <CardContent className="p-3 sm:p-5">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-slate-500 text-sm font-medium">Confirmed</p>
-                <p className="text-3xl font-bold mt-1 text-slate-800">{stats.confirmedTour + stats.confirmedTaxi}</p>
-                <p className="text-blue-600 text-xs mt-2 flex items-center font-medium">
-                  <CheckCircle2 className="h-3 w-3 mr-1" />
-                  {conversionRate}% conversion
+                <p className="text-slate-500 text-xs sm:text-sm font-medium">Confirmed</p>
+                <p className="text-2xl sm:text-3xl font-bold mt-1 text-slate-800">{stats.confirmedTour + stats.confirmedTaxi}</p>
+                <p className="text-blue-600 text-[10px] sm:text-xs mt-1.5 sm:mt-2 flex items-center font-medium">
+                  <CheckCircle2 className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-0.5 sm:mr-1" />
+                  {conversionRate}% conv.
                 </p>
               </div>
-              <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                <CheckCircle2 className="h-6 w-6 text-blue-600" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-lg sm:rounded-xl flex items-center justify-center">
+                <CheckCircle2 className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="bg-white border-slate-200 shadow-sm overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-20 h-20 bg-violet-50 rounded-full -mr-10 -mt-10" />
-          <CardContent className="p-5">
+          <div className="absolute top-0 right-0 w-16 sm:w-20 h-16 sm:h-20 bg-violet-50 rounded-full -mr-8 sm:-mr-10 -mt-8 sm:-mt-10" />
+          <CardContent className="p-3 sm:p-5">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-slate-500 text-sm font-medium">Tour Packages</p>
-                <p className="text-3xl font-bold mt-1 text-slate-800">{stats.totalPackages}</p>
-                <p className="text-violet-600 text-xs mt-2 flex items-center font-medium">
-                  <Package className="h-3 w-3 mr-1" />
-                  Active packages
+                <p className="text-slate-500 text-xs sm:text-sm font-medium">Packages</p>
+                <p className="text-2xl sm:text-3xl font-bold mt-1 text-slate-800">{stats.totalPackages}</p>
+                <p className="text-violet-600 text-[10px] sm:text-xs mt-1.5 sm:mt-2 flex items-center font-medium">
+                  <Package className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-0.5 sm:mr-1" />
+                  Active
                 </p>
               </div>
-              <div className="w-12 h-12 bg-violet-100 rounded-xl flex items-center justify-center">
-                <Plane className="h-6 w-6 text-violet-600" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-violet-100 rounded-lg sm:rounded-xl flex items-center justify-center">
+                <Plane className="h-5 w-5 sm:h-6 sm:w-6 text-violet-600" />
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="bg-white border-slate-200 shadow-sm overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-20 h-20 bg-amber-50 rounded-full -mr-10 -mt-10" />
-          <CardContent className="p-5">
+          <div className="absolute top-0 right-0 w-16 sm:w-20 h-16 sm:h-20 bg-amber-50 rounded-full -mr-8 sm:-mr-10 -mt-8 sm:-mt-10" />
+          <CardContent className="p-3 sm:p-5">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-slate-500 text-sm font-medium">Taxi Fleet</p>
-                <p className="text-3xl font-bold mt-1 text-slate-800">{stats.totalVehicles}</p>
-                <p className="text-amber-600 text-xs mt-2 flex items-center font-medium">
-                  <Car className="h-3 w-3 mr-1" />
+                <p className="text-slate-500 text-xs sm:text-sm font-medium">Taxi Fleet</p>
+                <p className="text-2xl sm:text-3xl font-bold mt-1 text-slate-800">{stats.totalVehicles}</p>
+                <p className="text-amber-600 text-[10px] sm:text-xs mt-1.5 sm:mt-2 flex items-center font-medium">
+                  <Car className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-0.5 sm:mr-1" />
                   {stats.totalTaxiEnquiries} bookings
                 </p>
               </div>
-              <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
-                <Car className="h-6 w-6 text-amber-600" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-amber-100 rounded-lg sm:rounded-xl flex items-center justify-center">
+                <Car className="h-5 w-5 sm:h-6 sm:w-6 text-amber-600" />
               </div>
             </div>
           </CardContent>
@@ -313,17 +313,17 @@ const Dashboard = () => {
       </div>
 
       {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-3">
         {/* Area Chart */}
         <Card className="lg:col-span-2 bg-white border-slate-200 shadow-sm">
-          <CardHeader className="pb-2">
+          <CardHeader className="pb-2 px-3 sm:px-6 pt-4 sm:pt-6">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-lg font-semibold text-slate-800">Enquiries Overview</CardTitle>
-              <Badge variant="outline" className="text-xs bg-slate-50 text-slate-600 border-slate-200">Last 7 days</Badge>
+              <CardTitle className="text-base sm:text-lg font-semibold text-slate-800">Enquiries Overview</CardTitle>
+              <Badge variant="outline" className="text-[10px] sm:text-xs bg-slate-50 text-slate-600 border-slate-200">Last 7 days</Badge>
             </div>
           </CardHeader>
-          <CardContent className="pt-0">
-            <div className="h-[280px]">
+          <CardContent className="pt-0 px-2 sm:px-6 pb-4">
+            <div className="h-[200px] sm:h-[280px]">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <defs>
@@ -353,14 +353,14 @@ const Dashboard = () => {
                 </AreaChart>
               </ResponsiveContainer>
             </div>
-            <div className="flex items-center justify-center gap-6 mt-4">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-violet-500" />
-                <span className="text-sm text-slate-600">Tour Enquiries</span>
+            <div className="flex items-center justify-center gap-4 sm:gap-6 mt-3 sm:mt-4">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-violet-500" />
+                <span className="text-xs sm:text-sm text-slate-600">Tour</span>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-emerald-500" />
-                <span className="text-sm text-slate-600">Taxi Bookings</span>
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-500" />
+                <span className="text-xs sm:text-sm text-slate-600">Taxi</span>
               </div>
             </div>
           </CardContent>
@@ -368,19 +368,19 @@ const Dashboard = () => {
 
         {/* Pie Chart */}
         <Card className="bg-white border-slate-200 shadow-sm">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-lg font-semibold text-slate-800">Status Distribution</CardTitle>
+          <CardHeader className="pb-2 px-3 sm:px-6 pt-4 sm:pt-6">
+            <CardTitle className="text-base sm:text-lg font-semibold text-slate-800">Status Distribution</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="h-[200px]">
+          <CardContent className="px-3 sm:px-6 pb-4">
+            <div className="h-[160px] sm:h-[200px]">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
                     data={statusData}
                     cx="50%"
                     cy="50%"
-                    innerRadius={50}
-                    outerRadius={80}
+                    innerRadius={35}
+                    outerRadius={60}
                     paddingAngle={2}
                     dataKey="value"
                   >
@@ -399,11 +399,11 @@ const Dashboard = () => {
                 </PieChart>
               </ResponsiveContainer>
             </div>
-            <div className="grid grid-cols-2 gap-2 mt-2">
+            <div className="grid grid-cols-2 gap-1.5 sm:gap-2 mt-2">
               {statusData.map((status) => (
-                <div key={status.name} className="flex items-center gap-2 text-sm">
-                  <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: status.color }} />
-                  <span className="text-slate-600">{status.name}</span>
+                <div key={status.name} className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm">
+                  <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: status.color }} />
+                  <span className="text-slate-600 truncate">{status.name}</span>
                   <span className="text-slate-800 font-medium ml-auto">{status.value}</span>
                 </div>
               ))}
@@ -415,21 +415,21 @@ const Dashboard = () => {
       {/* Pending Alert */}
       {totalPending > 0 && (
         <Card className="bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200 shadow-sm">
-          <CardContent className="p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center">
-                <AlertCircle className="h-6 w-6 text-amber-600" />
+          <CardContent className="p-3 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
+                <AlertCircle className="h-5 w-5 sm:h-6 sm:w-6 text-amber-600" />
               </div>
               <div>
-                <p className="font-semibold text-slate-800">
-                  {totalPending} Pending {totalPending === 1 ? "Enquiry" : "Enquiries"} Need Attention
+                <p className="font-semibold text-slate-800 text-sm sm:text-base">
+                  {totalPending} Pending {totalPending === 1 ? "Enquiry" : "Enquiries"}
                 </p>
-                <p className="text-sm text-slate-600">
-                  {stats.pendingTour} tour • {stats.pendingTaxi} taxi bookings waiting for response
+                <p className="text-xs sm:text-sm text-slate-600">
+                  {stats.pendingTour} tour • {stats.pendingTaxi} taxi
                 </p>
               </div>
             </div>
-            <Button className="bg-amber-500 hover:bg-amber-600 text-white shadow-md">
+            <Button className="bg-amber-500 hover:bg-amber-600 text-white shadow-md w-full sm:w-auto text-sm">
               Review Now
             </Button>
           </CardContent>
@@ -438,24 +438,24 @@ const Dashboard = () => {
 
       {/* All Enquiries Section */}
       <Card className="bg-white border-slate-200 shadow-sm">
-        <CardHeader className="border-b border-slate-100">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <CardHeader className="border-b border-slate-100 px-3 sm:px-6 py-3 sm:py-4">
+          <div className="flex flex-col gap-3 sm:gap-4">
             <div>
-              <CardTitle className="text-lg font-semibold text-slate-800">All Enquiries</CardTitle>
-              <p className="text-sm text-slate-500 mt-1">Tour and taxi enquiries in one place</p>
+              <CardTitle className="text-base sm:text-lg font-semibold text-slate-800">All Enquiries</CardTitle>
+              <p className="text-xs sm:text-sm text-slate-500 mt-0.5 sm:mt-1">Tour and taxi enquiries in one place</p>
             </div>
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-auto">
-              <TabsList className="bg-slate-100">
-                <TabsTrigger value="all" className="data-[state=active]:bg-white data-[state=active]:text-slate-800 text-slate-600">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <TabsList className="bg-slate-100 w-full grid grid-cols-3 h-9 sm:h-10">
+                <TabsTrigger value="all" className="text-xs sm:text-sm data-[state=active]:bg-white data-[state=active]:text-slate-800 text-slate-600 px-2 sm:px-4">
                   All ({allEnquiries.length})
                 </TabsTrigger>
-                <TabsTrigger value="tour" className="data-[state=active]:bg-white data-[state=active]:text-slate-800 text-slate-600">
-                  <Plane className="h-3.5 w-3.5 mr-1.5" />
-                  Tours ({tourEnquiries.length})
+                <TabsTrigger value="tour" className="text-xs sm:text-sm data-[state=active]:bg-white data-[state=active]:text-slate-800 text-slate-600 px-2 sm:px-4">
+                  <Plane className="h-3 w-3 sm:h-3.5 sm:w-3.5 mr-1" />
+                  <span className="hidden xs:inline">Tours</span> ({tourEnquiries.length})
                 </TabsTrigger>
-                <TabsTrigger value="taxi" className="data-[state=active]:bg-white data-[state=active]:text-slate-800 text-slate-600">
-                  <Car className="h-3.5 w-3.5 mr-1.5" />
-                  Taxi ({taxiEnquiries.length})
+                <TabsTrigger value="taxi" className="text-xs sm:text-sm data-[state=active]:bg-white data-[state=active]:text-slate-800 text-slate-600 px-2 sm:px-4">
+                  <Car className="h-3 w-3 sm:h-3.5 sm:w-3.5 mr-1" />
+                  <span className="hidden xs:inline">Taxi</span> ({taxiEnquiries.length})
                 </TabsTrigger>
               </TabsList>
             </Tabs>
@@ -464,56 +464,48 @@ const Dashboard = () => {
         <CardContent className="p-0">
           <div className="divide-y divide-slate-100">
             {filteredEnquiries.length === 0 ? (
-              <div className="p-12 text-center">
-                <MessageSquare className="h-12 w-12 text-slate-300 mx-auto mb-3" />
-                <p className="text-slate-500 font-medium">No enquiries yet</p>
-                <p className="text-sm text-slate-400">Enquiries will appear here when customers submit them</p>
+              <div className="p-8 sm:p-12 text-center">
+                <MessageSquare className="h-10 w-10 sm:h-12 sm:w-12 text-slate-300 mx-auto mb-2 sm:mb-3" />
+                <p className="text-slate-500 font-medium text-sm sm:text-base">No enquiries yet</p>
+                <p className="text-xs sm:text-sm text-slate-400">Enquiries will appear here when customers submit them</p>
               </div>
             ) : (
               filteredEnquiries.slice(0, 10).map((enquiry) => (
                 <div
                   key={enquiry.id}
-                  className="p-4 hover:bg-slate-50 transition-colors flex items-center gap-4"
+                  className="p-3 sm:p-4 hover:bg-slate-50 transition-colors flex items-center gap-3 sm:gap-4"
                 >
                   {/* Type Icon */}
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                  <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0 ${
                     enquiry.type === "tour" 
                       ? "bg-violet-100 text-violet-600" 
                       : "bg-emerald-100 text-emerald-600"
                   }`}>
-                    {enquiry.type === "tour" ? <Plane className="h-5 w-5" /> : <Car className="h-5 w-5" />}
+                    {enquiry.type === "tour" ? <Plane className="h-4 w-4 sm:h-5 sm:w-5" /> : <Car className="h-4 w-4 sm:h-5 sm:w-5" />}
                   </div>
 
                   {/* Customer Info */}
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className="font-medium text-slate-800 truncate">{enquiry.name}</p>
-                      <Badge variant="outline" className={`text-xs ${getStatusBadge(enquiry.status)}`}>
+                    <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                      <p className="font-medium text-slate-800 truncate text-sm sm:text-base">{enquiry.name}</p>
+                      <Badge variant="outline" className={`text-[10px] sm:text-xs ${getStatusBadge(enquiry.status)}`}>
                         {enquiry.status}
                       </Badge>
                     </div>
-                    <div className="flex items-center gap-3 mt-1 text-sm text-slate-500">
+                    <div className="flex items-center gap-1.5 sm:gap-3 mt-0.5 sm:mt-1 text-xs sm:text-sm text-slate-500">
                       {enquiry.type === "tour" ? (
-                        <>
-                          <span className="truncate max-w-[200px]">
-                            {(enquiry as TourEnquiry).tour_packages?.title || "General Enquiry"}
-                          </span>
-                          <span>•</span>
-                          <span>{(enquiry as TourEnquiry).adults || 1} travelers</span>
-                        </>
+                        <span className="truncate">
+                          {(enquiry as TourEnquiry).tour_packages?.title || "General Enquiry"}
+                        </span>
                       ) : (
-                        <>
-                          <span className="truncate">
-                            {(enquiry as TaxiEnquiry).pickup_location} → {(enquiry as TaxiEnquiry).drop_location || "Local"}
-                          </span>
-                          <span>•</span>
-                          <span className="capitalize">{(enquiry as TaxiEnquiry).trip_type}</span>
-                        </>
+                        <span className="truncate">
+                          {(enquiry as TaxiEnquiry).pickup_location}
+                        </span>
                       )}
                     </div>
                   </div>
 
-                  {/* Contact & Time */}
+                  {/* Contact & Time - Hidden on mobile */}
                   <div className="hidden md:flex flex-col items-end gap-1">
                     <div className="flex items-center gap-1.5 text-sm text-slate-600">
                       <Phone className="h-3.5 w-3.5" />
@@ -528,9 +520,9 @@ const Dashboard = () => {
                   {/* Action */}
                   <Link
                     to={enquiry.type === "tour" ? "/admin/enquiries" : "/admin/taxi"}
-                    className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+                    className="p-1.5 sm:p-2 hover:bg-slate-100 rounded-lg transition-colors"
                   >
-                    <ChevronRight className="h-5 w-5 text-slate-400" />
+                    <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
                   </Link>
                 </div>
               ))
@@ -538,13 +530,13 @@ const Dashboard = () => {
           </div>
 
           {filteredEnquiries.length > 10 && (
-            <div className="p-4 border-t border-slate-100 text-center">
+            <div className="p-3 sm:p-4 border-t border-slate-100 text-center">
               <Link
                 to={activeTab === "taxi" ? "/admin/taxi" : "/admin/enquiries"}
-                className="text-sm font-medium text-emerald-600 hover:text-emerald-700 inline-flex items-center gap-1"
+                className="text-xs sm:text-sm font-medium text-emerald-600 hover:text-emerald-700 inline-flex items-center gap-1"
               >
                 View all {filteredEnquiries.length} enquiries
-                <ArrowUpRight className="h-4 w-4" />
+                <ArrowUpRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               </Link>
             </div>
           )}
@@ -552,58 +544,58 @@ const Dashboard = () => {
       </Card>
 
       {/* Quick Stats Row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         <Card className="bg-white border-slate-200 shadow-sm">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
-                <Users className="h-5 w-5 text-blue-600" />
+          <CardContent className="p-3 sm:p-4">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                <Users className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
               </div>
-              <div>
-                <p className="text-2xl font-bold text-slate-800">{stats.newsletterSubs}</p>
-                <p className="text-xs text-slate-500">Newsletter Subscribers</p>
+              <div className="min-w-0">
+                <p className="text-xl sm:text-2xl font-bold text-slate-800">{stats.newsletterSubs}</p>
+                <p className="text-[10px] sm:text-xs text-slate-500 truncate">Subscribers</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="bg-white border-slate-200 shadow-sm">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center">
-                <TrendingUp className="h-5 w-5 text-emerald-600" />
+          <CardContent className="p-3 sm:p-4">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0">
+                <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-600" />
               </div>
-              <div>
-                <p className="text-2xl font-bold text-slate-800">{conversionRate}%</p>
-                <p className="text-xs text-slate-500">Conversion Rate</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-white border-slate-200 shadow-sm">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center">
-                <Clock className="h-5 w-5 text-amber-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-slate-800">{stats.pendingTour}</p>
-                <p className="text-xs text-slate-500">Pending Tour Enquiries</p>
+              <div className="min-w-0">
+                <p className="text-xl sm:text-2xl font-bold text-slate-800">{conversionRate}%</p>
+                <p className="text-[10px] sm:text-xs text-slate-500 truncate">Conversion</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="bg-white border-slate-200 shadow-sm">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-violet-50 flex items-center justify-center">
-                <Car className="h-5 w-5 text-violet-600" />
+          <CardContent className="p-3 sm:p-4">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0">
+                <Clock className="h-4 w-4 sm:h-5 sm:w-5 text-amber-600" />
               </div>
-              <div>
-                <p className="text-2xl font-bold text-slate-800">{stats.pendingTaxi}</p>
-                <p className="text-xs text-slate-500">Pending Taxi Bookings</p>
+              <div className="min-w-0">
+                <p className="text-xl sm:text-2xl font-bold text-slate-800">{stats.pendingTour}</p>
+                <p className="text-[10px] sm:text-xs text-slate-500 truncate">Pending Tours</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-white border-slate-200 shadow-sm">
+          <CardContent className="p-3 sm:p-4">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-violet-50 flex items-center justify-center flex-shrink-0">
+                <Car className="h-4 w-4 sm:h-5 sm:w-5 text-violet-600" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-xl sm:text-2xl font-bold text-slate-800">{stats.pendingTaxi}</p>
+                <p className="text-[10px] sm:text-xs text-slate-500 truncate">Pending Taxi</p>
               </div>
             </div>
           </CardContent>

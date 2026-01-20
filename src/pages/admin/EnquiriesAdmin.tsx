@@ -388,84 +388,84 @@ const EnquiriesAdmin = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-900">All Enquiries</h1>
-          <p className="text-gray-500 text-sm mt-1">
+          <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">All Enquiries</h1>
+          <p className="text-gray-500 text-xs sm:text-sm mt-1">
             Manage all booking enquiries in one place
           </p>
         </div>
         {stats.pending > 0 && (
-          <Badge className="bg-amber-100 text-amber-800 border-amber-200 px-3 py-1.5">
-            {stats.pending} pending enquiries
+          <Badge className="bg-amber-100 text-amber-800 border-amber-200 px-2 sm:px-3 py-1 sm:py-1.5 text-xs self-start sm:self-auto">
+            {stats.pending} pending
           </Badge>
         )}
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
         <Card className="bg-gradient-to-br from-orange-500 to-orange-600 text-white border-0">
-          <CardContent className="p-4">
+          <CardContent className="p-3 sm:p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-3xl font-bold">{stats.taxi}</p>
-                <p className="text-sm text-orange-100">Taxi Bookings</p>
+                <p className="text-2xl sm:text-3xl font-bold">{stats.taxi}</p>
+                <p className="text-[10px] sm:text-sm text-orange-100">Taxi</p>
               </div>
-              <Car className="h-8 w-8 text-orange-200" />
+              <Car className="h-6 w-6 sm:h-8 sm:w-8 text-orange-200" />
             </div>
           </CardContent>
         </Card>
         <Card className="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white border-0">
-          <CardContent className="p-4">
+          <CardContent className="p-3 sm:p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-3xl font-bold">{stats.domestic}</p>
-                <p className="text-sm text-emerald-100">Domestic Tours</p>
+                <p className="text-2xl sm:text-3xl font-bold">{stats.domestic}</p>
+                <p className="text-[10px] sm:text-sm text-emerald-100">Domestic</p>
               </div>
-              <Home className="h-8 w-8 text-emerald-200" />
+              <Home className="h-6 w-6 sm:h-8 sm:w-8 text-emerald-200" />
             </div>
           </CardContent>
         </Card>
         <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white border-0">
-          <CardContent className="p-4">
+          <CardContent className="p-3 sm:p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-3xl font-bold">{stats.international}</p>
-                <p className="text-sm text-purple-100">International Tours</p>
+                <p className="text-2xl sm:text-3xl font-bold">{stats.international}</p>
+                <p className="text-[10px] sm:text-sm text-purple-100">International</p>
               </div>
-              <Globe className="h-8 w-8 text-purple-200" />
+              <Globe className="h-6 w-6 sm:h-8 sm:w-8 text-purple-200" />
             </div>
           </CardContent>
         </Card>
         <Card className="bg-gradient-to-br from-sky-500 to-sky-600 text-white border-0">
-          <CardContent className="p-4">
+          <CardContent className="p-3 sm:p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-3xl font-bold">{stats.flight}</p>
-                <p className="text-sm text-sky-100">Flight Bookings</p>
+                <p className="text-2xl sm:text-3xl font-bold">{stats.flight}</p>
+                <p className="text-[10px] sm:text-sm text-sky-100">Flight</p>
               </div>
-              <Plane className="h-8 w-8 text-sky-200" />
+              <Plane className="h-6 w-6 sm:h-8 sm:w-8 text-sky-200" />
             </div>
           </CardContent>
         </Card>
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
           <Input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by name, email, or phone..."
-            className="pl-10 border-gray-300 focus:border-[#008060] bg-white"
+            placeholder="Search by name, email, phone..."
+            className="pl-10 border-gray-300 focus:border-[#008060] bg-white text-sm"
           />
         </div>
         <Select value={filterStatus} onValueChange={setFilterStatus}>
-          <SelectTrigger className="w-full sm:w-48 border-gray-300 bg-white">
-            <SelectValue placeholder="Filter by status" />
+          <SelectTrigger className="w-full sm:w-40 border-gray-300 bg-white text-sm">
+            <SelectValue placeholder="Filter status" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Status</SelectItem>
@@ -477,27 +477,27 @@ const EnquiriesAdmin = () => {
       </div>
 
       {/* Tabs */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-3 sm:space-y-4">
         <TabsList className="grid w-full grid-cols-4 h-auto p-1 bg-gray-100">
-          <TabsTrigger value="taxi" className="flex items-center gap-2 py-3 text-gray-700 data-[state=active]:bg-orange-500 data-[state=active]:text-white">
-            <Car className="h-4 w-4" />
-            <span className="hidden sm:inline">Taxi</span>
-            <Badge variant="secondary" className="ml-1 bg-gray-200 text-gray-700">{stats.taxi}</Badge>
+          <TabsTrigger value="taxi" className="flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm text-gray-700 data-[state=active]:bg-orange-500 data-[state=active]:text-white">
+            <Car className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            <span className="hidden xs:inline">Taxi</span>
+            <Badge variant="secondary" className="ml-0.5 sm:ml-1 bg-gray-200 text-gray-700 text-[10px] sm:text-xs px-1 sm:px-1.5">{stats.taxi}</Badge>
           </TabsTrigger>
-          <TabsTrigger value="domestic" className="flex items-center gap-2 py-3 text-gray-700 data-[state=active]:bg-emerald-500 data-[state=active]:text-white">
-            <Home className="h-4 w-4" />
-            <span className="hidden sm:inline">Domestic</span>
-            <Badge variant="secondary" className="ml-1 bg-gray-200 text-gray-700">{stats.domestic}</Badge>
+          <TabsTrigger value="domestic" className="flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm text-gray-700 data-[state=active]:bg-emerald-500 data-[state=active]:text-white">
+            <Home className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            <span className="hidden xs:inline">Dom</span>
+            <Badge variant="secondary" className="ml-0.5 sm:ml-1 bg-gray-200 text-gray-700 text-[10px] sm:text-xs px-1 sm:px-1.5">{stats.domestic}</Badge>
           </TabsTrigger>
-          <TabsTrigger value="international" className="flex items-center gap-2 py-3 text-gray-700 data-[state=active]:bg-purple-500 data-[state=active]:text-white">
-            <Globe className="h-4 w-4" />
-            <span className="hidden sm:inline">International</span>
-            <Badge variant="secondary" className="ml-1 bg-gray-200 text-gray-700">{stats.international}</Badge>
+          <TabsTrigger value="international" className="flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm text-gray-700 data-[state=active]:bg-purple-500 data-[state=active]:text-white">
+            <Globe className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            <span className="hidden xs:inline">Intl</span>
+            <Badge variant="secondary" className="ml-0.5 sm:ml-1 bg-gray-200 text-gray-700 text-[10px] sm:text-xs px-1 sm:px-1.5">{stats.international}</Badge>
           </TabsTrigger>
-          <TabsTrigger value="flight" className="flex items-center gap-2 py-3 text-gray-700 data-[state=active]:bg-sky-500 data-[state=active]:text-white">
-            <Plane className="h-4 w-4" />
-            <span className="hidden sm:inline">Flight</span>
-            <Badge variant="secondary" className="ml-1 bg-gray-200 text-gray-700">{stats.flight}</Badge>
+          <TabsTrigger value="flight" className="flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm text-gray-700 data-[state=active]:bg-sky-500 data-[state=active]:text-white">
+            <Plane className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            <span className="hidden xs:inline">Flight</span>
+            <Badge variant="secondary" className="ml-0.5 sm:ml-1 bg-gray-200 text-gray-700 text-[10px] sm:text-xs px-1 sm:px-1.5">{stats.flight}</Badge>
           </TabsTrigger>
         </TabsList>
 
