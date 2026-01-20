@@ -195,14 +195,14 @@ const Flights = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                 {/* From */}
                 <div className="space-y-2">
-                  <Label>From</Label>
+                  <Label className="text-foreground font-medium">From</Label>
                   <div className="relative">
-                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
                     <Input
                       value={from}
                       onChange={(e) => setFrom(e.target.value)}
                       placeholder="Departure city"
-                      className="pl-10 bg-white text-gray-900 placeholder:text-gray-500"
+                      className="pl-10 bg-white text-gray-900 placeholder:text-gray-500 border-gray-300"
                       required
                     />
                   </div>
@@ -225,31 +225,31 @@ const Flights = () => {
 
                 {/* To */}
                 <div className="space-y-2">
-                  <Label>To</Label>
+                  <Label className="text-foreground font-medium">To</Label>
                   <div className="relative">
-                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
                     <Input
                       value={to}
                       onChange={(e) => setTo(e.target.value)}
                       placeholder="Arrival city"
-                      className="pl-10 bg-white text-gray-900 placeholder:text-gray-500"
+                      className="pl-10 bg-white text-gray-900 placeholder:text-gray-500 border-gray-300"
                       required
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Departure</Label>
+                  <Label className="text-foreground font-medium">Departure</Label>
                   <Popover open={departDateOpen} onOpenChange={setDepartDateOpen}>
                     <PopoverTrigger asChild>
                       <Button
                         variant="outline"
                         className={cn(
-                          "w-full justify-start text-left font-normal bg-white text-gray-900",
-                          !departDate && "text-gray-500"
+                          "w-full justify-start text-left font-normal bg-white border-gray-300",
+                          departDate ? "text-gray-900" : "text-gray-500"
                         )}
                       >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        <CalendarIcon className="mr-2 h-4 w-4 text-gray-500" />
                         {departDate
                           ? format(departDate, "dd MMM yyyy")
                           : "Select date"}
@@ -272,18 +272,18 @@ const Flights = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Return</Label>
+                  <Label className="text-foreground font-medium">Return</Label>
                   <Popover open={returnDateOpen} onOpenChange={setReturnDateOpen}>
                     <PopoverTrigger asChild>
                       <Button
                         variant="outline"
                         className={cn(
-                          "w-full justify-start text-left font-normal bg-white text-gray-900",
-                          !returnDate && "text-gray-500"
+                          "w-full justify-start text-left font-normal bg-white border-gray-300",
+                          returnDate ? "text-gray-900" : "text-gray-500"
                         )}
                         disabled={tripType === "one-way"}
                       >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        <CalendarIcon className="mr-2 h-4 w-4 text-gray-500" />
                         {returnDate
                           ? format(returnDate, "dd MMM yyyy")
                           : "Select date"}
@@ -312,21 +312,21 @@ const Flights = () => {
               {/* Additional Options */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <Label>Passengers</Label>
+                  <Label className="text-foreground font-medium">Passengers</Label>
                   <div className="relative">
-                    <Users className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Users className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
                     <Input
                       type="number"
                       min="1"
                       max="9"
                       value={passengers}
                       onChange={(e) => setPassengers(e.target.value)}
-                      className="pl-10 bg-white text-gray-900"
+                      className="pl-10 bg-white text-gray-900 border-gray-300"
                     />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label>Class</Label>
+                  <Label className="text-foreground font-medium">Class</Label>
                   <RadioGroup
                     value={travelClass}
                     onValueChange={setTravelClass}
