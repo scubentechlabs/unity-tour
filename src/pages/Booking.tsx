@@ -11,6 +11,7 @@ import { Calendar, Users, MapPin, Phone, Mail, Clock, CheckCircle, Plane, Car, H
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
+import UpiPaymentDialog from "@/components/UpiPaymentDialog";
 
 const bookingSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
@@ -376,6 +377,9 @@ const Booking = () => {
                       <p className="text-sm text-muted-foreground">booking@unityglobaltours.com</p>
                     </div>
                   </a>
+                  
+                  {/* UPI Payment Option */}
+                  <UpiPaymentDialog variant="card" />
                 </CardContent>
               </Card>
 
