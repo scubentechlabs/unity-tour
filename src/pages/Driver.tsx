@@ -439,7 +439,7 @@ const Driver = () => {
                 <Textarea
                   id="message"
                   value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  onChange={(e) => handleInputChange("message", e.target.value)}
                   placeholder="Any additional information you'd like to share..."
                   rows={4}
                 />
