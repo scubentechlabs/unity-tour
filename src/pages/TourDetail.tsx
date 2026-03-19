@@ -9,6 +9,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useRecentlyViewedTours } from "@/hooks/useRecentlyViewedTours";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toast } from "sonner";
+import jsPDF from "jspdf";
 import {
   MapPin,
   Clock,
@@ -131,6 +133,144 @@ const TourDetail = () => {
   const displayPrice = tour.discounted_price || tour.price_per_person;
   const hasDiscount = tour.discounted_price && tour.discounted_price < tour.price_per_person;
   const allImages = [tour.featured_image, ...(tour.images || [])].filter(Boolean);
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    const text = `Check out ${tour.title} - ₹${displayPrice.toLocaleString()} per person | Unity Global Tours`;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: tour.title, text, url });
+      } catch (e) {
+        // User cancelled share
+      }
+    } else {
+      await navigator.clipboard.writeText(`${text}\n${url}`);
+      toast.success("Link copied to clipboard!");
+    }
+  };
+
+  const handleDownloadPDF = () => {
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    let y = 20;
+
+    // Title
+    doc.setFontSize(22);
+    doc.setFont("helvetica", "bold");
+    doc.text("Unity Global Tours", pageWidth / 2, y, { align: "center" });
+    y += 12;
+
+    doc.setFontSize(18);
+    doc.text(tour.title, pageWidth / 2, y, { align: "center" });
+    y += 10;
+
+    doc.setDrawColor(200);
+    doc.line(20, y, pageWidth - 20, y);
+    y += 10;
+
+    // Info
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Location: ${tour.location}`, 20, y); y += 7;
+    doc.text(`Duration: ${tour.duration_days} Days / ${tour.duration_nights} Nights`, 20, y); y += 7;
+    doc.text(`Group Size: ${tour.min_group_size}-${tour.max_group_size} People`, 20, y); y += 7;
+    doc.text(`Price: Rs. ${displayPrice.toLocaleString()} per person`, 20, y); y += 7;
+    if (hasDiscount) {
+      doc.text(`Original Price: Rs. ${tour.price_per_person.toLocaleString()}`, 20, y); y += 7;
+    }
+    y += 5;
+
+    // Description
+    if (tour.description) {
+      doc.setFontSize(14);
+      doc.setFont("helvetica", "bold");
+      doc.text("Overview", 20, y); y += 8;
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal");
+      const descLines = doc.splitTextToSize(tour.description, pageWidth - 40);
+      doc.text(descLines, 20, y);
+      y += descLines.length * 5 + 8;
+    }
+
+    // Highlights
+    if (tour.highlights?.length > 0) {
+      if (y > 250) { doc.addPage(); y = 20; }
+      doc.setFontSize(14);
+      doc.setFont("helvetica", "bold");
+      doc.text("Highlights", 20, y); y += 8;
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal");
+      tour.highlights.forEach((h) => {
+        if (y > 275) { doc.addPage(); y = 20; }
+        doc.text(`• ${h}`, 24, y); y += 6;
+      });
+      y += 5;
+    }
+
+    // Itinerary
+    if (tour.itinerary?.length > 0) {
+      if (y > 240) { doc.addPage(); y = 20; }
+      doc.setFontSize(14);
+      doc.setFont("helvetica", "bold");
+      doc.text("Itinerary", 20, y); y += 8;
+      tour.itinerary.forEach((day) => {
+        if (y > 260) { doc.addPage(); y = 20; }
+        doc.setFontSize(11);
+        doc.setFont("helvetica", "bold");
+        doc.text(`Day ${day.day}: ${day.title}`, 24, y); y += 6;
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "normal");
+        const lines = doc.splitTextToSize(day.description, pageWidth - 50);
+        doc.text(lines, 28, y);
+        y += lines.length * 5 + 6;
+      });
+      y += 5;
+    }
+
+    // Inclusions
+    if (tour.inclusions?.length > 0) {
+      if (y > 240) { doc.addPage(); y = 20; }
+      doc.setFontSize(14);
+      doc.setFont("helvetica", "bold");
+      doc.text("Inclusions", 20, y); y += 8;
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal");
+      tour.inclusions.forEach((item) => {
+        if (y > 275) { doc.addPage(); y = 20; }
+        doc.text(`✓ ${item}`, 24, y); y += 6;
+      });
+      y += 5;
+    }
+
+    // Exclusions
+    if (tour.exclusions?.length > 0) {
+      if (y > 240) { doc.addPage(); y = 20; }
+      doc.setFontSize(14);
+      doc.setFont("helvetica", "bold");
+      doc.text("Exclusions", 20, y); y += 8;
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal");
+      tour.exclusions.forEach((item) => {
+        if (y > 275) { doc.addPage(); y = 20; }
+        doc.text(`✗ ${item}`, 24, y); y += 6;
+      });
+      y += 5;
+    }
+
+    // Footer
+    doc.addPage();
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "bold");
+    doc.text("Contact Us", 20, 20);
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    doc.text("Phone: +91 70050 50020", 20, 30);
+    doc.text("Email: booking@unityglobaltours.com", 20, 37);
+    doc.text("Website: www.unityglobaltours.com", 20, 44);
+
+    doc.save(`${tour.slug}-unity-global-tours.pdf`);
+    toast.success("PDF downloaded successfully!");
+  };
 
   return (
     <Layout>
@@ -384,7 +524,7 @@ const TourDetail = () => {
 
                 {/* Share & Save */}
                 <div className="flex gap-3 mt-6 pt-6 border-t border-border">
-                  <Button variant="ghost" size="sm" className="flex-1 text-muted-foreground">
+                  <Button variant="ghost" size="sm" className="flex-1 text-muted-foreground" onClick={handleShare}>
                     <Share2 className="h-4 w-4 mr-2" />
                     Share
                   </Button>
@@ -405,7 +545,7 @@ const TourDetail = () => {
                     variant="button"
                     className="flex-1"
                   />
-                  <Button variant="ghost" size="sm" className="flex-1 text-muted-foreground">
+                  <Button variant="ghost" size="sm" className="flex-1 text-muted-foreground" onClick={handleDownloadPDF}>
                     <Download className="h-4 w-4 mr-2" />
                     PDF
                   </Button>
