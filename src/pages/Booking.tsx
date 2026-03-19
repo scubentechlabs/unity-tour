@@ -241,9 +241,10 @@ const Booking = () => {
                         <Input
                           id="phone"
                           type="tel"
-                          placeholder="Enter your phone number"
+                          placeholder="Enter 10-digit phone number"
                           value={formData.phone}
-                          onChange={(e) => handleInputChange("phone", e.target.value)}
+                          onChange={(e) => handleInputChange("phone", onlyNumbers(e.target.value))}
+                          maxLength={10}
                           className={`bg-white text-gray-900 placeholder:text-gray-500 ${errors.phone ? "border-red-500" : ""}`}
                         />
                         {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}

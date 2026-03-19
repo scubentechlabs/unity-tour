@@ -125,16 +125,29 @@ const Driver = () => {
     vehicle_type: "",
     message: "",
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const driverSchema = z.object({
+    name: nameSchema,
+    phone: phoneSchema,
+    city: z.string().min(1, "Please select your city"),
+    vehicle_type: z.string().min(1, "Please select vehicle type"),
+    message: z.string().trim().max(500, "Message is too long").optional(),
+  });
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: "" }));
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.phone || !formData.city || !formData.vehicle_type) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in all required fields.",
-        variant: "destructive",
-      });
+    const result = driverSchema.safeParse(formData);
+    if (!result.success) {
+      setErrors(getValidationErrors(result));
       return;
     }
 
@@ -163,6 +176,7 @@ const Driver = () => {
         vehicle_type: "",
         message: "",
       });
+      setErrors({});
     } catch (error) {
       console.error("Error submitting driver registration:", error);
       toast({
