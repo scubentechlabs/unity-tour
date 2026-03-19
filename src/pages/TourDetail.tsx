@@ -545,7 +545,7 @@ const TourDetail = () => {
                     variant="button"
                     className="flex-1"
                   />
-                  <Button variant="ghost" size="sm" className="flex-1 text-muted-foreground">
+                  <Button variant="ghost" size="sm" className="flex-1 text-muted-foreground" onClick={handleDownloadPDF}>
                     <Download className="h-4 w-4 mr-2" />
                     PDF
                   </Button>
