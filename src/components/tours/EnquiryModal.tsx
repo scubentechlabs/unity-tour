@@ -257,9 +257,15 @@ export const EnquiryModal = ({ isOpen, onClose, tour }: EnquiryModalProps) => {
                 <Input
                   id="phone"
                   type="tel"
-                  placeholder="+91 70050 50020"
+                  placeholder="Enter 10-digit number"
                   className="bg-background border-border mt-1"
+                  maxLength={10}
                   {...register("phone")}
+                  onChange={(e) => {
+                    const val = onlyNumbers(e.target.value);
+                    e.target.value = val;
+                    register("phone").onChange(e);
+                  }}
                 />
                 {errors.phone && <p className="text-destructive text-sm mt-1">{errors.phone.message}</p>}
               </div>
