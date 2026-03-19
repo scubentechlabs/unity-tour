@@ -233,7 +233,7 @@ export const EnquiryModal = ({ isOpen, onClose, tour }: EnquiryModalProps) => {
               <Input
                 id="name"
                 placeholder="Enter your full name"
-                className="bg-background border-border mt-1"
+                className="bg-white text-gray-900 placeholder:text-gray-500 border-gray-300 mt-1"
                 {...register("name")}
               />
               {errors.name && <p className="text-destructive text-sm mt-1">{errors.name.message}</p>}
@@ -247,7 +247,7 @@ export const EnquiryModal = ({ isOpen, onClose, tour }: EnquiryModalProps) => {
                   id="email"
                   type="email"
                   placeholder="your@email.com"
-                  className="bg-background border-border mt-1"
+                  className="bg-white text-gray-900 placeholder:text-gray-500 border-gray-300 mt-1"
                   {...register("email")}
                 />
                 {errors.email && <p className="text-destructive text-sm mt-1">{errors.email.message}</p>}
@@ -258,7 +258,7 @@ export const EnquiryModal = ({ isOpen, onClose, tour }: EnquiryModalProps) => {
                   id="phone"
                   type="tel"
                   placeholder="Enter 10-digit number"
-                  className="bg-background border-border mt-1"
+                  className="bg-white text-gray-900 placeholder:text-gray-500 border-gray-300 mt-1"
                   maxLength={10}
                   {...register("phone")}
                   onChange={(e) => {
@@ -280,7 +280,7 @@ export const EnquiryModal = ({ isOpen, onClose, tour }: EnquiryModalProps) => {
               <Input
                 id="travel_date"
                 type="date"
-                className="bg-background border-border mt-1"
+                className="bg-white text-gray-900 border-gray-300 mt-1"
                 min={new Date().toISOString().split("T")[0]}
                 {...register("travel_date")}
               />
@@ -298,7 +298,7 @@ export const EnquiryModal = ({ isOpen, onClose, tour }: EnquiryModalProps) => {
                   type="number"
                   min={1}
                   max={50}
-                  className="bg-background border-border mt-1"
+                  className="bg-white text-gray-900 border-gray-300 mt-1"
                   {...register("adults", { valueAsNumber: true })}
                 />
                 {errors.adults && <p className="text-destructive text-sm mt-1">{errors.adults.message}</p>}
@@ -310,7 +310,7 @@ export const EnquiryModal = ({ isOpen, onClose, tour }: EnquiryModalProps) => {
                   type="number"
                   min={0}
                   max={50}
-                  className="bg-background border-border mt-1"
+                  className="bg-white text-gray-900 border-gray-300 mt-1"
                   {...register("children", { valueAsNumber: true })}
                 />
               </div>
@@ -322,7 +322,7 @@ export const EnquiryModal = ({ isOpen, onClose, tour }: EnquiryModalProps) => {
               <Textarea
                 id="message"
                 placeholder="Any special requests or questions..."
-                className="bg-background border-border mt-1 resize-none"
+                className="bg-white text-gray-900 placeholder:text-gray-500 border-gray-300 mt-1 resize-none"
                 rows={3}
                 {...register("message")}
               />
