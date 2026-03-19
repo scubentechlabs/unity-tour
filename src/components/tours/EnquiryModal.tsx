@@ -280,7 +280,7 @@ export const EnquiryModal = ({ isOpen, onClose, tour }: EnquiryModalProps) => {
               <Input
                 id="travel_date"
                 type="date"
-                className="bg-background border-border mt-1"
+                className="bg-white text-gray-900 border-gray-300 mt-1"
                 min={new Date().toISOString().split("T")[0]}
                 {...register("travel_date")}
               />
