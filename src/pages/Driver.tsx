@@ -370,10 +370,11 @@ const Driver = () => {
                   <Input
                     id="name"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) => handleInputChange("name", e.target.value)}
                     placeholder="Enter your full name"
-                    required
+                    className={errors.name ? "border-destructive" : ""}
                   />
+                  {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
                 </div>
 
                 <div className="space-y-2">
@@ -382,10 +383,12 @@ const Driver = () => {
                     id="phone"
                     type="tel"
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder="+91 XXXXX XXXXX"
-                    required
+                    onChange={(e) => handleInputChange("phone", onlyNumbers(e.target.value))}
+                    placeholder="Enter 10-digit phone number"
+                    maxLength={10}
+                    className={errors.phone ? "border-destructive" : ""}
                   />
+                  {errors.phone && <p className="text-sm text-destructive">{errors.phone}</p>}
                 </div>
               </div>
 
@@ -394,9 +397,9 @@ const Driver = () => {
                   <Label htmlFor="city">City *</Label>
                   <Select
                     value={formData.city}
-                    onValueChange={(value) => setFormData({ ...formData, city: value })}
+                    onValueChange={(value) => handleInputChange("city", value)}
                   >
-                    <SelectTrigger id="city">
+                    <SelectTrigger id="city" className={errors.city ? "border-destructive" : ""}>
                       <SelectValue placeholder="Select your city" />
                     </SelectTrigger>
                     <SelectContent>
@@ -407,15 +410,16 @@ const Driver = () => {
                       ))}
                     </SelectContent>
                   </Select>
+                  {errors.city && <p className="text-sm text-destructive">{errors.city}</p>}
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="vehicle_type">Vehicle Type *</Label>
                   <Select
                     value={formData.vehicle_type}
-                    onValueChange={(value) => setFormData({ ...formData, vehicle_type: value })}
+                    onValueChange={(value) => handleInputChange("vehicle_type", value)}
                   >
-                    <SelectTrigger id="vehicle_type">
+                    <SelectTrigger id="vehicle_type" className={errors.vehicle_type ? "border-destructive" : ""}>
                       <SelectValue placeholder="Select vehicle type" />
                     </SelectTrigger>
                     <SelectContent>
@@ -426,6 +430,7 @@ const Driver = () => {
                       ))}
                     </SelectContent>
                   </Select>
+                  {errors.vehicle_type && <p className="text-sm text-destructive">{errors.vehicle_type}</p>}
                 </div>
               </div>
 
