@@ -247,7 +247,7 @@ export const EnquiryModal = ({ isOpen, onClose, tour }: EnquiryModalProps) => {
                   id="email"
                   type="email"
                   placeholder="your@email.com"
-                  className="bg-background border-border mt-1"
+                  className="bg-white text-gray-900 placeholder:text-gray-500 border-gray-300 mt-1"
                   {...register("email")}
                 />
                 {errors.email && <p className="text-destructive text-sm mt-1">{errors.email.message}</p>}
