@@ -135,9 +135,28 @@ const TaxiBooking = () => {
     setStep("booking");
   };
 
+  const taxiBookingSchema = z.object({
+    name: nameSchema,
+    email: emailSchema,
+    phone: phoneSchema,
+  });
+
+  const handleBookingInputChange = (field: string, value: string, setter: (v: string) => void) => {
+    setter(value);
+    if (bookingErrors[field]) {
+      setBookingErrors((prev) => ({ ...prev, [field]: "" }));
+    }
+  };
+
   const handleBookingSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    const result = taxiBookingSchema.safeParse({ name, email, phone });
+    if (!result.success) {
+      setBookingErrors(getValidationErrors(result));
+      return;
+    }
+
     if (!selectedVehicle || !pickupDate) return;
     
     setSubmitting(true);
