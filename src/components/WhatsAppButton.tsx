@@ -7,12 +7,14 @@ const WhatsAppButton = () => {
   
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
+  const handleClick = () => {
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+  };
+
   return (
-    <motion.a
-      href={whatsappUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group"
+    <motion.button
+      onClick={handleClick}
+      className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer"
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ delay: 1, type: "spring", stiffness: 200 }}
@@ -32,7 +34,7 @@ const WhatsAppButton = () => {
         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
         <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
       </span>
-    </motion.a>
+    </motion.button>
   );
 };
 
