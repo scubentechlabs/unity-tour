@@ -60,6 +60,14 @@ const socialLinks = [
 ];
 
 const Contact = () => {
+  const contactSchema = z.object({
+    name: nameSchema,
+    email: emailSchema,
+    phone: phoneSchema,
+    subject: z.string().trim().min(2, "Subject is required").max(200, "Subject is too long"),
+    message: z.string().trim().min(5, "Message must be at least 5 characters").max(1000, "Message is too long"),
+  });
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -67,15 +75,29 @@ const Contact = () => {
     subject: "",
     message: "",
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const { toast } = useToast();
 
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: "" }));
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const result = contactSchema.safeParse(formData);
+    if (!result.success) {
+      setErrors(getValidationErrors(result));
+      return;
+    }
+
     setSubmitting(true);
 
     try {
-      // Send email notification to admin
       const { error } = await supabase.functions.invoke("send-enquiry-notification", {
         body: {
           type: "contact",
@@ -95,6 +117,7 @@ const Contact = () => {
       });
 
       setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+      setErrors({});
     } catch (error) {
       console.error("Error sending message:", error);
       toast({
