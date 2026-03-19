@@ -524,7 +524,7 @@ const TourDetail = () => {
 
                 {/* Share & Save */}
                 <div className="flex gap-3 mt-6 pt-6 border-t border-border">
-                  <Button variant="ghost" size="sm" className="flex-1 text-muted-foreground">
+                  <Button variant="ghost" size="sm" className="flex-1 text-muted-foreground" onClick={handleShare}>
                     <Share2 className="h-4 w-4 mr-2" />
                     Share
                   </Button>
