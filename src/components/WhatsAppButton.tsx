@@ -3,11 +3,12 @@ import { motion } from "framer-motion";
 const WhatsAppButton = () => {
   const phoneNumber = "917005050020";
   const message = "Hello! I'm interested in your travel services. Can you help me?";
-  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
   return (
     <motion.a
       href={whatsappUrl}
+      target="_blank"
       rel="noopener noreferrer"
       className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer"
       initial={{ scale: 0, opacity: 0 }}
