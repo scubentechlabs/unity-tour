@@ -233,7 +233,7 @@ export const EnquiryModal = ({ isOpen, onClose, tour }: EnquiryModalProps) => {
               <Input
                 id="name"
                 placeholder="Enter your full name"
-                className="bg-background border-border mt-1"
+                className="bg-white text-gray-900 placeholder:text-gray-500 border-gray-300 mt-1"
                 {...register("name")}
               />
               {errors.name && <p className="text-destructive text-sm mt-1">{errors.name.message}</p>}
