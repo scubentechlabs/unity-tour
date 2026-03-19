@@ -258,7 +258,7 @@ export const EnquiryModal = ({ isOpen, onClose, tour }: EnquiryModalProps) => {
                   id="phone"
                   type="tel"
                   placeholder="Enter 10-digit number"
-                  className="bg-background border-border mt-1"
+                  className="bg-white text-gray-900 placeholder:text-gray-500 border-gray-300 mt-1"
                   maxLength={10}
                   {...register("phone")}
                   onChange={(e) => {
