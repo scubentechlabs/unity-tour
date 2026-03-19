@@ -77,6 +77,7 @@ const TaxiBooking = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
+  const [bookingErrors, setBookingErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     fetchVehicles();
