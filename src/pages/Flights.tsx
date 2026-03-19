@@ -97,8 +97,28 @@ const Flights = () => {
     setShowContactModal(true);
   };
 
+  const contactSchema = z.object({
+    name: nameSchema,
+    email: emailSchema,
+    phone: phoneSchema,
+  });
+
+  const handleContactInputChange = (field: string, value: string) => {
+    setContactForm((prev) => ({ ...prev, [field]: value }));
+    if (contactErrors[field]) {
+      setContactErrors((prev) => ({ ...prev, [field]: "" }));
+    }
+  };
+
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const result = contactSchema.safeParse(contactForm);
+    if (!result.success) {
+      setContactErrors(getValidationErrors(result));
+      return;
+    }
+
     setSubmitting(true);
     try {
       await supabase.functions.invoke("send-enquiry-notification", {
@@ -122,6 +142,7 @@ const Flights = () => {
       });
       setShowContactModal(false);
       setContactForm({ name: "", email: "", phone: "" });
+      setContactErrors({});
     } catch (error) {
       console.error("Error:", error);
       toast({ title: "Failed to submit", variant: "destructive" });
