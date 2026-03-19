@@ -322,7 +322,7 @@ export const EnquiryModal = ({ isOpen, onClose, tour }: EnquiryModalProps) => {
               <Textarea
                 id="message"
                 placeholder="Any special requests or questions..."
-                className="bg-background border-border mt-1 resize-none"
+                className="bg-white text-gray-900 placeholder:text-gray-500 border-gray-300 mt-1 resize-none"
                 rows={3}
                 {...register("message")}
               />
