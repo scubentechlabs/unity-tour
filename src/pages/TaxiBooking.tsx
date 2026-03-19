@@ -6,6 +6,8 @@ import {
   Check, Phone, Mail, User, MessageSquare, ArrowRight,
   Fuel, Wind, ChevronRight
 } from "lucide-react";
+import { z } from "zod";
+import { nameSchema, emailSchema, phoneSchema, onlyNumbers, getValidationErrors } from "@/lib/validation";
 import { Layout } from "@/components/layout/Layout";
 import TaxiHireSection from "@/components/taxi/TaxiHireSection";
 import { Button } from "@/components/ui/button";
