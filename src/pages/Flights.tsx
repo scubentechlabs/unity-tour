@@ -84,6 +84,7 @@ const Flights = () => {
   const [returnDateOpen, setReturnDateOpen] = useState(false);
   const [showContactModal, setShowContactModal] = useState(false);
   const [contactForm, setContactForm] = useState({ name: "", email: "", phone: "" });
+  const [contactErrors, setContactErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const { toast } = useToast();
 
