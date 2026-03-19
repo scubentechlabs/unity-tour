@@ -645,15 +645,18 @@ const Flights = () => {
             </div>
             <div>
               <Label>Full Name *</Label>
-              <Input value={contactForm.name} onChange={(e) => setContactForm({...contactForm, name: e.target.value})} required placeholder="Your name" className="bg-white text-gray-900 placeholder:text-gray-500" />
+              <Input value={contactForm.name} onChange={(e) => handleContactInputChange("name", e.target.value)} placeholder="Your name" className={`bg-white text-gray-900 placeholder:text-gray-500 ${contactErrors.name ? "border-destructive" : ""}`} />
+              {contactErrors.name && <p className="text-sm text-destructive mt-1">{contactErrors.name}</p>}
             </div>
             <div>
               <Label>Email *</Label>
-              <Input type="email" value={contactForm.email} onChange={(e) => setContactForm({...contactForm, email: e.target.value})} required placeholder="your@email.com" className="bg-white text-gray-900 placeholder:text-gray-500" />
+              <Input type="email" value={contactForm.email} onChange={(e) => handleContactInputChange("email", e.target.value)} placeholder="your@email.com" className={`bg-white text-gray-900 placeholder:text-gray-500 ${contactErrors.email ? "border-destructive" : ""}`} />
+              {contactErrors.email && <p className="text-sm text-destructive mt-1">{contactErrors.email}</p>}
             </div>
             <div>
               <Label>Phone *</Label>
-              <Input value={contactForm.phone} onChange={(e) => setContactForm({...contactForm, phone: e.target.value})} required placeholder="+91 98765 43210" className="bg-white text-gray-900 placeholder:text-gray-500" />
+              <Input type="tel" value={contactForm.phone} onChange={(e) => handleContactInputChange("phone", onlyNumbers(e.target.value))} placeholder="Enter 10-digit phone number" maxLength={10} className={`bg-white text-gray-900 placeholder:text-gray-500 ${contactErrors.phone ? "border-destructive" : ""}`} />
+              {contactErrors.phone && <p className="text-sm text-destructive mt-1">{contactErrors.phone}</p>}
             </div>
             <Button type="submit" className="w-full bg-primary" disabled={submitting}>
               {submitting ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" />Submitting...</> : "Submit Enquiry"}
