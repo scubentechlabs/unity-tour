@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { nameSchema, emailSchema, phoneSchema, onlyNumbers } from "@/lib/validation";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,10 +13,9 @@ import { toast } from "sonner";
 import { Loader2, Calendar, Users, Send, CheckCircle } from "lucide-react";
 
 const enquirySchema = z.object({
-  name: z.string().trim().min(2, "Name must be at least 2 characters").max(100, "Name is too long"),
-  email: z.string().trim().email("Please enter a valid email").max(255, "Email is too long"),
-  phone: z.string().trim().min(10, "Please enter a valid phone number").max(15, "Phone number is too long")
-    .regex(/^[+]?[\d\s-]+$/, "Please enter a valid phone number"),
+  name: nameSchema,
+  email: emailSchema,
+  phone: phoneSchema,
   travel_date: z.string().optional(),
   adults: z.number().min(1, "At least 1 adult required").max(50, "Maximum 50 adults"),
   children: z.number().min(0).max(50, "Maximum 50 children"),
@@ -257,9 +257,15 @@ export const EnquiryModal = ({ isOpen, onClose, tour }: EnquiryModalProps) => {
                 <Input
                   id="phone"
                   type="tel"
-                  placeholder="+91 70050 50020"
+                  placeholder="Enter 10-digit number"
                   className="bg-background border-border mt-1"
+                  maxLength={10}
                   {...register("phone")}
+                  onChange={(e) => {
+                    const val = onlyNumbers(e.target.value);
+                    e.target.value = val;
+                    register("phone").onChange(e);
+                  }}
                 />
                 {errors.phone && <p className="text-destructive text-sm mt-1">{errors.phone.message}</p>}
               </div>

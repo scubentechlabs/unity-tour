@@ -6,6 +6,8 @@ import {
   Check, Phone, Mail, User, MessageSquare, ArrowRight,
   Fuel, Wind, ChevronRight
 } from "lucide-react";
+import { z } from "zod";
+import { nameSchema, emailSchema, phoneSchema, onlyNumbers, getValidationErrors } from "@/lib/validation";
 import { Layout } from "@/components/layout/Layout";
 import TaxiHireSection from "@/components/taxi/TaxiHireSection";
 import { Button } from "@/components/ui/button";
@@ -75,6 +77,7 @@ const TaxiBooking = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
+  const [bookingErrors, setBookingErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     fetchVehicles();
@@ -132,9 +135,28 @@ const TaxiBooking = () => {
     setStep("booking");
   };
 
+  const taxiBookingSchema = z.object({
+    name: nameSchema,
+    email: emailSchema,
+    phone: phoneSchema,
+  });
+
+  const handleBookingInputChange = (field: string, value: string, setter: (v: string) => void) => {
+    setter(value);
+    if (bookingErrors[field]) {
+      setBookingErrors((prev) => ({ ...prev, [field]: "" }));
+    }
+  };
+
   const handleBookingSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    const result = taxiBookingSchema.safeParse({ name, email, phone });
+    if (!result.success) {
+      setBookingErrors(getValidationErrors(result));
+      return;
+    }
+
     if (!selectedVehicle || !pickupDate) return;
     
     setSubmitting(true);
@@ -675,11 +697,11 @@ const TaxiBooking = () => {
                             <Input
                               id="name"
                               value={name}
-                              onChange={(e) => setName(e.target.value)}
+                              onChange={(e) => handleBookingInputChange("name", e.target.value, setName)}
                               placeholder="Enter your name"
-                              required
-                              className="bg-white text-gray-900 placeholder:text-gray-500"
+                              className={`bg-white text-gray-900 placeholder:text-gray-500 ${bookingErrors.name ? "border-destructive" : ""}`}
                             />
+                            {bookingErrors.name && <p className="text-sm text-destructive">{bookingErrors.name}</p>}
                           </div>
                           <div className="space-y-2">
                             <Label htmlFor="phone" className="flex items-center gap-2">
@@ -688,12 +710,14 @@ const TaxiBooking = () => {
                             </Label>
                             <Input
                               id="phone"
+                              type="tel"
                               value={phone}
-                              onChange={(e) => setPhone(e.target.value)}
-                              placeholder="Enter your phone"
-                              required
-                              className="bg-white text-gray-900 placeholder:text-gray-500"
+                              onChange={(e) => handleBookingInputChange("phone", onlyNumbers(e.target.value), setPhone)}
+                              placeholder="Enter 10-digit phone number"
+                              maxLength={10}
+                              className={`bg-white text-gray-900 placeholder:text-gray-500 ${bookingErrors.phone ? "border-destructive" : ""}`}
                             />
+                            {bookingErrors.phone && <p className="text-sm text-destructive">{bookingErrors.phone}</p>}
                           </div>
                         </div>
                         
@@ -706,11 +730,11 @@ const TaxiBooking = () => {
                             id="email"
                             type="email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e) => handleBookingInputChange("email", e.target.value, setEmail)}
                             placeholder="Enter your email"
-                            required
-                            className="bg-white text-gray-900 placeholder:text-gray-500"
+                            className={`bg-white text-gray-900 placeholder:text-gray-500 ${bookingErrors.email ? "border-destructive" : ""}`}
                           />
+                          {bookingErrors.email && <p className="text-sm text-destructive">{bookingErrors.email}</p>}
                         </div>
                         
                         <div className="space-y-2">

@@ -8,6 +8,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { z } from "zod";
+import { nameSchema, emailSchema, phoneSchema, onlyNumbers, getValidationErrors } from "@/lib/validation";
 import {
   Phone,
   Mail,
@@ -58,6 +60,14 @@ const socialLinks = [
 ];
 
 const Contact = () => {
+  const contactSchema = z.object({
+    name: nameSchema,
+    email: emailSchema,
+    phone: phoneSchema,
+    subject: z.string().trim().min(2, "Subject is required").max(200, "Subject is too long"),
+    message: z.string().trim().min(5, "Message must be at least 5 characters").max(1000, "Message is too long"),
+  });
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -65,15 +75,29 @@ const Contact = () => {
     subject: "",
     message: "",
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const { toast } = useToast();
 
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: "" }));
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const result = contactSchema.safeParse(formData);
+    if (!result.success) {
+      setErrors(getValidationErrors(result));
+      return;
+    }
+
     setSubmitting(true);
 
     try {
-      // Send email notification to admin
       const { error } = await supabase.functions.invoke("send-enquiry-notification", {
         body: {
           type: "contact",
@@ -93,6 +117,7 @@ const Contact = () => {
       });
 
       setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+      setErrors({});
     } catch (error) {
       console.error("Error sending message:", error);
       toast({
@@ -248,13 +273,11 @@ const Contact = () => {
                       <Input
                         id="name"
                         value={formData.name}
-                        onChange={(e) =>
-                          setFormData({ ...formData, name: e.target.value })
-                        }
+                        onChange={(e) => handleInputChange("name", e.target.value)}
                         placeholder="Enter your name"
-                        required
-                        className="bg-white text-gray-900 placeholder:text-gray-500"
+                        className={`bg-white text-gray-900 placeholder:text-gray-500 ${errors.name ? "border-destructive" : ""}`}
                       />
+                      {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="email">Email Address *</Label>
@@ -262,41 +285,38 @@ const Contact = () => {
                         id="email"
                         type="email"
                         value={formData.email}
-                        onChange={(e) =>
-                          setFormData({ ...formData, email: e.target.value })
-                        }
+                        onChange={(e) => handleInputChange("email", e.target.value)}
                         placeholder="Enter your email"
-                        required
-                        className="bg-white text-gray-900 placeholder:text-gray-500"
+                        className={`bg-white text-gray-900 placeholder:text-gray-500 ${errors.email ? "border-destructive" : ""}`}
                       />
+                      {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
                     </div>
                   </div>
 
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="phone">Phone Number</Label>
+                      <Label htmlFor="phone">Phone Number *</Label>
                       <Input
                         id="phone"
+                        type="tel"
                         value={formData.phone}
-                        onChange={(e) =>
-                          setFormData({ ...formData, phone: e.target.value })
-                        }
-                        placeholder="Enter your phone"
-                        className="bg-white text-gray-900 placeholder:text-gray-500"
+                        onChange={(e) => handleInputChange("phone", onlyNumbers(e.target.value))}
+                        placeholder="Enter 10-digit phone number"
+                        maxLength={10}
+                        className={`bg-white text-gray-900 placeholder:text-gray-500 ${errors.phone ? "border-destructive" : ""}`}
                       />
+                      {errors.phone && <p className="text-sm text-destructive">{errors.phone}</p>}
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="subject">Subject *</Label>
                       <Input
                         id="subject"
                         value={formData.subject}
-                        onChange={(e) =>
-                          setFormData({ ...formData, subject: e.target.value })
-                        }
+                        onChange={(e) => handleInputChange("subject", e.target.value)}
                         placeholder="What's this about?"
-                        required
-                        className="bg-white text-gray-900 placeholder:text-gray-500"
+                        className={`bg-white text-gray-900 placeholder:text-gray-500 ${errors.subject ? "border-destructive" : ""}`}
                       />
+                      {errors.subject && <p className="text-sm text-destructive">{errors.subject}</p>}
                     </div>
                   </div>
 
@@ -305,14 +325,12 @@ const Contact = () => {
                     <Textarea
                       id="message"
                       value={formData.message}
-                      onChange={(e) =>
-                        setFormData({ ...formData, message: e.target.value })
-                      }
+                      onChange={(e) => handleInputChange("message", e.target.value)}
                       placeholder="Tell us how we can help..."
                       rows={5}
-                      required
-                      className="bg-white text-gray-900 placeholder:text-gray-500"
+                      className={`bg-white text-gray-900 placeholder:text-gray-500 ${errors.message ? "border-destructive" : ""}`}
                     />
+                    {errors.message && <p className="text-sm text-destructive">{errors.message}</p>}
                   </div>
 
                   <Button

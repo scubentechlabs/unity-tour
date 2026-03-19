@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { z } from "zod";
+import { nameSchema, phoneSchema, onlyNumbers, getValidationErrors } from "@/lib/validation";
 import {
   Select,
   SelectContent,
@@ -123,16 +125,29 @@ const Driver = () => {
     vehicle_type: "",
     message: "",
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const driverSchema = z.object({
+    name: nameSchema,
+    phone: phoneSchema,
+    city: z.string().min(1, "Please select your city"),
+    vehicle_type: z.string().min(1, "Please select vehicle type"),
+    message: z.string().trim().max(500, "Message is too long").optional(),
+  });
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: "" }));
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.phone || !formData.city || !formData.vehicle_type) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in all required fields.",
-        variant: "destructive",
-      });
+    const result = driverSchema.safeParse(formData);
+    if (!result.success) {
+      setErrors(getValidationErrors(result));
       return;
     }
 
@@ -161,6 +176,7 @@ const Driver = () => {
         vehicle_type: "",
         message: "",
       });
+      setErrors({});
     } catch (error) {
       console.error("Error submitting driver registration:", error);
       toast({
@@ -354,10 +370,11 @@ const Driver = () => {
                   <Input
                     id="name"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) => handleInputChange("name", e.target.value)}
                     placeholder="Enter your full name"
-                    required
+                    className={errors.name ? "border-destructive" : ""}
                   />
+                  {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
                 </div>
 
                 <div className="space-y-2">
@@ -366,10 +383,12 @@ const Driver = () => {
                     id="phone"
                     type="tel"
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder="+91 XXXXX XXXXX"
-                    required
+                    onChange={(e) => handleInputChange("phone", onlyNumbers(e.target.value))}
+                    placeholder="Enter 10-digit phone number"
+                    maxLength={10}
+                    className={errors.phone ? "border-destructive" : ""}
                   />
+                  {errors.phone && <p className="text-sm text-destructive">{errors.phone}</p>}
                 </div>
               </div>
 
@@ -378,9 +397,9 @@ const Driver = () => {
                   <Label htmlFor="city">City *</Label>
                   <Select
                     value={formData.city}
-                    onValueChange={(value) => setFormData({ ...formData, city: value })}
+                    onValueChange={(value) => handleInputChange("city", value)}
                   >
-                    <SelectTrigger id="city">
+                    <SelectTrigger id="city" className={errors.city ? "border-destructive" : ""}>
                       <SelectValue placeholder="Select your city" />
                     </SelectTrigger>
                     <SelectContent>
@@ -391,15 +410,16 @@ const Driver = () => {
                       ))}
                     </SelectContent>
                   </Select>
+                  {errors.city && <p className="text-sm text-destructive">{errors.city}</p>}
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="vehicle_type">Vehicle Type *</Label>
                   <Select
                     value={formData.vehicle_type}
-                    onValueChange={(value) => setFormData({ ...formData, vehicle_type: value })}
+                    onValueChange={(value) => handleInputChange("vehicle_type", value)}
                   >
-                    <SelectTrigger id="vehicle_type">
+                    <SelectTrigger id="vehicle_type" className={errors.vehicle_type ? "border-destructive" : ""}>
                       <SelectValue placeholder="Select vehicle type" />
                     </SelectTrigger>
                     <SelectContent>
@@ -410,6 +430,7 @@ const Driver = () => {
                       ))}
                     </SelectContent>
                   </Select>
+                  {errors.vehicle_type && <p className="text-sm text-destructive">{errors.vehicle_type}</p>}
                 </div>
               </div>
 
@@ -418,7 +439,7 @@ const Driver = () => {
                 <Textarea
                   id="message"
                   value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  onChange={(e) => handleInputChange("message", e.target.value)}
                   placeholder="Any additional information you'd like to share..."
                   rows={4}
                 />

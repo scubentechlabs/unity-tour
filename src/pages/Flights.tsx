@@ -21,6 +21,8 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { z } from "zod";
+import { nameSchema, emailSchema, phoneSchema, onlyNumbers, getValidationErrors } from "@/lib/validation";
 import {
   Plane,
   Calendar as CalendarIcon,
@@ -82,6 +84,7 @@ const Flights = () => {
   const [returnDateOpen, setReturnDateOpen] = useState(false);
   const [showContactModal, setShowContactModal] = useState(false);
   const [contactForm, setContactForm] = useState({ name: "", email: "", phone: "" });
+  const [contactErrors, setContactErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const { toast } = useToast();
 
@@ -94,8 +97,28 @@ const Flights = () => {
     setShowContactModal(true);
   };
 
+  const contactSchema = z.object({
+    name: nameSchema,
+    email: emailSchema,
+    phone: phoneSchema,
+  });
+
+  const handleContactInputChange = (field: string, value: string) => {
+    setContactForm((prev) => ({ ...prev, [field]: value }));
+    if (contactErrors[field]) {
+      setContactErrors((prev) => ({ ...prev, [field]: "" }));
+    }
+  };
+
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const result = contactSchema.safeParse(contactForm);
+    if (!result.success) {
+      setContactErrors(getValidationErrors(result));
+      return;
+    }
+
     setSubmitting(true);
     try {
       await supabase.functions.invoke("send-enquiry-notification", {
@@ -119,6 +142,7 @@ const Flights = () => {
       });
       setShowContactModal(false);
       setContactForm({ name: "", email: "", phone: "" });
+      setContactErrors({});
     } catch (error) {
       console.error("Error:", error);
       toast({ title: "Failed to submit", variant: "destructive" });
@@ -621,15 +645,18 @@ const Flights = () => {
             </div>
             <div>
               <Label>Full Name *</Label>
-              <Input value={contactForm.name} onChange={(e) => setContactForm({...contactForm, name: e.target.value})} required placeholder="Your name" className="bg-white text-gray-900 placeholder:text-gray-500" />
+              <Input value={contactForm.name} onChange={(e) => handleContactInputChange("name", e.target.value)} placeholder="Your name" className={`bg-white text-gray-900 placeholder:text-gray-500 ${contactErrors.name ? "border-destructive" : ""}`} />
+              {contactErrors.name && <p className="text-sm text-destructive mt-1">{contactErrors.name}</p>}
             </div>
             <div>
               <Label>Email *</Label>
-              <Input type="email" value={contactForm.email} onChange={(e) => setContactForm({...contactForm, email: e.target.value})} required placeholder="your@email.com" className="bg-white text-gray-900 placeholder:text-gray-500" />
+              <Input type="email" value={contactForm.email} onChange={(e) => handleContactInputChange("email", e.target.value)} placeholder="your@email.com" className={`bg-white text-gray-900 placeholder:text-gray-500 ${contactErrors.email ? "border-destructive" : ""}`} />
+              {contactErrors.email && <p className="text-sm text-destructive mt-1">{contactErrors.email}</p>}
             </div>
             <div>
               <Label>Phone *</Label>
-              <Input value={contactForm.phone} onChange={(e) => setContactForm({...contactForm, phone: e.target.value})} required placeholder="+91 98765 43210" className="bg-white text-gray-900 placeholder:text-gray-500" />
+              <Input type="tel" value={contactForm.phone} onChange={(e) => handleContactInputChange("phone", onlyNumbers(e.target.value))} placeholder="Enter 10-digit phone number" maxLength={10} className={`bg-white text-gray-900 placeholder:text-gray-500 ${contactErrors.phone ? "border-destructive" : ""}`} />
+              {contactErrors.phone && <p className="text-sm text-destructive mt-1">{contactErrors.phone}</p>}
             </div>
             <Button type="submit" className="w-full bg-primary" disabled={submitting}>
               {submitting ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" />Submitting...</> : "Submit Enquiry"}

@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
 import UpiPaymentDialog from "@/components/UpiPaymentDialog";
+import { nameSchema, emailSchema, phoneSchema, onlyNumbers } from "@/lib/validation";
 
 const bookingSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
@@ -241,9 +242,10 @@ const Booking = () => {
                         <Input
                           id="phone"
                           type="tel"
-                          placeholder="Enter your phone number"
+                          placeholder="Enter 10-digit phone number"
                           value={formData.phone}
-                          onChange={(e) => handleInputChange("phone", e.target.value)}
+                          onChange={(e) => handleInputChange("phone", onlyNumbers(e.target.value))}
+                          maxLength={10}
                           className={`bg-white text-gray-900 placeholder:text-gray-500 ${errors.phone ? "border-red-500" : ""}`}
                         />
                         {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
