@@ -310,7 +310,7 @@ export const EnquiryModal = ({ isOpen, onClose, tour }: EnquiryModalProps) => {
                   type="number"
                   min={0}
                   max={50}
-                  className="bg-background border-border mt-1"
+                  className="bg-white text-gray-900 border-gray-300 mt-1"
                   {...register("children", { valueAsNumber: true })}
                 />
               </div>
