@@ -298,7 +298,7 @@ export const EnquiryModal = ({ isOpen, onClose, tour }: EnquiryModalProps) => {
                   type="number"
                   min={1}
                   max={50}
-                  className="bg-background border-border mt-1"
+                  className="bg-white text-gray-900 border-gray-300 mt-1"
                   {...register("adults", { valueAsNumber: true })}
                 />
                 {errors.adults && <p className="text-destructive text-sm mt-1">{errors.adults.message}</p>}
